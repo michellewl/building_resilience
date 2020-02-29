@@ -101,7 +101,7 @@ def slice_lat_lon(xr_df, lon, lat):
         with latitude, longitude specified in slice
     '''
     sliced_xr_temp = xr_df.sel(lon=slice(lon - 2, lon),
-                               lat=slice(lat - 2, lat)).to_dataframe().reset_index()
+                               lat=slice(lat - 2, lat))
 
     return sliced_xr_temp
 
@@ -185,7 +185,7 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
     now = datetime.datetime.now()
     while (longi < lon_end):
         longi += 2
-        if(lati == lati_end):
+        if(lati == lati_end  + 1):
             check_time(now)
             now = datetime.datetime.now()
         lati = lati_st
@@ -193,16 +193,17 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
             lati += 2
             sliced_xr_temp = slice_lat_lon(xr_temp, longi, lati)
             if (era):
-                sliced_xr_temp = sliced_xr_temp.rename(columns={'year': 'yr'})
+                sliced_xr_temp = sliced_xr_temp.to_dataframe().reset_index().rename(columns={'year': 'yr'})
                 grouped_temp = get_days_below_abv_thres_temp(sliced_xr_temp, 'MX2T')
             else:
-                sliced_xr_temp = get_time_from_netcdftime(sliced_xr_temp)
+                sliced_xr_temp_df = get_time_from_netcdftime(sliced_xr_temp.to_dataframe().reset_index())
                 if (bias_cor):
-                    sliceed_xr_temp_bc_mean= bc.mean_bias_correct(xr_temp, xr_obs, ('1979-01-01', '2016-01-01'), ('2017-01-01', None))
-                    sliceed_xr_temp_bc_delta= bc.delta_change_correct(xr_temp, xr_obs, ('1979-01-01', '2016-12-31'), ('2017-01-01', None))
-                    print(sliceed_xr_temp_bc_delta)
-                    # sliced_xr_temp.to_csv(str(model) + '_' + str(lat_st) + '_' + str(lon_st) + '_' + 'bc.csv')
-                grouped_temp = get_days_below_abv_thres_temp(sliceed_xr_temp, c_var)
+                    sliced_xr_obs = slice_lat_lon(xr_obs, longi, lati)
+                    sliced_xr_temp_bc_mean= bc.mean_bias_correct(sliced_xr_temp, sliced_xr_obs, ('1979-01-01', '2016-01-01'), ('2017-01-01', None))
+                    sliced_xr_temp_bc_delta= bc.delta_change_correct(sliced_xr_temp, sliced_xr_obs, ('1979-01-01', '2016-01-01'), ('2017-01-01', None))
+                    print(sliced_xr_temp_bc_delta)
+                    # sliced_xr_temp.to_csv(str(model) + '_' + str(run) '_' + str(exper) + '_'  + str(lat_st) + '_' + str(lon_st) + '_' + 'bc.csv')
+                grouped_temp = get_days_below_abv_thres_temp(sliced_xr_temp_df, c_var)
 
             grouped_temp['run'] = run
             grouped_temp['model'] = model
