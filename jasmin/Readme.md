@@ -41,3 +41,10 @@ cd PYTHON
 ** Discover what is Jaspy for [here](https://help.jasmin.ac.uk/article/4729-jaspy-envs)
 
 
+Run:
+
+```
+sh create_directories_climate_models.sh
+```
+
+
