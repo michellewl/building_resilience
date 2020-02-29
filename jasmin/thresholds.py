@@ -4,6 +4,7 @@ import baspy as bp
 import numpy as np
 import pandas as pd
 import datetime
+import bias_correction as bc  
 
 
 def read_catalog(model=None, data='cmip5', freq='day', var='tas'):
@@ -144,7 +145,7 @@ def get_time_from_netcdftime(df, yr=True, mon=False, day=False):
     return df
 
 
-def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t2max', c_var='tas', catl_model=None, run=0, exper="", model=""):
+def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t2max', c_var='tas', catl_model=None, run=0, exper="", model="", bias_cor = False):
     '''
     Get year/month/day from netcdf time column
     Parameters:
@@ -160,6 +161,7 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
     run:
     exper:
     model:
+    bias_cor: mean, delta, delta_var, quantile
 
 
     Returns:
@@ -168,13 +170,13 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
         with # days above different threshold for every lat/lon square (2X2) grouped by year/month/day
     '''
 
-    longi = lon_st
-    lati = 0
+    longi = lon_st; lati = 0
     curr_df = pd.DataFrame([])
 
-    if(era):
+    if((era) and (bias_cor)):
         xr_temp = dp.load_era(era_var)
     else:
+        xr_obs = dp.load_era(era_var)
         xr_temp = catalog_to_xr(catl_model.T)
         xr_temp = xr_temp.sel(time=slice("1979-01", None))
 
@@ -195,7 +197,12 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
                 grouped_temp = get_days_below_abv_thres_temp(sliced_xr_temp, 'MX2T')
             else:
                 sliced_xr_temp = get_time_from_netcdftime(sliced_xr_temp)
-                grouped_temp = get_days_below_abv_thres_temp(sliced_xr_temp, c_var)
+                if (bias_cor):
+                    sliceed_xr_temp_bc_mean= bc.mean_bias_correct(xr_temp, xr_obs, ('1979-01-01', '2016-01-01'), ('2017-01-01', None))
+                    sliceed_xr_temp_bc_delta= bc.delta_change_correct(xr_temp, xr_obs, ('1979-01-01', '2016-12-31'), ('2017-01-01', None))
+                    print(sliceed_xr_temp_bc_delta)
+                    # sliced_xr_temp.to_csv(str(model) + '_' + str(lat_st) + '_' + str(lon_st) + '_' + 'bc.csv')
+                grouped_temp = get_days_below_abv_thres_temp(sliceed_xr_temp, c_var)
 
             grouped_temp['run'] = run
             grouped_temp['model'] = model
@@ -210,7 +217,7 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
     return curr_df
 
 
-def cube_wrap(lati_st, lati_end, lon_st, lon_end, model):
+def cube_wrap(lati_st, lati_end, lon_st, lon_end, model, bias_cor = False):
     '''
     Get csv files with threshold for all the runs of a model
     Parameters:
@@ -229,7 +236,7 @@ def cube_wrap(lati_st, lati_end, lon_st, lon_end, model):
         exper = cat_item.loc['Experiment']
         run = cat_item.loc['RunID']
         get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=False, catl_model=pd.DataFrame(cat_item),
-                            run=run, exper=exper, model=model)
+                            run=run, exper=exper, model=model, bias_cor = bias_cor)
 
 
 # a bit of a bad code here - reading twice the catalog
