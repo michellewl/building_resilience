@@ -48,3 +48,23 @@ sh create_directories_climate_models.sh
 ```
 
 
+For creating csv files for the ERA data with varying thresholds run:
+
+```
+sh era_bjob.sh
+```  
+
+To check the status of the job:
+
+```
+bjobs -a
+
+```
+
+After the jobs are done run: 
+
+```
+sh mv_era_files.sh
+```
+
+

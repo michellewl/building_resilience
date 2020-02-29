@@ -1,0 +1,1 @@
+for i in {1..7}; do bsub < bjobs/era/era${i}.bsub; done

@@ -6,7 +6,7 @@ import pandas as pd
 import datetime
 
 
-def read_catalog(model=None, data='cmip5', freq='day', . var='tas'):
+def read_catalog(model=None, data='cmip5', freq='day', var='tas'):
     '''
     Read in catalogue of climate models
     Parameters:
@@ -99,8 +99,8 @@ def slice_lat_lon(xr_df, lon, lat):
     data (Xarray):
         with latitude, longitude specified in slice
     '''
-    sliced_xr_temp = xr_df.sel(lon=slice(lon_const - 2, lon_const),
-                               lat=slice(lati_const - 2, lati_const)).to_dataframe().reset_index()
+    sliced_xr_temp = xr_df.sel(lon=slice(lon - 2, lon),
+                               lat=slice(lat - 2, lat)).to_dataframe().reset_index()
 
     return sliced_xr_temp
 
@@ -173,7 +173,7 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
     curr_df = pd.DataFrame([])
 
     if(era):
-        xr_temp = dp.load_era(var)
+        xr_temp = dp.load_era(era_var)
     else:
         xr_temp = catalog_to_xr(catl_model.T)
         xr_temp = xr_temp.sel(time=slice("1979-01", None))
@@ -192,10 +192,10 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
             sliced_xr_temp = slice_lat_lon(xr_temp, longi, lati)
             if (era):
                 sliced_xr_temp = sliced_xr_temp.rename(columns={'year': 'yr'})
-                grouped_temp = get_days_below_abv_thres(sliced_xr_temp, 'MX2T')
+                grouped_temp = get_days_below_abv_thres_temp(sliced_xr_temp, 'MX2T')
             else:
                 sliced_xr_temp = get_time_from_netcdftime(sliced_xr_temp)
-                grouped_temp = get_days_below_abv_thres(sliced_xr_temp, c_var)
+                grouped_temp = get_days_below_abv_thres_temp(sliced_xr_temp, c_var)
 
             grouped_temp['run'] = run
             grouped_temp['model'] = model
