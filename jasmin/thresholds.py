@@ -2,6 +2,7 @@
 import dataprocessing as dp
 import baspy as bp
 import numpy as np
+import xarray as xr
 import pandas as pd
 import datetime
 import bias_correction as bc  
@@ -144,10 +145,46 @@ def get_time_from_netcdftime(df, yr=True, mon=False, day=False):
         df['day'] = df['time'].apply(lambda x: x.day)
     return df
 
+def grouped_df(dfs, params):
+    df_list = []
+    run, model, lat_st, lati_end, lon_st, lon_end, c_var = list(params)
+
+    for df in (dfs):
+        df = get_time_from_netcdftime(df.to_dataframe().reset_index())
+        df = get_days_below_abv_thres_temp(df, c_var)
+        df['run'] = run
+        df['model'] = model
+        df['lat_st'] = lati - 2
+        df['lat_end'] = lati
+        df['lon_st'] = longi - 2
+        df['lon_end'] = longi
+        df_list.append(df)
+
+    return df_list
+
+
+def bias_cor_methods(sliced_xr_temp, sliced_xr_obs, params):
+    model, run, exper, lat_st, lon_st = list(params)
+
+    # print(sliced_xr_temp.values)
+    # print(sliced_xr_obs.values)
+
+    sliced_xr_temp_bc_mean = bc.mean_bias_correct(sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
+    sliced_xr_temp_bc_mean.name = 'bc_mean'
+    sliced_xr_temp_bc_mean.to_netcdf(str(model) + '_' + str(run) + '_' + str(exper) + '_'  + str(lat_st) + '_' + str(lon_st) + '_' + 'mean_bc.nc')
+    # sliced_xr_temp_bc_delta = bc.delta_change_correct(sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
+    # print('values after bc:', sliced_xr_temp_bc_mean.values)
+    # future = sliced_xr_temp.sel(time=slice('2020-01-01', '2030-01-01')).time
+    # sliced_xr_temp_bc_delta = sliced_xr_temp_bc_delta.assign_coords(time=future)
+    # sliced_xr_temp_bc_delta.to_netcdf(str(model) + '_' + str(run) + '_' + str(exper) + '_'  + str(lat_st) + '_' + str(lon_st) + '_' + 'delta_bc.nc')
+
+    return sliced_xr_temp_bc_mean.to_dataframe().reset_index()
+
+
 
 def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t2max', c_var='tas', catl_model=None, run=0, exper="", model="", bias_cor = False):
     '''
-    Get year/month/day from netcdf time column
+    Get 
     Parameters:
     ----------
     lati_st: (pandas.DataFrame with time column (netcdf format))
@@ -171,10 +208,11 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
     '''
 
     longi = lon_st; lati = 0
-    curr_df = pd.DataFrame([])
+    dict_df = {'era': pd.DataFrame([]), 'mean_bc': pd.DataFrame([]), 'delta': pd.DataFrame([])}
 
     if((era) and (bias_cor)):
         xr_temp = dp.load_era(era_var)
+        c_var = 'MX2T'
     else:
         xr_obs = dp.load_era(era_var)
         xr_temp = catalog_to_xr(catl_model.T)
@@ -194,28 +232,21 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
             sliced_xr_temp = slice_lat_lon(xr_temp, longi, lati)
             if (era):
                 sliced_xr_temp = sliced_xr_temp.to_dataframe().reset_index().rename(columns={'year': 'yr'})
-                grouped_temp = get_days_below_abv_thres_temp(sliced_xr_temp, 'MX2T')
+                dfs = sliced_xr_temp
             else:
-                sliced_xr_temp_df = get_time_from_netcdftime(sliced_xr_temp.to_dataframe().reset_index())
-                if (bias_cor):
-                    sliced_xr_obs = slice_lat_lon(xr_obs, longi, lati)
-                    sliced_xr_temp_bc_mean= bc.mean_bias_correct(sliced_xr_temp, sliced_xr_obs, ('1979-01-01', '2016-01-01'), ('2017-01-01', None))
-                    sliced_xr_temp_bc_delta= bc.delta_change_correct(sliced_xr_temp, sliced_xr_obs, ('1979-01-01', '2016-01-01'), ('2017-01-01', None))
-                    print(sliced_xr_temp_bc_delta)
-                    # sliced_xr_temp.to_csv(str(model) + '_' + str(run) '_' + str(exper) + '_'  + str(lat_st) + '_' + str(lon_st) + '_' + 'bc.csv')
-                grouped_temp = get_days_below_abv_thres_temp(sliced_xr_temp_df, c_var)
+                sliced_xr_obs = slice_lat_lon(xr_obs, longi, lati)
+                print('obs:', sliced_xr_obs)
+                print('model:', sliced_xr_temp)
+                dfs = bias_cor_methods(sliced_xr_temp, sliced_xr_obs, (model, run, exper, lati_st, lon_st))
+                print('dfs:', dfs)
 
-            grouped_temp['run'] = run
-            grouped_temp['model'] = model
-            grouped_temp['lat_st'] = lati - 2
-            grouped_temp['lat_end'] = lati
-            grouped_temp['lon_st'] = longi - 2
-            grouped_temp['lon_end'] = longi
-            curr_df = curr_df.append(grouped_temp)
+            df_list = grouped_df(dfs, (run, model, lati_st, lati_end, lon_st, lon_end, c_var))
+            # print(df_list[0])
+            # curr_df = curr_df.append(grouped_temp)
 
-    curr_df.to_csv(str(model)+'_' + str(exper) + '_' +
-                   str(run) + '_' + str(lon_st) + '.csv')
-    return curr_df
+    # curr_df.to_csv(str(model)+'_' + str(exper) + '_' +
+    #                str(run) + '_' + str(lon_st) + '.csv')
+    return df_list
 
 
 def cube_wrap(lati_st, lati_end, lon_st, lon_end, model, bias_cor = False):
