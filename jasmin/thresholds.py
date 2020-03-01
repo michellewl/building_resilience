@@ -87,7 +87,7 @@ def get_days_below_abv_thres_temp(df, var='tas', gr='yr'):
     return grouped_df
 
 
-def slice_lat_lon(xr_df, lon, lat):
+def slice_lat_lon(xr_df, loni, lati):
     '''
     slice a lat/lon square 2X2
     Parameters:
@@ -101,8 +101,8 @@ def slice_lat_lon(xr_df, lon, lat):
     data (Xarray):
         with latitude, longitude specified in slice
     '''
-    sliced_xr_temp = xr_df.sel(lon=slice(lon - 2, lon),
-                               lat=slice(lat - 2, lat))
+    sliced_xr_temp = xr_df.sel(lon=slice(loni - 2, loni),
+                               lat=slice(lati - 2, lati))
 
     return sliced_xr_temp
 
@@ -147,12 +147,15 @@ def get_time_from_netcdftime(df, yr=True, mon=False, day=False):
 
 def grouped_df(dfs, params):
     run, model, lat_st, lati_end, lon_st, lon_end, c_var = list(params)
+    print(c_var)
 
     for key in (dfs.keys()):
         if (key != 'era'):
             c_var = dfs[key].columns[list(pd.Series(dfs[key].columns).str.startswith('bc'))][0]
         dfs[key] =  get_time_from_netcdftime(dfs[key])
-        dfs[key] = get_days_below_abv_thres_temp(dfs[key], c_var)
+        print('here:', dfs[key])
+        dfs[key] = get_days_below_abv_thres_temp(dfs[key], var = c_var)
+        print('after:', dfs[key])
         dfs[key]['run'] = run
         dfs[key]['model'] = model
         dfs[key]['lat_st'] = lat_st
@@ -235,6 +238,7 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
             sliced_xr_temp = slice_lat_lon(xr_temp, longi, lati)
             if (era):
                 sliced_xr_temp = sliced_xr_temp.to_dataframe().reset_index().rename(columns={'year': 'yr'})
+                print(sliced_xr_temp)
                 dfs = {};
                 dfs['era'] = sliced_xr_temp
             else:
@@ -244,6 +248,7 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
             df_list = grouped_df(dfs, (run, model, lati_st, lati_end, lon_st, lon_end, c_var))
             for key in df_list.keys():
                 dict_df[key] = dict_df[key].append(df_list[key])
+                print(df_list[key])
 
     for item in dict_df.keys():
         if(dict_df[item].shape[0] > 0):
