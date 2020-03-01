@@ -146,43 +146,43 @@ def get_time_from_netcdftime(df, yr=True, mon=False, day=False):
     return df
 
 def grouped_df(dfs, params):
-    df_list = []
     run, model, lat_st, lati_end, lon_st, lon_end, c_var = list(params)
 
-    for df in (dfs):
-        df = get_time_from_netcdftime(df.to_dataframe().reset_index())
-        df = get_days_below_abv_thres_temp(df, c_var)
-        df['run'] = run
-        df['model'] = model
-        df['lat_st'] = lati - 2
-        df['lat_end'] = lati
-        df['lon_st'] = longi - 2
-        df['lon_end'] = longi
-        df_list.append(df)
+    for key in (dfs.keys()):
+        if (key != 'era'):
+            c_var = dfs[key].columns[list(pd.Series(dfs[key].columns).str.startswith('bc'))][0]
+        dfs[key] =  get_time_from_netcdftime(dfs[key])
+        dfs[key] = get_days_below_abv_thres_temp(dfs[key], c_var)
+        dfs[key]['run'] = run
+        dfs[key]['model'] = model
+        dfs[key]['lat_st'] = lat_st
+        dfs[key]['lat_end'] = lati_end
+        dfs[key]['lon_st'] = lon_st
+        dfs[key]['lon_end'] = lon_end
 
-    return df_list
+
+    return dfs
 
 
 def bias_cor_methods(sliced_xr_temp, sliced_xr_obs, params):
+    bias_cor_dict = {}
     model, run, exper, lat_st, lon_st = list(params)
-
-    # print(sliced_xr_temp.values)
-    # print(sliced_xr_obs.values)
 
     sliced_xr_temp_bc_mean = bc.mean_bias_correct(sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
     sliced_xr_temp_bc_mean.name = 'bc_mean'
     sliced_xr_temp_bc_mean.to_netcdf(str(model) + '_' + str(run) + '_' + str(exper) + '_'  + str(lat_st) + '_' + str(lon_st) + '_' + 'mean_bc.nc')
+    bias_cor_dict['bc_mean'] = sliced_xr_temp_bc_mean.to_dataframe().reset_index()
     # sliced_xr_temp_bc_delta = bc.delta_change_correct(sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
     # print('values after bc:', sliced_xr_temp_bc_mean.values)
     # future = sliced_xr_temp.sel(time=slice('2020-01-01', '2030-01-01')).time
     # sliced_xr_temp_bc_delta = sliced_xr_temp_bc_delta.assign_coords(time=future)
     # sliced_xr_temp_bc_delta.to_netcdf(str(model) + '_' + str(run) + '_' + str(exper) + '_'  + str(lat_st) + '_' + str(lon_st) + '_' + 'delta_bc.nc')
 
-    return sliced_xr_temp_bc_mean.to_dataframe().reset_index()
+    return bias_cor_dict
 
 
 
-def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t2max', c_var='tas', catl_model=None, run=0, exper="", model="", bias_cor = False):
+def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t2max', c_var='tas', catl_model=None, run=0, exper="", model=""):
     '''
     Get 
     Parameters:
@@ -208,15 +208,18 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
     '''
 
     longi = lon_st; lati = 0
-    dict_df = {'era': pd.DataFrame([]), 'mean_bc': pd.DataFrame([]), 'delta': pd.DataFrame([])}
+    dict_df = {'era': pd.DataFrame([]), 'bc_mean': pd.DataFrame([]), 'delta': pd.DataFrame([])}
 
-    if((era) and (bias_cor)):
+    if(era):
         xr_temp = dp.load_era(era_var)
         c_var = 'MX2T'
     else:
         xr_obs = dp.load_era(era_var)
         xr_temp = catalog_to_xr(catl_model.T)
         xr_temp = xr_temp.sel(time=slice("1979-01", None))
+        if (np.max(xr_temp.time.dt.year) < 2030):
+            print(model, ' doesnt have appropriate time range') 
+            return 1
 
     check_time()
 
@@ -232,24 +235,24 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
             sliced_xr_temp = slice_lat_lon(xr_temp, longi, lati)
             if (era):
                 sliced_xr_temp = sliced_xr_temp.to_dataframe().reset_index().rename(columns={'year': 'yr'})
-                dfs = sliced_xr_temp
+                dfs = {};
+                dfs['era'] = sliced_xr_temp
             else:
                 sliced_xr_obs = slice_lat_lon(xr_obs, longi, lati)
-                print('obs:', sliced_xr_obs)
-                print('model:', sliced_xr_temp)
                 dfs = bias_cor_methods(sliced_xr_temp, sliced_xr_obs, (model, run, exper, lati_st, lon_st))
-                print('dfs:', dfs)
 
             df_list = grouped_df(dfs, (run, model, lati_st, lati_end, lon_st, lon_end, c_var))
-            # print(df_list[0])
-            # curr_df = curr_df.append(grouped_temp)
+            for key in df_list.keys():
+                dict_df[key] = dict_df[key].append(df_list[key])
 
-    # curr_df.to_csv(str(model)+'_' + str(exper) + '_' +
-    #                str(run) + '_' + str(lon_st) + '.csv')
-    return df_list
+    for item in dict_df.keys():
+        if(dict_df[item].shape[0] > 0):
+            dict_df[item].to_csv(str(item)+ '_' + str(model)+ '_' + str(exper) + '_' +
+                        str(run) + '_' + str(lon_st) + '.csv')
+    return dict_df
 
 
-def cube_wrap(lati_st, lati_end, lon_st, lon_end, model, bias_cor = False):
+def cube_wrap(lati_st, lati_end, lon_st, lon_end, model):
     '''
     Get csv files with threshold for all the runs of a model
     Parameters:
@@ -265,10 +268,10 @@ def cube_wrap(lati_st, lati_end, lon_st, lon_end, model, bias_cor = False):
     catalog = read_catalog(model)
     for item in range(len(catalog)):
         cat_item = catalog.iloc[item, :]
-        exper = cat_item.loc['Experiment']
-        run = cat_item.loc['RunID']
-        get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=False, catl_model=pd.DataFrame(cat_item),
-                            run=run, exper=exper, model=model, bias_cor = bias_cor)
+        experi = cat_item.loc['Experiment']
+        runi = cat_item.loc['RunID']
+        get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=False, era_var='t2max', catl_model=pd.DataFrame(cat_item),
+                            run=runi, exper=experi, model=model)
 
 
 # a bit of a bad code here - reading twice the catalog
