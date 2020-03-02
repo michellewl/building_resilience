@@ -222,11 +222,12 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
         xr_obs = dp.load_era(era_var)
         xr_temp = catalog_to_xr(catl_model.T)
         xr_temp = xr_temp.sel(time=slice("1979-01", None))
-        print('model:', model)
-        print(xr_temp.time)
-        print(np.max(xr_temp.time.dt.year) < 2030)
-        if (np.max(xr_temp.time.dt.year) < 2030):
-            print(model, ' doesnt have appropriate time range')
+        try:
+            if (np.max(xr_temp.time.dt.year) < 2030):
+                print(model, ' doesnt have appropriate time range')
+                return None
+        except:
+            print(model, ' doesnt have dt')
             return None
 
     check_time()
