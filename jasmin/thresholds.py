@@ -74,6 +74,7 @@ def get_days_below_abv_thres_temp(df, var='tas', gr='yr'):
     data (pd.DataFrame):
         with threshold columns (e.g. column 32 will contain # days above 32)
     '''
+    print('below_above:', df)
     df['cel'] = df[var] - 273.15
 
     for temperature in range(-10, 19, 1):
@@ -82,7 +83,7 @@ def get_days_below_abv_thres_temp(df, var='tas', gr='yr'):
     for temperature in range(22, 40, 1):
         df[temperature] = df['cel'] > temperature
 
-    grouped_df = df.reset_index().groupby([gr]).sum().reset_index()
+    grouped_df = df.groupby([gr]).sum().reset_index()
 
     return grouped_df
 
@@ -146,22 +147,19 @@ def get_time_from_netcdftime(df, yr=True, mon=False, day=False):
     return df
 
 def grouped_df(dfs, params):
-    run, model, lat_st, lati_end, lon_st, lon_end, c_var = list(params)
-    print(c_var)
+    run, model, lati, longi, c_var = list(params)
 
     for key in (dfs.keys()):
         if (key != 'era'):
             c_var = dfs[key].columns[list(pd.Series(dfs[key].columns).str.startswith('bc'))][0]
         dfs[key] =  get_time_from_netcdftime(dfs[key])
-        print('here:', dfs[key])
         dfs[key] = get_days_below_abv_thres_temp(dfs[key], var = c_var)
-        print('after:', dfs[key])
         dfs[key]['run'] = run
         dfs[key]['model'] = model
-        dfs[key]['lat_st'] = lat_st
-        dfs[key]['lat_end'] = lati_end
-        dfs[key]['lon_st'] = lon_st
-        dfs[key]['lon_end'] = lon_end
+        dfs[key]['lati_st'] = lati - 2
+        dfs[key]['longi_st'] = longi - 2 
+        dfs[key]['lati'] = lati 
+        dfs[key]['longi'] = longi  
 
 
     return dfs
@@ -238,17 +236,15 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
             sliced_xr_temp = slice_lat_lon(xr_temp, longi, lati)
             if (era):
                 sliced_xr_temp = sliced_xr_temp.to_dataframe().reset_index().rename(columns={'year': 'yr'})
-                print(sliced_xr_temp)
                 dfs = {};
                 dfs['era'] = sliced_xr_temp
             else:
                 sliced_xr_obs = slice_lat_lon(xr_obs, longi, lati)
-                dfs = bias_cor_methods(sliced_xr_temp, sliced_xr_obs, (model, run, exper, lati_st, lon_st))
+                dfs = bias_cor_methods(sliced_xr_temp, sliced_xr_obs, (model, run, exper, lati, longi))
 
-            df_list = grouped_df(dfs, (run, model, lati_st, lati_end, lon_st, lon_end, c_var))
+            df_list = grouped_df(dfs, (run, model, lati, longi, c_var))
             for key in df_list.keys():
                 dict_df[key] = dict_df[key].append(df_list[key])
-                print(df_list[key])
 
     for item in dict_df.keys():
         if(dict_df[item].shape[0] > 0):
