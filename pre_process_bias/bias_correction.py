@@ -11,12 +11,13 @@ def mean_bias_correct(model_data, observations, ref_times, future_times):
     '''
 
 
-    # Select reference arrays
-    past_model = model_data.sel(time=slice(*ref_times))
-    past_obs = observations.sel(time=slice(*ref_times))
 
     # Select future data to be correcte
     try:
+
+        # Select reference arrays
+        past_model = model_data.sel(time=slice(*ref_times))
+        past_obs = observations.sel(time=slice(*ref_times))
         future_model = model_data.sel(time=slice(
             *future_times)).reduce(np.mean, ('lat', 'lon'))
 
@@ -27,7 +28,7 @@ def mean_bias_correct(model_data, observations, ref_times, future_times):
         future_bias_corrected = future_model - bias
     except:
         print('unable to bias correct')
-        return 0
+        return None
 
     return(future_bias_corrected)
 
