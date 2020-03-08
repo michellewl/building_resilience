@@ -170,12 +170,20 @@ def bias_cor_methods(sliced_xr_temp, sliced_xr_obs, params):
     bias_cor_dict = {}
     model, run, exper, lat_st, lon_st = list(params)
 
-    sliced_xr_temp_bc_mean = bc.mean_bias_correct(
-        sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
-    sliced_xr_temp_bc_mean.name = 'bc_mean'
-    sliced_xr_temp_bc_mean.to_netcdf(str(model) + '_' + str(run) + '_' + str(
-        exper) + '_' + str(lat_st) + '_' + str(lon_st) + '_' + 'mean_bc.nc')
-    bias_cor_dict['bc_mean'] = sliced_xr_temp_bc_mean.to_dataframe().reset_index()
+    # sliced_xr_temp_bc_mean = bc.mean_bias_correct(
+    #     sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
+    # sliced_xr_temp_bc_mean.name = 'bc_mean'
+    # sliced_xr_temp_bc_mean.to_netcdf(str(model) + '_' + str(run) + '_' + str(
+    #     exper) + '_' + str(lat_st) + '_' + str(lon_st) + '_' + 'mean_bc.nc')
+    # bias_cor_dict['bc_mean'] = sliced_xr_temp_bc_mean.to_dataframe().reset_index()
+
+
+    sliced_xr_temp_bc_qm = bc.ecdf_bias_correction(sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
+    sliced_xr_temp_bc_qm.name = 'bc_qm'
+    sliced_xr_temp_bc_qm.to_netcdf(str(model) + '_' + str(run) + '_' + str(
+        exper) + '_' + str(lat_st) + '_' + str(lon_st) + '_' + 'qm_bc.nc')
+    bias_cor_dict['qm'] = sliced_xr_temp_bc_qm.to_dataframe().reset_index()
+
     # sliced_xr_temp_bc_delta = bc.delta_change_correct(sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
     # print('values after bc:', sliced_xr_temp_bc_mean.values)
     # future = sliced_xr_temp.sel(time=slice('2020-01-01', '2030-01-01')).time
@@ -213,7 +221,7 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
     longi = lon_st
     lati = 0
     dict_df = {'era': pd.DataFrame([]), 'bc_mean': pd.DataFrame(
-        []), 'delta': pd.DataFrame([])}
+        []), 'delta': pd.DataFrame([]), 'qm': pd.DataFrame([])}
 
     if(era):
         xr_temp = dp.load_era(era_var)
