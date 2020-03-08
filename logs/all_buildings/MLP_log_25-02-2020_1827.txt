@@ -1,0 +1,3 @@
+Mean squared error: 0.9998055481966076
+
+MLP regression model test:

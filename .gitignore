@@ -1,2 +1,4 @@
 *.egg-info/
 /bias_correction/plots
+*.csv
+

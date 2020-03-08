@@ -1,0 +1,18 @@
+WEATHER TRAINING DATA
+
+All sites.
+Data shape: (140544, 5)
+
+BUILDING TRAINING DATA
+
+All sites.
+Data shape: (140544,)
+
+MODEL TRAIN
+
+Training size: 0.6699999999999999
+Test size: 0.33
+Training array dimensions: (94164, 5) (94164, 1)
+Test array dimensions: (46380, 5) (46380, 1)
+
+Normalised the training data and applied the same to the test set.

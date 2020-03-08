@@ -1,0 +1,35 @@
+WEATHER TRAINING DATA
+
+All buildings.
+Data shape: (12728016, 5)
+
+BUILDING TRAINING DATA
+
+All buildings.
+Data shape: (12728016,)
+
+MODEL TRAIN
+
+Training size: 0.6699999999999999
+Test size: 0.33
+Training array dimensions: (8527770, 5) (8527770, 1)
+Test array dimensions: (4200246, 5) (4200246, 1)
+
+Normalised the training data and applied the same to the test set.
+
+Linear regression model fit:
+R²: 8.881395555460081e-05
+Mean squared error: 0.9999111860444461
+
+Linear regression model test:
+Mean squared error: 1.0634945880403768
+
+Model coefficients:
+air_temperature : [-0.0029125470009063927]
+dew_temperature : [-0.00289696128107019]
+wind_speed : [0.006325765572083354]
+cos_wind_direction : [-0.0010966577966319189]
+sin_wind_direction : [0.005386644530618522]
+
+Model intercept:
+0.0
