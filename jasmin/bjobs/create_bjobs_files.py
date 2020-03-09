@@ -12,7 +12,7 @@ def create_bjobs():
 	    # BSUB -oo R-%J.o \n
 	    # BSUB -eo R-%J.e \n
 	    # BSUB -W 23:00 \n
-	    python -c \'import os; os.chdir(\"/home/users/omer/PYTHON/\"); import thresholds as th; th.model_wrap(-90, 89,''' + str(i) + "," + str(i + 5) + ''')\'''')
+	    python -c \'import os; os.chdir(\"/home/users/omer/PYTHON/\"); import threshold as th; th.model_wrap(-90, 89,''' + str(i) + "," + str(i + 5) + ''')\'''')
 	    f.close()
 	    j += 1
 
