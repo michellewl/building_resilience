@@ -14,6 +14,8 @@ import datetime as dt
 folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/"
 #folder = "C:\\Users\\Michelle\\PycharmProjects\\GTC\\data_ashrae_raw\\"
 
+code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
+
 include_meta_data = True
 
 print("\nBUILDING META DATA\n")
@@ -128,12 +130,12 @@ else:
     print(f"Error occurred, energy array shape is {all_sites_energy.shape[0]}.")
 
 
-save_folder = "../data/processed_arrays/"
+save_folder = "data/processed_arrays/"
 
-if inclue_meta_data is True:
-    np.savetxt(f"{save_folder}weather_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
-else:
-    np.savetxt(f"{save_folder}weather_only_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
+if include_meta_data is True:
+    np.savetxt(f"{code_home_folder}{save_folder}weather_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
+elif include_meta_data is False:
+    np.savetxt(f"{code_home_folder}{save_folder}weather_only_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
 
-np.savetxt(f"{save_folder}energy_processed_stacked_buildings.csv", all_sites_energy, delimiter=",")
+np.savetxt(f"{code_home_folder}{save_folder}energy_processed_stacked_buildings.csv", all_sites_energy, delimiter=",")
 print("\n Successfully saved data files for weather and energy.")
