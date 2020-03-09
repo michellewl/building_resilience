@@ -4,10 +4,9 @@ from matplotlib.pyplot import figure
 import numpy as np
 import glob
 from sklearn.linear_model import LinearRegression
-from functions import show_data
-from functions import nan_mean_interpolation, nan_count_by_variable
+from functions.functions import show_data, nan_mean_interpolation, nan_count_by_variable
 
-folder = "/space/mwlw3/GTC_data_exploration/ashrae-energy-prediction/"
+folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/"
 #folder = "C:\\Users\\Michelle\\PycharmProjects\\GTC\\data\\ashrae-energy-prediction\\"
 
 print("\nWEATHER TRAINING DATA\n")
