@@ -38,24 +38,24 @@ for chosen_building in range(0, 1448+1):
     building = data.loc[data.building_id == chosen_building].copy()
     chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
 
-    #remove outliers
-    data_retention = 0.9999
-    top = 1 - (1-data_retention)/2
-    bottom = (1-data_retention)/2
-    q_high = building.meter_reading.quantile(top)
-    q_low = building.meter_reading.quantile(bottom)
-    building.loc[building.meter_reading >= q_high, "meter_reading"] = None
-    building.loc[building.meter_reading <= q_low, "meter_reading"] = None
+    # #remove outliers
+    # data_retention = 0.9999
+    # top = 1 - (1-data_retention)/2
+    # bottom = (1-data_retention)/2
+    # q_high = building.meter_reading.quantile(top)
+    # q_low = building.meter_reading.quantile(bottom)
+    # building.loc[building.meter_reading >= q_high, "meter_reading"] = None
+    # building.loc[building.meter_reading <= q_low, "meter_reading"] = None
 
     building = building.groupby("timestamp", as_index=False).sum()
     # This adds meter readings together if there multiple energy meters.
 
-    building = fix_time_gaps(building, start=start, end=end)
-    building.meter_reading = nan_mean_interpolation(building.meter_reading)
+    # building = fix_time_gaps(building, start=start, end=end)
+    # building.meter_reading = nan_mean_interpolation(building.meter_reading)
     ax.plot(building.timestamp, building.meter_reading, color=f"C{chosen_site}", alpha=0.3)
 
 #plt.legend()
-plt.ylim(0,100000)
+#plt.ylim(0,100000)
 plt.show()
    
   
