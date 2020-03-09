@@ -7,13 +7,12 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
-from functions import show_data
-from functions import nan_mean_interpolation, nan_count_total, nan_count_by_variable, write, \
+from functions.functions import nan_mean_interpolation, nan_count_total, nan_count_by_variable, write, \
     get_building_ids, fix_time_gaps, wind_direction_trigonometry
 import datetime as dt
 
-folder = "/space/mwlw3/GTC_data_exploration/ashrae-energy-prediction/"
-#folder = "C:\\Users\\Michelle\\PycharmProjects\\GTC\\data\\ashrae-energy-prediction\\"
+folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/"
+#folder = "C:\\Users\\Michelle\\PycharmProjects\\GTC\\data_ashrae_raw\\"
 
 include_meta_data = True
 
@@ -96,20 +95,26 @@ files = glob.glob(f"{folder}train.csv")
 data = pd.read_csv(files[0])
 data["timestamp"] = pd.to_datetime(data.timestamp)
 print("Processing dataset...")
-meta_data_file = glob.glob(f"{folder}*meta*.csv")[0]
+#meta_data_file = glob.glob(f"{folder}*meta*.csv")[0]
+
+
+
+data_retention = 0.9999
+top = 1 - (1-data_retention)/2
+bottom = (1-data_retention)/2
+q_high = data.meter_reading.quantile(top)
+q_low = data.meter_reading.quantile(bottom)
+data.loc[data.meter_reading >= q_high, "meter_reading"] = None
+data.loc[data.meter_reading <= q_low, "meter_reading"] = None
+
+print(f"Outlier limits: {q_low}, {q_high}")
 
 array_list = []
 
 for chosen_building in range(0, 1448+1):
     building = data.loc[data.building_id == chosen_building].copy()
 
-    data_retention = 0.9999
-    top = 1 - (1-data_retention)/2
-    bottom = (1-data_retention)/2
-    q_high = building.meter_reading.quantile(top)
-    q_low = building.meter_reading.quantile(bottom)
-    building.loc[building.meter_reading >= q_high, "meter_reading"] = None
-    building.loc[building.meter_reading <= q_low, "meter_reading"] = None
+   
 
     building = building.groupby("timestamp", as_index=False).sum()
     # This adds meter readings together if there multiple energy meters.
@@ -131,15 +136,20 @@ for chosen_building in range(0, 1448+1):
 
 all_sites_energy = np.concatenate(array_list, axis=None)
 
-print(all_sites_energy.shape)
+#print(all_sites_energy.shape)
 
 if all_sites_energy.shape[0] == 12728016:
     print("\nSuccessfully stacked energy for all buildings!")
+else:
+    print(f"Error occurred, energy array shape is {all_sites_energy.shape[0]}.")
+
+
+save_folder = "../data/processed_arrays/"
 
 # if inclue_meta_data is True:
-#     np.savetxt("weather_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
+#     np.savetxt(f"{save_folder}weather_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
 # else:
-#     np.savetxt("weather_only_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
+#     np.savetxt(f"{save_folder}weather_only_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
 
-np.savetxt("energy_processed_stacked_buildings.csv", all_sites_energy, delimiter=",")
+np.savetxt(f"{save_folder}energy_processed_stacked_buildings.csv", all_sites_energy, delimiter=",")
 print("\n Successfully saved data files for weather and energy.")
