@@ -84,6 +84,9 @@ Idea:
 Challenges/open questions: 
 - How do we combine the different climate models?
 
+ML questions to check: 
+- Leo breiman says that random forests get F in explanation - is it reliable to use the different importance measures? 
+
 
 
 Our current project includes 2 products for individual buildings and one product for global energy usage projection.
