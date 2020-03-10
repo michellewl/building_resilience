@@ -33,7 +33,7 @@ There are issues with CDD/HDD (see [link](https://www.energylens.com/articles/de
 #### Different buildings have different base temperatures.
 #### "people and equipment in the building. These sources contribute to an "average internal heat gain" that is typically worth around 3.5°C."
 #### "the "default" base temperature in the UK is 15.5°C, whilst, in the US, it's 18°C"
-#### 
+####  "lighting energy consumption typically depends on the level of daylight, which varies seasonally and from day to day" - which means for example it matters if it's 18 degrees with daylight or not.
 
 
 Things we need to check: 
