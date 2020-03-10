@@ -40,7 +40,9 @@ model I (XGBoost):
 Question: what led us to choose this model?
 What variables were choosen and why? what variabels are feature engineered? 
  - If CDD/HDD is the same in year I and year 7, then energy usage is the same (time independent). 
- - Spatially constant (different areas with same characteristics will produce same results)
+   - this means also if any improvement in building efficiency won't be captured if it is not part of the considered variables  
+ - Spatially constant (different areas with same characteristics will produce same results).
+ 
 How do we test it (which metrics)? why?
  
 model II (NN):
