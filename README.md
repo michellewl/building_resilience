@@ -25,7 +25,7 @@ Population growth is based on scenarios
 Also energy usage is heavily affected by policy/regulations (scenarios - not limited to climate scenarios)
 Data available only in the US and/or UK - seems a big leap to apply it in different locations. 
 
-There are issues with CDD/HDD (see ![](https://www.energylens.com/articles/degree-days))
+There are issues with CDD/HDD (see [link](https://www.energylens.com/articles/degree-days))
 
 Things we need to check: 
 model I: 
