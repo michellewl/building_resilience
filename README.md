@@ -80,6 +80,7 @@ Idea:
  How well does 15.5 degrees sits with the energy consumption - we have the hourly data in Michelle's data -- can we check it?
  - Look at proportional changes in consumption --> not absolute!
  - Can we comapre similar buildings in different locations to assess behavioural impact? 
+ - Let's plot the energy usage conditioned on HDD/CDD marginalizing all the other parameters.
 
 Challenges/open questions: 
 - How do we combine the different climate models?
