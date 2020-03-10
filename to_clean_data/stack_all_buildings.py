@@ -101,6 +101,7 @@ data.loc[data.meter_reading <= q_low, "meter_reading"] = None
 print(f"Outlier limits: {q_low}, {q_high}")
 
 array_list = []
+dataframe_list = []
 
 for chosen_building in range(0, 1448+1):
     building = data.loc[data.building_id == chosen_building].copy()
@@ -113,16 +114,18 @@ for chosen_building in range(0, 1448+1):
     building = fix_time_gaps(building, start=start, end=end)
 
     building_array = building.meter_reading
-    building_array = nan_mean_interpolation(building_array)
-    nan_count = nan_count_total(building_array)
+    building.meter_reading = nan_mean_interpolation(building.meter_reading)
+    nan_count = nan_count_total(building.meter_reading)
     if nan_count > 0:
         print(f"NaN count is {nan_count} at building: {chosen_building}\n{building.head}")
 
-    building_array = building_array.to_numpy()
+    building_array = building.meter_reading.to_numpy()
 
     array_list.append(building_array)
+    dataframe_list.append(building)
     
 all_sites_energy = np.concatenate(array_list, axis=None)
+energy_dataframe = pd.concat(dataframe_list)
 
 if all_sites_energy.shape[0] == 12728016:
     print("\nSuccessfully stacked energy for all buildings!")
@@ -132,10 +135,11 @@ else:
 
 save_folder = "data/processed_arrays/"
 
-if include_meta_data is True:
-    np.savetxt(f"{code_home_folder}{save_folder}weather_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
-elif include_meta_data is False:
-    np.savetxt(f"{code_home_folder}{save_folder}weather_only_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
+# if include_meta_data is True:
+#     np.savetxt(f"{code_home_folder}{save_folder}weather_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
+# elif include_meta_data is False:
+#     np.savetxt(f"{code_home_folder}{save_folder}weather_only_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
 
-np.savetxt(f"{code_home_folder}{save_folder}energy_processed_stacked_buildings.csv", all_sites_energy, delimiter=",")
+#np.savetxt(f"{code_home_folder}{save_folder}energy_processed_stacked_buildings.csv", all_sites_energy, delimiter=",")
+energy_dataframe.to_csv(f"{code_home_folder}{save_folder}energy_stacked_buildings_dataframe.csv", index=False)
 print("\n Successfully saved data files for weather and energy.")
