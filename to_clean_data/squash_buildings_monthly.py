@@ -60,6 +60,7 @@ weather_columns = weather_array.columns
 
 # squash to monthly data
 monthly_weather = weather_array.copy().resample("M", on="timestamp").mean()
+monthly_weather["min_daily_temp"] = weather_array.copy().resample("D") # need to finish this - resample daily min, then resample monthly mean (min daily)
 print(monthly_weather)
 exit
 
