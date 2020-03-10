@@ -29,6 +29,7 @@ There are issues with CDD/HDD (see [link](https://www.energylens.com/articles/de
 + "In the UK, the most readily available heating degree days come with a base temperature of 15.5°C"
 + "Fahrenheit-based degree days are 1.8 times bigger than their equivalent Celsius-based degree days"
 + "So, for a heated building, it is assumed that the energy consumption required to heat that building for any particular period is proportional to (or driven by) the number of heating degree days over that period"
++ "baseload" is often used to describe the total kW power of all the equipment that is on constantly
 
 
 
