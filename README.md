@@ -81,6 +81,7 @@ Idea:
  - Look at proportional changes in consumption --> not absolute!
  - Can we comapre similar buildings in different locations to assess behavioural impact? 
  - Let's plot the energy usage conditioned on HDD/CDD marginalizing all the other parameters.
+ - Let's add a simple table of correlations of varibales to energy usage
 
 Challenges/open questions: 
 - How do we combine the different climate models?
