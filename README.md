@@ -17,7 +17,7 @@ The use case being, I don't know and I'm not sure???
  - Predicting individual 
 The use case being, I don't know and I'm not sure??? building s
 
-When we refer to climate variables. We would like to have many variables, but most importantly it seems that we want humidity, wind, rainfall and temperature. 
+When we refer to climate variables. We would like to have many variables, but most importantly it seems that we want humidity, solar heat gain, wind, rainfall and temperature. 
 
 Limitations: 
 GDP predictions are problematic also might be scenario based
@@ -30,7 +30,10 @@ There are issues with CDD/HDD (see [link](https://www.energylens.com/articles/de
 + "Fahrenheit-based degree days are 1.8 times bigger than their equivalent Celsius-based degree days"
 + "So, for a heated building, it is assumed that the energy consumption required to heat that building for any particular period is proportional to (or driven by) the number of heating degree days over that period"
 + "baseload" is often used to describe the total kW power of all the equipment that is on constantly
-
+#### Different buildings have different base temperatures.
+#### "people and equipment in the building. These sources contribute to an "average internal heat gain" that is typically worth around 3.5°C."
+#### "the "default" base temperature in the UK is 15.5°C, whilst, in the US, it's 18°C"
+#### 
 
 
 Things we need to check: 
@@ -56,6 +59,7 @@ Question: what led us to choose this model?
 What variables were choosen and why?
 - Model is not a great fit for the time series nature 
 - Spatially constant (different areas with same characteristics will produce same results)
+- Concentrated on education type buildings.
 How do we test it (which metrics)? why?
 
 model III (currently heuristic): 
@@ -68,6 +72,9 @@ Idea:
 - interesting to try to understand what uncertainty comes from climate, what uncertainty comes from scenarios
 - Produce a geology like map to visualize all countries in different years in one plot.
 - Can we calculate the baseload for buildings - i.e. when we don't cross the thresholds for CDD/HDD
+   One idea would be to take the intrecept of the linear regression model. Or look at months where no heating or cooling is not needed - pay attention that different degree days will yield differernt baselines. How will we do it for unknown locations?!
+ - Show that the heating and cooling for different building types is different. 
+ How well does 15.5 degrees sits with the energy consumption - we have the hourly data in Michelle's data -- can we check it?
 
 Challenges/open questions: 
 - How do we combine the different climate models?
