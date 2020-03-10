@@ -34,13 +34,16 @@ There are issues with CDD/HDD (see [link](https://www.energylens.com/articles/de
 #### "people and equipment in the building. These sources contribute to an "average internal heat gain" that is typically worth around 3.5°C."
 #### "the "default" base temperature in the UK is 15.5°C, whilst, in the US, it's 18°C"
 ####  "lighting energy consumption typically depends on the level of daylight, which varies seasonally and from day to day" - which means for example it matters if it's 18 degrees with daylight or not.
-
++ Heating degree days might disappear if we had to heat at night and then cool in the daytime
++ "When the outside temperature is close to the base temperature of the building, the building will often require little or no heating. Degree-day-based calculations are particularly inaccurate under such circumstance"
 
 Things we need to check: 
-model I: 
+
 - What is the effect of dropping all the varibale to fit to openstreet map data availability
 
 * What is a baseline model in our case? I mean, can we do better than an area split to population density for example? 
+
+* What metrics do we want to use!? 
 
 Assumptions: 
 
@@ -75,6 +78,7 @@ Idea:
    One idea would be to take the intrecept of the linear regression model. Or look at months where no heating or cooling is not needed - pay attention that different degree days will yield differernt baselines. How will we do it for unknown locations?!
  - Show that the heating and cooling for different building types is different. 
  How well does 15.5 degrees sits with the energy consumption - we have the hourly data in Michelle's data -- can we check it?
+ - Look at proportional changes in consumption --> not absolute!
 
 Challenges/open questions: 
 - How do we combine the different climate models?
