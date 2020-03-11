@@ -58,10 +58,35 @@ if nan_count > 0:
 weather_variables = weather_array.drop("timestamp", axis=1).columns
 weather_columns = weather_array.columns
 
-# squash to monthly data
-monthly_weather = weather_array.copy().resample("M", on="timestamp").mean()
-monthly_weather["min_daily_temp"] = weather_array.copy().resample("D") # need to finish this - resample daily min, then resample monthly mean (min daily)
+#_______________________squash to daily data
+# All variables
+new_variables = ["mean_air_temp", "mean_dew_temp", "mean_wind_speed", "mean_cos_wind_dir", "mean_sin_wind_dir"]
+daily_weather = weather_array.copy().resample("D", on="timestamp").mean()
+daily_weather.columns = new_variables
+daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").min().iloc[:,1:])
+new_variables.extend(["min_air_temp", "min_dew_temp", "min_wind_speed", "min_cos_wind_dir", "min_sin_wind_dir"])
+daily_weather.columns = new_variables
+daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").max().iloc[:,1:])
+new_variables.extend(["max_air_temp", "max_dew_temp", "max_wind_speed", "max_cos_wind_dir", "max_sin_wind_dir"])
+daily_weather.columns = new_variables
+
+
+# Additional temperature metrics
+temperature_array = weather_array.iloc[:,:2].copy().set_index("timestamp")
+# temperature thresholds
+daily_weather["hours_above_18_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x>18.5).sum())
+daily_weather["hours_below_18_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<18.5).sum())
+daily_weather["hours_above_25_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x>25).sum())
+daily_weather["hours_below_15_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<15.5).sum())
+
+
+print(daily_weather)
+
+
+#_______________________squash to monthly data
+monthly_weather = daily_weather.copy().resample("M").mean()
 print(monthly_weather)
+
 exit
 
 if include_meta_data is True:
