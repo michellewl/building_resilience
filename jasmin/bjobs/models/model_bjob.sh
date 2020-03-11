@@ -1,0 +1,1 @@
+for i in {1..71}; do bsub < bjobs/models/model${i}.bsub; done

@@ -1,7 +1,4 @@
-*.egg-info/
 /bias_correction/plots
 *.csv
 __pycache__/
 .ipynb_checkpoints/
-
-
