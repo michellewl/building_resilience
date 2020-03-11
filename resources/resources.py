@@ -17,7 +17,7 @@ def whichCountry(coords):
     UN_code (string):
         Three letter UN country code
     '''
-    country_codes = pd.read_csv('data_resources/country_codes_2_3_letters.csv')
+    country_codes = pd.read_csv('/home/ts809/Documents/Code/github/building_resilience/resources/data_resources/country_codes_2_3_letters.csv')
     
     result = rg.search(coords)
     
