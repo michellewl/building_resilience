@@ -36,7 +36,7 @@ print("Processing dataset...")
 
 array_list = []
 
-for chosen_building in range(0,1448+1):
+for chosen_building in range(0,meta_data.shape[0]):
     print(chosen_building)
     chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
     year_built = meta_data.loc[meta_data.building_id == chosen_building, "year_built"].values[0]
@@ -54,9 +54,7 @@ for chosen_building in range(0,1448+1):
     nan_count = nan_count_total(weather_array)
     if nan_count > 0:
         print(f"NaN count is {nan_count} at building: {chosen_building}")
-    #weather_variables = weather_array.drop("timestamp", axis=1).columns
-    #weather_columns = weather_array.columns
-
+    
     #_______________________squash to daily data
     # All variables
     new_variables = ["mean_air_temp", "mean_dew_temp", "mean_wind_speed", "mean_cos_wind_dir", "mean_sin_wind_dir"]
@@ -82,6 +80,13 @@ for chosen_building in range(0,1448+1):
     #_______________________squash to monthly data
     monthly_weather = daily_weather.copy().resample("M").mean()
     monthly_weather.insert(loc=monthly_weather.shape[-1], column="number_of_days_per_month", value=monthly_weather.index.day)
+    monthly_weather["three_month_average_temp"] = monthly_weather.mean_air_temp.rolling(window=3).mean()
+    # Fill NaN gaps for January & February (only have 1 year of data)
+    monthly_weather.iloc[0,-1] = monthly_weather.mean_air_temp.values[0]
+    monthly_weather.iloc[1,-1] = monthly_weather.mean_air_temp.values[0:2].mean()
+    
+
+    #________________________Add in the meta data about each building
 
     if include_meta_data is True:
         #daily_weather.insert(loc=daily_weather.shape[-1], column="year_built", value=pd.Series([year_built] * daily_weather.shape[0]))
@@ -107,6 +112,7 @@ for chosen_building in range(0,1448+1):
 all_sites_weather = np.vstack(array_list)
 
 print(all_sites_weather.shape)
+
 # if all_sites_weather.shape[0] == 12728016:
 #     print("Successfully stacked weather for all buildings.")
 
