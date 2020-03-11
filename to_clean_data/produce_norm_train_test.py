@@ -30,7 +30,7 @@ X = weather_array
 y = energy_array
 
 print("Splitting into train and test sets...")
-test_size = 0.33
+test_size = 0.15
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
 y_train = y_train.reshape(-1,1)
 y_test = y_test.reshape(-1,1)
