@@ -34,85 +34,80 @@ data["timestamp"] = pd.to_datetime(data.timestamp)
 print("Processing dataset...")
 
 
-#array_list = []
+array_list = []
 
-#for chosen_building in range(0,1448+1):
-chosen_building = 0
+for chosen_building in range(0,1448+1):
+    print(chosen_building)
+    chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
+    year_built = meta_data.loc[meta_data.building_id == chosen_building, "year_built"].values[0]
+    sq_ft = meta_data.loc[meta_data.building_id == chosen_building, "square_feet"].values[0]
 
-chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
-year_built = meta_data.loc[meta_data.building_id == chosen_building, "year_built"].values[0]
-sq_ft = meta_data.loc[meta_data.building_id == chosen_building, "square_feet"].values[0]
+    site_weather = data.loc[data.site_id == chosen_site]
 
-site_weather = data.loc[data.site_id == chosen_site]
+    site_weather = fix_time_gaps(site_weather, start=start, end=end)
 
-site_weather = fix_time_gaps(site_weather, start=start, end=end)
+    weather_array = site_weather.drop("site_id", axis=1)
+    weather_array = wind_direction_trigonometry(weather_array)
+    weather_array = weather_array.drop(["cloud_coverage", "precip_depth_1_hr", "sea_level_pressure"], axis=1)
 
-weather_array = site_weather.drop("site_id", axis=1)
-weather_array = wind_direction_trigonometry(weather_array)
-weather_array = weather_array.drop(["cloud_coverage", "precip_depth_1_hr", "sea_level_pressure"], axis=1)
-
-weather_array.iloc[:, 1:] = nan_mean_interpolation(weather_array.iloc[:, 1:])
-nan_count = nan_count_total(weather_array)
-if nan_count > 0:
-    print(f"NaN count is {nan_count} at building: {chosen_building}")
-weather_variables = weather_array.drop("timestamp", axis=1).columns
-weather_columns = weather_array.columns
-
-#_______________________squash to daily data
-# All variables
-new_variables = ["mean_air_temp", "mean_dew_temp", "mean_wind_speed", "mean_cos_wind_dir", "mean_sin_wind_dir"]
-daily_weather = weather_array.copy().resample("D", on="timestamp").mean()
-daily_weather.columns = new_variables
-daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").min().iloc[:,1:])
-new_variables.extend(["min_air_temp", "min_dew_temp", "min_wind_speed", "min_cos_wind_dir", "min_sin_wind_dir"])
-daily_weather.columns = new_variables
-daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").max().iloc[:,1:])
-new_variables.extend(["max_air_temp", "max_dew_temp", "max_wind_speed", "max_cos_wind_dir", "max_sin_wind_dir"])
-daily_weather.columns = new_variables
-
-# Additional temperature metrics
-temperature_array = weather_array.iloc[:,:2].copy().set_index("timestamp")
-# temperature thresholds
-daily_weather["hours_above_18_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x>18.5).sum())
-daily_weather["hours_below_18_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<18.5).sum())
-daily_weather["hours_above_25_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x>25).sum())
-daily_weather["hours_below_15_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<15.5).sum())
-
-
-
-#_______________________squash to monthly data
-monthly_weather = daily_weather.copy().resample("M").mean()
-
-
-
-if include_meta_data is True:
-    daily_weather.insert(loc=daily_weather.shape[-1], column="year_built", value=pd.Series([year_built] * daily_weather.shape[0]))
-    monthly_weather.insert(loc=monthly_weather.shape[-1], column="year_built", value=pd.Series([year_built] * monthly_weather.shape[0]))
-    average_year = meta_data.year_built.mean()
-    daily_weather.year_built = daily_weather.year_built.fillna(average_year)
-    monthly_weather.year_built = monthly_weather.year_built.fillna(average_year)
+    weather_array.iloc[:, 1:] = nan_mean_interpolation(weather_array.iloc[:, 1:])
+    nan_count = nan_count_total(weather_array)
     if nan_count > 0:
-        print(f"NaN count (year built) is {nan_count} at building: {chosen_building}")
+        print(f"NaN count is {nan_count} at building: {chosen_building}")
+    #weather_variables = weather_array.drop("timestamp", axis=1).columns
+    #weather_columns = weather_array.columns
+
+    #_______________________squash to daily data
+    # All variables
+    new_variables = ["mean_air_temp", "mean_dew_temp", "mean_wind_speed", "mean_cos_wind_dir", "mean_sin_wind_dir"]
+    daily_weather = weather_array.copy().resample("D", on="timestamp").mean()
+    daily_weather.columns = new_variables
+    daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").min().iloc[:,1:])
+    new_variables.extend(["min_air_temp", "min_dew_temp", "min_wind_speed", "min_cos_wind_dir", "min_sin_wind_dir"])
+    daily_weather.columns = new_variables
+    daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").max().iloc[:,1:])
+    new_variables.extend(["max_air_temp", "max_dew_temp", "max_wind_speed", "max_cos_wind_dir", "max_sin_wind_dir"])
+    daily_weather.columns = new_variables
+
+    # Additional temperature metrics
+    temperature_array = weather_array.iloc[:,:2].copy().set_index("timestamp")
+    # temperature thresholds
+    daily_weather["hours_above_18_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x>18.5).sum())
+    daily_weather["hours_below_18_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<18.5).sum())
+    daily_weather["hours_above_25_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x>25).sum())
+    daily_weather["hours_below_15_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<15.5).sum())
 
 
-    daily_weather.insert(loc=daily_weather.shape[-1], column="square_feet", value=pd.Series([sq_ft] * daily_weather.shape[0]))
-    monthly_weather.insert(loc=monthly_weather.shape[-1], column="square_feet", value=pd.Series([sq_ft] * monthly_weather.shape[0]))
-    average_sqft = meta_data.square_feet.mean()
-    daily_weather.square_feet = daily_weather.square_feet.fillna(average_sqft)
-    monthly_weather.square_feet = monthly_weather.square_feet.fillna(average_sqft)
-    if nan_count > 0:
-        print(f"NaN count (square feet) is {nan_count} at building: {chosen_building}")
 
-print(daily_weather)
-print(monthly_weather)
-exit
+    #_______________________squash to monthly data
+    monthly_weather = daily_weather.copy().resample("M").mean()
 
-weather_array = weather_array.drop("timestamp", axis=1).to_numpy()
-    #array_list.append(weather_array)
+
+
+    if include_meta_data is True:
+        #daily_weather.insert(loc=daily_weather.shape[-1], column="year_built", value=pd.Series([year_built] * daily_weather.shape[0]))
+        monthly_weather.insert(loc=monthly_weather.shape[-1], column="year_built", value=pd.Series([year_built] * monthly_weather.shape[0]))
+        average_year = meta_data.year_built.mean()
+        #daily_weather.year_built = daily_weather.year_built.fillna(average_year)
+        monthly_weather.year_built = monthly_weather.year_built.fillna(average_year)
+        if nan_count > 0:
+            print(f"NaN count (year built) is {nan_count} at building: {chosen_building}")
+
+
+        #daily_weather.insert(loc=daily_weather.shape[-1], column="square_feet", value=pd.Series([sq_ft] * daily_weather.shape[0]))
+        monthly_weather.insert(loc=monthly_weather.shape[-1], column="square_feet", value=pd.Series([sq_ft] * monthly_weather.shape[0]))
+        average_sqft = meta_data.square_feet.mean()
+        #daily_weather.square_feet = daily_weather.square_feet.fillna(average_sqft)
+        monthly_weather.square_feet = monthly_weather.square_feet.fillna(average_sqft)
+        if nan_count > 0:
+            print(f"NaN count (square feet) is {nan_count} at building: {chosen_building}")
+
+
+    array_list.append(monthly_weather.to_numpy())
     
-#all_sites_weather = np.vstack(array_list)
+all_sites_weather = np.vstack(array_list)
 
-# print(all_sites_weather.shape)
+print(all_sites_weather.shape)
 # if all_sites_weather.shape[0] == 12728016:
 #     print("Successfully stacked weather for all buildings.")
 
