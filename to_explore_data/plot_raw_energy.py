@@ -34,7 +34,7 @@ meta_data_file = glob.glob(f"{folder}*meta*.csv")[0]
 
 fig, ax = plt.subplots(figsize=(20,8))
 
-for chosen_building in range(0, 1448+1):
+for chosen_building in range(0, 10):
     building = data.loc[data.building_id == chosen_building].copy()
     chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
 
@@ -55,7 +55,7 @@ for chosen_building in range(0, 1448+1):
     ax.plot(building.timestamp, building.meter_reading, color=f"C{chosen_site}", alpha=0.3)
 
 #plt.legend()
-#plt.ylim(0,100000)
+plt.ylim(0,100000)
 plt.show()
    
   
