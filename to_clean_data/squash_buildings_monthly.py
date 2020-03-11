@@ -21,105 +21,105 @@ start = dt.datetime(day=1, month=1, year=2016, hour=0, minute=0)
 end = dt.datetime(day=31, month=12, year=2016, hour=23, minute=0)
 
 
-# print("WEATHER TRAINING DATA")
-# print("Reading dataset...")
-# files = glob.glob(f"{folder}weather_train.csv")
-# data = pd.read_csv(files[0])
-# data["timestamp"] = pd.to_datetime(data.timestamp)
-# print("Processing dataset...")
+print("WEATHER TRAINING DATA")
+print("Reading dataset...")
+files = glob.glob(f"{folder}weather_train.csv")
+data = pd.read_csv(files[0])
+data["timestamp"] = pd.to_datetime(data.timestamp)
+print("Processing dataset...")
 
 
-# array_list_daily = []
-# dataframe_list_daily = []
-# if monthly_data is True:
-#     array_list_monthly = []
-#     dataframe_list_monthly = []
+array_list_daily = []
+dataframe_list_daily = []
+if monthly_data is True:
+    array_list_monthly = []
+    dataframe_list_monthly = []
 
-# for chosen_building in range(0,meta_data.shape[0]):
-#     if chosen_building%50==0:
-#         print(f"We're on building #{chosen_building}...")
-#     chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
-#     year_built = meta_data.loc[meta_data.building_id == chosen_building, "year_built"].values[0]
-#     sq_ft = meta_data.loc[meta_data.building_id == chosen_building, "square_feet"].values[0]
+for chosen_building in range(700, 800):
+    if chosen_building%50==0:
+        print(f"We're on building #{chosen_building}...")
+    chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
+    year_built = meta_data.loc[meta_data.building_id == chosen_building, "year_built"].values[0]
+    sq_ft = meta_data.loc[meta_data.building_id == chosen_building, "square_feet"].values[0]
 
-#     site_weather = data.loc[data.site_id == chosen_site]
+    site_weather = data.loc[data.site_id == chosen_site]
 
-#     site_weather = fix_time_gaps(site_weather, start=start, end=end)
+    site_weather = fix_time_gaps(site_weather, start=start, end=end)
 
-#     weather_array = site_weather.drop("site_id", axis=1)
-#     weather_array = wind_direction_trigonometry(weather_array)
-#     weather_array = weather_array.drop(["cloud_coverage", "precip_depth_1_hr", "sea_level_pressure"], axis=1)
+    weather_array = site_weather.drop("site_id", axis=1)
+    weather_array = wind_direction_trigonometry(weather_array)
+    weather_array = weather_array.drop(["cloud_coverage", "precip_depth_1_hr", "sea_level_pressure"], axis=1)
 
-#     weather_array.iloc[:, 1:] = nan_mean_interpolation(weather_array.iloc[:, 1:])
-#     nan_count = nan_count_total(weather_array)
-#     if nan_count > 0:
-#         print(f"NaN count is {nan_count} at building: {chosen_building}")
+    weather_array.iloc[:, 1:] = nan_mean_interpolation(weather_array.iloc[:, 1:])
+    nan_count = nan_count_total(weather_array)
+    if nan_count > 0:
+        print(f"NaN count is {nan_count} at building: {chosen_building}")
     
-#     #_______________________squash to daily data
-#     # All variables
-#     new_variables = ["mean_air_temp", "mean_dew_temp", "mean_wind_speed", "mean_cos_wind_dir", "mean_sin_wind_dir"]
-#     daily_weather = weather_array.copy().resample("D", on="timestamp").mean()
-#     daily_weather.columns = new_variables
-#     daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").min().iloc[:,1:])
-#     new_variables.extend(["min_air_temp", "min_dew_temp", "min_wind_speed", "min_cos_wind_dir", "min_sin_wind_dir"])
-#     daily_weather.columns = new_variables
-#     daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").max().iloc[:,1:])
-#     new_variables.extend(["max_air_temp", "max_dew_temp", "max_wind_speed", "max_cos_wind_dir", "max_sin_wind_dir"])
-#     daily_weather.columns = new_variables
+    #_______________________squash to daily data
+    # All variables
+    new_variables = ["mean_air_temp", "mean_dew_temp", "mean_wind_speed", "mean_cos_wind_dir", "mean_sin_wind_dir"]
+    daily_weather = weather_array.copy().resample("D", on="timestamp").mean()
+    daily_weather.columns = new_variables
+    daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").min().iloc[:,1:])
+    new_variables.extend(["min_air_temp", "min_dew_temp", "min_wind_speed", "min_cos_wind_dir", "min_sin_wind_dir"])
+    daily_weather.columns = new_variables
+    daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").max().iloc[:,1:])
+    new_variables.extend(["max_air_temp", "max_dew_temp", "max_wind_speed", "max_cos_wind_dir", "max_sin_wind_dir"])
+    daily_weather.columns = new_variables
 
-#     # Additional temperature metrics
-#     temperature_array = weather_array.iloc[:,:2].copy().set_index("timestamp")
-#     # temperature thresholds
-#     daily_weather["hours_above_18_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x>18.5).sum())
-#     daily_weather["hours_below_18_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<18.5).sum())
-#     daily_weather["hours_above_25_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x>25).sum())
-#     daily_weather["hours_below_15_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<15.5).sum())
+    # Additional temperature metrics
+    temperature_array = weather_array.iloc[:,:2].copy().set_index("timestamp")
+    # temperature thresholds
+    daily_weather["hours_above_18_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x>18.5).sum())
+    daily_weather["hours_below_18_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<18.5).sum())
+    daily_weather["hours_above_25_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x>25).sum())
+    daily_weather["hours_below_15_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<15.5).sum())
 
 
-#     if monthly_data is True:
-#         #_______________________squash to monthly data
-#         monthly_weather = daily_weather.copy().resample("M").mean()
-#         monthly_weather.insert(loc=monthly_weather.shape[-1], column="number_of_days_per_month", value=monthly_weather.index.day)
-#         monthly_weather["three_month_average_temp"] = monthly_weather.mean_air_temp.rolling(window=3).mean()
-#         # Fill NaN gaps for January & February (only have 1 year of data)
-#         monthly_weather.iloc[0,-1] = monthly_weather.mean_air_temp.values[0]
-#         monthly_weather.iloc[1,-1] = monthly_weather.mean_air_temp.values[0:2].mean()
+    if monthly_data is True:
+        #_______________________squash to monthly data
+        monthly_weather = daily_weather.copy().resample("M").mean()
+        monthly_weather.insert(loc=monthly_weather.shape[-1], column="number_of_days_per_month", value=monthly_weather.index.day)
+        monthly_weather["three_month_average_temp"] = monthly_weather.mean_air_temp.rolling(window=3).mean()
+        # Fill NaN gaps for January & February (only have 1 year of data)
+        monthly_weather.iloc[0,-1] = monthly_weather.mean_air_temp.values[0]
+        monthly_weather.iloc[1,-1] = monthly_weather.mean_air_temp.values[0:2].mean()
     
 
-#     #________________________Add in the meta data about each building
+    #________________________Add in the meta data about each building
 
-#     if include_meta_data is True:
-#         daily_weather['year_built'] = [year_built] * daily_weather.shape[0]
-#         average_year = meta_data.year_built.mean()
-#         daily_weather.year_built = daily_weather.year_built.fillna(average_year)
+    if include_meta_data is True:
+        daily_weather['year_built'] = [year_built] * daily_weather.shape[0]
+        average_year = meta_data.year_built.mean()
+        daily_weather.year_built = daily_weather.year_built.fillna(average_year)
                 
-#         daily_weather['square_feet'] = [sq_ft] * daily_weather.shape[0]
-#         average_sqft = meta_data.square_feet.mean()
-#         daily_weather.square_feet = daily_weather.square_feet.fillna(average_sqft)
+        daily_weather['square_feet'] = [sq_ft] * daily_weather.shape[0]
+        average_sqft = meta_data.square_feet.mean()
+        daily_weather.square_feet = daily_weather.square_feet.fillna(average_sqft)
                 
-#         daily_weather['site_id'] = [chosen_site] * daily_weather.shape[0]
+        daily_weather['site_id'] = [chosen_site] * daily_weather.shape[0]
         
-#         if monthly_data is True:
-#             monthly_weather['year_built'] = [year_built] * monthly_weather.shape[0]
-#             monthly_weather.year_built = monthly_weather.year_built.fillna(average_year)
-#             monthly_weather['square_feet'] = [sq_ft] * monthly_weather.shape[0]
-#             monthly_weather.square_feet = monthly_weather.square_feet.fillna(average_sqft)
-#             monthly_weather['site_id'] = [chosen_site] * monthly_weather.shape[0]
+        if monthly_data is True:
+            monthly_weather['year_built'] = [year_built] * monthly_weather.shape[0]
+            monthly_weather.year_built = monthly_weather.year_built.fillna(average_year)
+            monthly_weather['square_feet'] = [sq_ft] * monthly_weather.shape[0]
+            monthly_weather.square_feet = monthly_weather.square_feet.fillna(average_sqft)
+            monthly_weather['site_id'] = [chosen_site] * monthly_weather.shape[0]
 
-#     array_list_daily.append(daily_weather.to_numpy())
-#     dataframe_list_daily.append(daily_weather)
-#     if monthly_data is True:
-#         array_list_monthly.append(monthly_weather.to_numpy())
-#         dataframe_list_monthly.append(monthly_weather)
+    array_list_daily.append(daily_weather.to_numpy())
+    dataframe_list_daily.append(daily_weather)
+    if monthly_data is True:
+        array_list_monthly.append(monthly_weather.to_numpy())
+        dataframe_list_monthly.append(monthly_weather)
 
-# all_sites_weather_daily = np.vstack(array_list_daily)
-# weather_dataframe_daily = pd.concat(dataframe_list_daily)
-# print(all_sites_weather_daily.shape)
+all_sites_weather_daily = np.vstack(array_list_daily)
+weather_dataframe_daily = pd.concat(dataframe_list_daily)
+print(all_sites_weather_daily.shape)
 
-# if monthly_data is True:
-#     all_sites_weather_monthly = np.vstack(all_sites_weather_monthly)
-#     weather_dataframe_monthly = pd.concat(dataframe_list_monthly)
-#     print(all_sites_weather_monthly.shape)
+if monthly_data is True:
+    all_sites_weather_monthly = np.vstack(all_sites_weather_monthly)
+    weather_dataframe_monthly = pd.concat(dataframe_list_monthly)
+    print(all_sites_weather_monthly.shape)
 
 print("\nBUILDING TRAINING DATA")
 print("Reading dataset...")
@@ -144,7 +144,7 @@ if monthly_data is True:
     array_list_monthly = []
     dataframe_list_monthly = []
 
-for chosen_building in range(500, 1000):
+for chosen_building in range(700, 800):
     if chosen_building%50==0:
         print(f"We're on building #{chosen_building}...")
     
@@ -157,45 +157,45 @@ for chosen_building in range(500, 1000):
     if all(np.isnan(building.meter_reading)) is False:
         building = fix_time_gaps(building, start=start, end=end)
 
-    building.meter_reading = nan_mean_interpolation(building.meter_reading)
-    nan_count = nan_count_total(building.meter_reading)
-    if nan_count > 0 and all(np.isnan(building.meter_reading)) is False:
-        print(f"NaN count meter_reading is {nan_count} at building: {chosen_building}\n{building.head}")
+        building.meter_reading = nan_mean_interpolation(building.meter_reading)
+        nan_count = nan_count_total(building.meter_reading)
+        if nan_count > 0:
+            print(f"NaN count meter_reading is {nan_count} at building: {chosen_building}\n{building.head}")
 
-    daily_energy = building.copy().resample("D", on="timestamp").sum()
-    if monthly_data is True:
-        monthly_energy = building.copy().resample("M", on="timestamp").mean()
-        monthly_energy = monthly_energy.drop("meter_reading", axis=1)
-        monthly_energy["mean_daily_energy"] = daily_energy.copy().resample("M").mean().meter_reading
-        monthly_energy["total_energy"] = building.copy().resample("M", on="timestamp").sum().meter_reading
-    
-    if all(np.isnan(building.meter_reading)) is False:
+        daily_energy = building.copy().resample("D", on="timestamp").sum()
+        if monthly_data is True:
+            monthly_energy = building.copy().resample("M", on="timestamp").mean()
+            monthly_energy = monthly_energy.drop("meter_reading", axis=1)
+            monthly_energy["mean_daily_energy"] = daily_energy.copy().resample("M").mean().meter_reading
+            monthly_energy["total_energy"] = building.copy().resample("M", on="timestamp").sum().meter_reading
+        
+        
         array_list_daily.append(daily_energy.to_numpy())
         dataframe_list_daily.append(daily_energy)
-    if monthly_data is True:
-        array_list_monthly.append(monthly_energy.total_energy.to_numpy())
-        dataframe_list_monthly.append(monthly_energy)
+        if monthly_data is True:
+            array_list_monthly.append(monthly_energy.total_energy.to_numpy())
+            dataframe_list_monthly.append(monthly_energy)
 
 
 all_sites_energy_daily = np.concatenate(array_list_daily, axis=None)
 energy_dataframe_daily = pd.concat(dataframe_list_daily)
 print(all_sites_energy_daily.shape)
 
-# if monthly_data is True:
-#     all_sites_energy_monthly = np.concatenate(array_list_monthly, axis=None)
-#     energy_dataframe_monthly = pd.concat(dataframe_list_monthly)
-#     print(all_sites_energy_monthly.shape)
+if monthly_data is True:
+    all_sites_energy_monthly = np.concatenate(array_list_monthly, axis=None)
+    energy_dataframe_monthly = pd.concat(dataframe_list_monthly)
+    print(all_sites_energy_monthly.shape)
 
-# if all_sites_energy_daily.shape[0] == all_sites_weather_daily.shape[0]:
-#     print("\nSuccess!")
-# else:
-#     print(f"Error occurred, weather array shape is {all_sites_weather_daily.shape[0]} but energy array shape is {all_sites_energy_daily.shape[0]}.")
+if all_sites_energy_daily.shape[0] == all_sites_weather_daily.shape[0]:
+    print("\nSuccess!")
+else:
+    print(f"Error occurred, weather array shape is {all_sites_weather_daily.shape[0]} but energy array shape is {all_sites_energy_daily.shape[0]}.")
 
-# if monthly_data is True:
-#     if all_sites_energy_monthly.shape[0] == all_sites_weather_monthly.shape[0]:
-#         print("\nSuccess!")
-#     else:
-#         print(f"Error occurred, weather array shape is {all_sites_weather_monthly.shape[0]} but energy array shape is {all_sites_energy_monthly.shape[0]}.")
+if monthly_data is True:
+    if all_sites_energy_monthly.shape[0] == all_sites_weather_monthly.shape[0]:
+        print("\nSuccess!")
+    else:
+        print(f"Error occurred, weather array shape is {all_sites_weather_monthly.shape[0]} but energy array shape is {all_sites_energy_monthly.shape[0]}.")
 
 
 
