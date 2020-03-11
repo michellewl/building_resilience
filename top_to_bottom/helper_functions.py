@@ -82,6 +82,15 @@ def get_year_of_WB_data(year,WB_data):
 
 #---------------------------------------------------------------------------------------------------------------------
 
+def merge_WB_and_IEA(WB_data, IEA_data):
+    merged_df = WB_data.merge(IEA_data, on = 'Country Code', how = 'left')
+    merged_df = merged_df.drop(['Country Name_y'], axis = 1)
+    merged_df = merged_df.rename(columns={"Country Name_x": "Country Name"})
+    
+    return merged_df
+
+#---------------------------------------------------------------------------------------------------------------------
+
 def extract_key_years(df):
     return df[['Country Name','2020','2025','2050','2075']]
 
