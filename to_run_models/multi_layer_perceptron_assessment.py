@@ -2,28 +2,28 @@ import glob
 import numpy as np
 import pandas as pd
 from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
-from sklearn.preprocessing import StandardScaler
-from functions import write, current_time
+from functions.functions import write, current_time
 import pickle
 
-folder = "/space/mwlw3/GTC_data_exploration/"
-#folder = "C:\\Users\\Michelle\\PycharmProjects\\GTC\\"
 
-vars = "_yrbt_sqft"
-arch = "_50_50"
-now = current_time()
-title = f"MLP_assessment_log{vars}{arch}_{now}"
+code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
+
+arch = "_100_100"
+title = f"{code_home_folder}logs/assessment/monthly_data/MLP{arch}_log_{current_time()}"
+
+data_folder = "data/train_test_arrays/"
+
 
 print("Importing data...")
-X_train = np.genfromtxt(glob.glob(f"{folder}X_train{vars}.csv")[0], delimiter=",")
-y_train = np.genfromtxt(glob.glob(f"{folder}y_train{vars}.csv")[0], delimiter=",")
-X_test = np.genfromtxt(glob.glob(f"{folder}X_test{vars}.csv")[0], delimiter=",")
-y_test = np.genfromtxt(glob.glob(f"{folder}y_test{vars}.csv")[0], delimiter=",")
+X_train = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}X_train.csv")[0], delimiter=",")
+y_train = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}y_train.csv")[0], delimiter=",")
+X_test = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}X_test.csv")[0], delimiter=",")
+y_test = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}y_test.csv")[0], delimiter=",")
 
 print("Importing model...")
-filename = f"MLP_model{vars}{arch}.sav"
+
+filename = f"{code_home_folder}models/MLP_model_monthly{arch}.sav"
 model = pickle.load(open(filename, 'rb'))
 
 write(title, f"MLP model uses weather variables and building meta data (year built and square feet).\n")
@@ -35,7 +35,6 @@ write(title, f"\nBest loss: {model.best_loss_}"
              f"\nActivation function: {model.activation}"
              f"\nOutput activation function: {model.out_activation_}"
              f"\nSolver: {model.solver}")
-#pd.DataFrame(model.loss_curve_).plot()
 
 write(title, f"Training array dimensions: {X_train.shape} {y_train.shape}")
 write(title, f"Test array dimensions: {X_test.shape} {y_test.shape}")
@@ -44,7 +43,7 @@ write(title, f"Test array dimensions: {X_test.shape} {y_test.shape}")
 print("Training set:")
 dataset_X = X_train
 dataset_y = y_train
-n_batches = 100
+n_batches = 10
 batch_size = int(dataset_X.shape[0] / n_batches) 
 array_list = []
 for i in range(0, n_batches):
@@ -70,7 +69,7 @@ write(title, f"\nMean squared error (training data): {mean_se}")
 print("Test set:")
 dataset_X = X_test
 dataset_y = y_test
-n_batches = 100
+n_batches = 10
 batch_size = int(dataset_X.shape[0] / n_batches) 
 array_list = []
 for i in range(0, n_batches):
