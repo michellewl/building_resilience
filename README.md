@@ -79,9 +79,15 @@ Idea:
  - Show that the heating and cooling for different building types is different. 
  How well does 15.5 degrees sits with the energy consumption - we have the hourly data in Michelle's data -- can we check it?
  - Look at proportional changes in consumption --> not absolute!
+ - Can we comapre similar buildings in different locations to assess behavioural impact? 
+ - Let's plot the energy usage conditioned on HDD/CDD marginalizing all the other parameters.
+ - Let's add a simple table of correlations of varibales to energy usage
 
 Challenges/open questions: 
 - How do we combine the different climate models?
+
+ML questions to check: 
+- Leo breiman says that random forests get F in explanation - is it reliable to use the different importance measures? 
 
 
 
