@@ -17,7 +17,7 @@ The use case being, I don't know and I'm not sure???
  - Predicting individual 
 The use case being, I don't know and I'm not sure??? building s
 
-When we refer to climate variables. We would like to have many variables, but most importantly it seems that we want humidity, solar heat gain, wind, rainfall and temperature. 
+When we refer to climate variables. We would like to have many variables, but most importantly it seems that we want dry- bulb temperature, dew point temperature, relative humidity, global solar radiation, wind speed, wind direction, degree of cloudiness, pressure, rainfall amount, and evaporation (see paper #3 from models section). 
 
 Limitations: 
 GDP predictions are problematic also might be scenario based
