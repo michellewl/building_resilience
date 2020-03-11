@@ -1,0 +1,250 @@
+Territory,2-letter code,3-letter code,independent
+Åland Islands ,AX,ALA,No 
+American Samoa ,AS,ASM,No 
+Anguilla ,AI,AIA,No 
+Antarctica ,AQ,ATA,No 
+Aruba ,AW,ABW,No 
+Bermuda ,BM,BMU,No 
+"Bonaire, Sint Eustatius and Saba ",BQ,BES,No 
+Bouvet Island ,BV,BVT,No 
+British Indian Ocean Territory ,IO,IOT,No 
+Cayman Islands ,KY,CYM,No 
+Christmas Island ,CX,CXR,No 
+Cocos (Keeling) Islands ,CC,CCK,No 
+Cook Islands ,CK,COK,No 
+Curaçao ,CW,CUW,No 
+Falkland Islands (Malvinas) ,FK,FLK,No 
+Faroe Islands ,FO,FRO,No 
+French Guiana ,GF,GUF,No 
+French Polynesia ,PF,PYF,No 
+French Southern Territories ,TF,ATF,No 
+Gibraltar ,GI,GIB,No 
+Greenland ,GL,GRL,No 
+Guadeloupe ,GP,GLP,No 
+Guam ,GU,GUM,No 
+Guernsey ,GG,GGY,No 
+Heard Island and McDonald Islands ,HM,HMD,No 
+Hong Kong ,HK,HKG,No 
+Isle of Man ,IM,IMN,No 
+Jersey ,JE,JEY,No 
+Macao ,MO,MAC,No 
+Martinique ,MQ,MTQ,No 
+Mayotte ,YT,MYT,No 
+Montserrat ,MS,MSR,No 
+New Caledonia ,NC,NCL,No 
+Niue ,NU,NIU,No 
+Norfolk Island ,NF,NFK,No 
+Northern Mariana Islands ,MP,MNP,No 
+"Palestine, State of ",PS,PSE,No 
+Pitcairn ,PN,PCN,No 
+Puerto Rico ,PR,PRI,No 
+Réunion ,RE,REU,No 
+Saint Barthélemy ,BL,BLM,No 
+"Saint Helena, Ascension and Tristan da Cunha ",SH,SHN,No 
+Saint Martin (French part) ,MF,MAF,No 
+Saint Pierre and Miquelon ,PM,SPM,No 
+Sint Maarten (Dutch part) ,SX,SXM,No 
+South Georgia and the South Sandwich Islands ,GS,SGS,No 
+Svalbard and Jan Mayen ,SJ,SJM,No 
+"Taiwan, Province of China ",TW,TWN,No 
+Tokelau ,TK,TKL,No 
+Turks and Caicos Islands ,TC,TCA,No 
+United States Minor Outlying Islands ,UM,UMI,No 
+Virgin Islands (British) ,VG,VGB,No 
+Virgin Islands (U.S.) ,VI,VIR,No 
+Wallis and Futuna ,WF,WLF,No 
+Western Sahara ,EH,ESH,No 
+Afghanistan ,AF,AFG,Yes 
+Albania ,AL,ALB,Yes 
+Algeria ,DZ,DZA,Yes 
+Andorra ,AD,AND,Yes 
+Angola ,AO,AGO,Yes 
+Antigua and Barbuda ,AG,ATG,Yes 
+Argentina ,AR,ARG,Yes 
+Armenia ,AM,ARM,Yes 
+Australia ,AU,AUS,Yes 
+Austria ,AT,AUT,Yes 
+Azerbaijan ,AZ,AZE,Yes 
+Bahamas ,BS,BHS,Yes 
+Bahrain ,BH,BHR,Yes 
+Bangladesh ,BD,BGD,Yes 
+Barbados ,BB,BRB,Yes 
+Belarus ,BY,BLR,Yes 
+Belgium ,BE,BEL,Yes 
+Belize ,BZ,BLZ,Yes 
+Benin ,BJ,BEN,Yes 
+Bhutan ,BT,BTN,Yes 
+Bolivia (Plurinational State of) ,BO,BOL,Yes 
+Bosnia and Herzegovina ,BA,BIH,Yes 
+Botswana ,BW,BWA,Yes 
+Brazil ,BR,BRA,Yes 
+Brunei Darussalam ,BN,BRN,Yes 
+Bulgaria ,BG,BGR,Yes 
+Burkina Faso ,BF,BFA,Yes 
+Burundi ,BI,BDI,Yes 
+Cabo Verde ,CV,CPV,Yes 
+Cambodia ,KH,KHM,Yes 
+Cameroon ,CM,CMR,Yes 
+Canada ,CA,CAN,Yes 
+Central African Republic ,CF,CAF,Yes 
+Chad ,TD,TCD,Yes 
+Chile ,CL,CHL,Yes 
+China ,CN,CHN,Yes 
+Colombia ,CO,COL,Yes 
+Comoros ,KM,COM,Yes 
+Congo ,CG,COG,Yes 
+"Congo, Democratic Republic of the ",CD,COD,Yes 
+Costa Rica ,CR,CRI,Yes 
+Côte d'Ivoire ,CI,CIV,Yes 
+Croatia ,HR,HRV,Yes 
+Cuba ,CU,CUB,Yes 
+Cyprus ,CY,CYP,Yes 
+Czechia ,CZ,CZE,Yes 
+Denmark ,DK,DNK,Yes 
+Djibouti ,DJ,DJI,Yes 
+Dominica ,DM,DMA,Yes 
+Dominican Republic ,DO,DOM,Yes 
+Ecuador ,EC,ECU,Yes 
+Egypt ,EG,EGY,Yes 
+El Salvador ,SV,SLV,Yes 
+Equatorial Guinea ,GQ,GNQ,Yes 
+Eritrea ,ER,ERI,Yes 
+Estonia ,EE,EST,Yes 
+Eswatini ,SZ,SWZ,Yes 
+Ethiopia ,ET,ETH,Yes 
+Fiji ,FJ,FJI,Yes 
+Finland ,FI,FIN,Yes 
+France ,FR,FRA,Yes 
+Gabon ,GA,GAB,Yes 
+Gambia ,GM,GMB,Yes 
+Georgia ,GE,GEO,Yes 
+Germany ,DE,DEU,Yes 
+Ghana ,GH,GHA,Yes 
+Greece ,GR,GRC,Yes 
+Grenada ,GD,GRD,Yes 
+Guatemala ,GT,GTM,Yes 
+Guinea ,GN,GIN,Yes 
+Guinea-Bissau ,GW,GNB,Yes 
+Guyana ,GY,GUY,Yes 
+Haiti ,HT,HTI,Yes 
+Holy See ,VA,VAT,Yes 
+Honduras ,HN,HND,Yes 
+Hungary ,HU,HUN,Yes 
+Iceland ,IS,ISL,Yes 
+India ,IN,IND,Yes 
+Indonesia ,ID,IDN,Yes 
+Iran (Islamic Republic of) ,IR,IRN,Yes 
+Iraq ,IQ,IRQ,Yes 
+Ireland ,IE,IRL,Yes 
+Israel ,IL,ISR,Yes 
+Italy ,IT,ITA,Yes 
+Jamaica ,JM,JAM,Yes 
+Japan ,JP,JPN,Yes 
+Jordan ,JO,JOR,Yes 
+Kazakhstan ,KZ,KAZ,Yes 
+Kenya ,KE,KEN,Yes 
+Kiribati ,KI,KIR,Yes 
+Korea (Democratic People's Republic of) ,KP,PRK,Yes 
+"Korea, Republic of ",KR,KOR,Yes 
+Kuwait ,KW,KWT,Yes 
+Kyrgyzstan ,KG,KGZ,Yes 
+Lao People's Democratic Republic ,LA,LAO,Yes 
+Latvia ,LV,LVA,Yes 
+Lebanon ,LB,LBN,Yes 
+Lesotho ,LS,LSO,Yes 
+Liberia ,LR,LBR,Yes 
+Libya ,LY,LBY,Yes 
+Liechtenstein ,LI,LIE,Yes 
+Lithuania ,LT,LTU,Yes 
+Luxembourg ,LU,LUX,Yes 
+Madagascar ,MG,MDG,Yes 
+Malawi ,MW,MWI,Yes 
+Malaysia ,MY,MYS,Yes 
+Maldives ,MV,MDV,Yes 
+Mali ,ML,MLI,Yes 
+Malta ,MT,MLT,Yes 
+Marshall Islands ,MH,MHL,Yes 
+Mauritania ,MR,MRT,Yes 
+Mauritius ,MU,MUS,Yes 
+Mexico ,MX,MEX,Yes 
+Micronesia (Federated States of) ,FM,FSM,Yes 
+"Moldova, Republic of ",MD,MDA,Yes 
+Monaco ,MC,MCO,Yes 
+Mongolia ,MN,MNG,Yes 
+Montenegro ,ME,MNE,Yes 
+Morocco ,MA,MAR,Yes 
+Mozambique ,MZ,MOZ,Yes 
+Myanmar ,MM,MMR,Yes 
+Namibia ,NA,NAM,Yes 
+Nauru ,NR,NRU,Yes 
+Nepal ,NP,NPL,Yes 
+Netherlands ,NL,NLD,Yes 
+New Zealand ,NZ,NZL,Yes 
+Nicaragua ,NI,NIC,Yes 
+Niger ,NE,NER,Yes 
+Nigeria ,NG,NGA,Yes 
+North Macedonia ,MK,MKD,Yes 
+Norway ,NO,NOR,Yes 
+Oman ,OM,OMN,Yes 
+Pakistan ,PK,PAK,Yes 
+Palau ,PW,PLW,Yes 
+Panama ,PA,PAN,Yes 
+Papua New Guinea ,PG,PNG,Yes 
+Paraguay ,PY,PRY,Yes 
+Peru ,PE,PER,Yes 
+Philippines ,PH,PHL,Yes 
+Poland ,PL,POL,Yes 
+Portugal ,PT,PRT,Yes 
+Qatar ,QA,QAT,Yes 
+Romania ,RO,ROU,Yes 
+Russian Federation ,RU,RUS,Yes 
+Rwanda ,RW,RWA,Yes 
+Saint Kitts and Nevis ,KN,KNA,Yes 
+Saint Lucia ,LC,LCA,Yes 
+Saint Vincent and the Grenadines ,VC,VCT,Yes 
+Samoa ,WS,WSM,Yes 
+San Marino ,SM,SMR,Yes 
+Sao Tome and Principe ,ST,STP,Yes 
+Saudi Arabia ,SA,SAU,Yes 
+Senegal ,SN,SEN,Yes 
+Serbia ,RS,SRB,Yes 
+Seychelles ,SC,SYC,Yes 
+Sierra Leone ,SL,SLE,Yes 
+Singapore ,SG,SGP,Yes 
+Slovakia ,SK,SVK,Yes 
+Slovenia ,SI,SVN,Yes 
+Solomon Islands ,SB,SLB,Yes 
+Somalia ,SO,SOM,Yes 
+South Africa ,ZA,ZAF,Yes 
+South Sudan ,SS,SSD,Yes 
+Spain ,ES,ESP,Yes 
+Sri Lanka ,LK,LKA,Yes 
+Sudan ,SD,SDN,Yes 
+Suriname ,SR,SUR,Yes 
+Sweden ,SE,SWE,Yes 
+Switzerland ,CH,CHE,Yes 
+Syrian Arab Republic ,SY,SYR,Yes 
+Tajikistan ,TJ,TJK,Yes 
+"Tanzania, United Republic of ",TZ,TZA,Yes 
+Thailand ,TH,THA,Yes 
+Timor-Leste ,TL,TLS,Yes 
+Togo ,TG,TGO,Yes 
+Tonga ,TO,TON,Yes 
+Trinidad and Tobago ,TT,TTO,Yes 
+Tunisia ,TN,TUN,Yes 
+Turkey ,TR,TUR,Yes 
+Turkmenistan ,TM,TKM,Yes 
+Tuvalu ,TV,TUV,Yes 
+Uganda ,UG,UGA,Yes 
+Ukraine ,UA,UKR,Yes 
+United Arab Emirates ,AE,ARE,Yes 
+United Kingdom of Great Britain and Northern Ireland ,GB,GBR,Yes 
+United States of America ,US,USA,Yes 
+Uruguay ,UY,URY,Yes 
+Uzbekistan ,UZ,UZB,Yes 
+Vanuatu ,VU,VUT,Yes 
+Venezuela (Bolivarian Republic of) ,VE,VEN,Yes 
+Viet Nam ,VN,VNM,Yes 
+Yemen ,YE,YEM,Yes 
+Zambia ,ZM,ZMB,Yes 
+Zimbabwe ,ZW,ZWE,Yes 
