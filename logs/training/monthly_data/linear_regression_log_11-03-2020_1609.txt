@@ -1,0 +1,51 @@
+WEATHER TRAINING DATA
+
+Filename: /home/mwlw3/Documents/Guided_team_challenge/building_resilience/data/processed_arrays/monthly_weather.csv
+
+BUILDING TRAINING DATA
+
+Filename: /home/mwlw3/Documents/Guided_team_challenge/building_resilience/data/processed_arrays/monthly_energy.csv
+
+MODEL TRAIN
+
+Training size: 0.6699999999999999
+Test size: 0.33
+Training array dimensions: (11649, 23) (11649, 1)
+Test array dimensions: (5738, 23) (5738, 1)
+
+Normalised the training data and applied the same to the test set.
+
+Linear regression model fit:
+R²: 0.055219813479265634
+Mean squared error: 0.9447801865207344
+
+Linear regression model test:
+Mean squared error: 2.5761354568373633
+
+Model coefficients:
+mean_air_temp : [0.6115533520764694]
+mean_dew_temp : [-2.94765212057678]
+mean_wind_speed : [-0.5432122863619421]
+mean_cos_wind_dir : [0.03782102428038319]
+mean_sin_wind_dir : [-0.04714904202082804]
+min_air_temp : [-0.692856448144591]
+min_dew_temp : [1.8362804486416957]
+min_wind_speed : [0.2878231654011233]
+min_cos_wind_dir : [-0.04471583342260456]
+min_sin_wind_dir : [0.05440357959064345]
+max_air_temp : [-0.26093154927399087]
+max_dew_temp : [0.91409512583112]
+max_wind_speed : [0.25495883647136486]
+max_cos_wind_dir : [-0.047389808098243696]
+max_sin_wind_dir : [-0.010133025228458398]
+hours_above_18_5_degc : [2.6101180024497794]
+hours_below_18_5_degc : [2.45775977918845]
+hours_above_25_degc : [0.08033910046826065]
+hours_below_15_5_degc : [-0.2663731255817313]
+number_of_days_per_month : [0.03635578384772703]
+three_month_average_temp : [-0.02062811286282462]
+year_built : [7.256422251886005e-14]
+square_feet : [-1.5292186715557046e-13]
+
+Model intercept: 
+0.0
