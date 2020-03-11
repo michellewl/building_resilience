@@ -35,9 +35,10 @@ print("Processing dataset...")
 
 
 array_list = []
+dataframe_list = []
 
 for chosen_building in range(0,meta_data.shape[0]):
-    print(chosen_building)
+    
     chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
     year_built = meta_data.loc[meta_data.building_id == chosen_building, "year_built"].values[0]
     sq_ft = meta_data.loc[meta_data.building_id == chosen_building, "square_feet"].values[0]
@@ -108,71 +109,82 @@ for chosen_building in range(0,meta_data.shape[0]):
 
 
     array_list.append(monthly_weather.to_numpy())
-    
-all_sites_weather = np.vstack(array_list)
+    dataframe_list.append(monthly_weather)
 
+all_sites_weather = np.vstack(array_list)
+weather_dataframe = pd.concat(dataframe_list)
 print(all_sites_weather.shape)
 
 # if all_sites_weather.shape[0] == 12728016:
 #     print("Successfully stacked weather for all buildings.")
 
-# print("\nBUILDING TRAINING DATA")
-# print("Reading dataset...")
-# files = glob.glob(f"{folder}train.csv")
-# data = pd.read_csv(files[0])
-# data["timestamp"] = pd.to_datetime(data.timestamp)
-# print("Processing dataset...")
+print("\nBUILDING TRAINING DATA")
+print("Reading dataset...")
+files = glob.glob(f"{folder}train.csv")
+data = pd.read_csv(files[0])
+data["timestamp"] = pd.to_datetime(data.timestamp)
+print("Processing dataset...")
 
-# data_retention = 0.999
-# top = 1 - (1-data_retention)/2
-# bottom = (1-data_retention)/2
-# q_high = data.meter_reading.quantile(top)
-# q_low = data.meter_reading.quantile(bottom)
-# data.loc[data.meter_reading >= q_high, "meter_reading"] = None
-# data.loc[data.meter_reading <= q_low, "meter_reading"] = None
+data_retention = 0.999
+top = 1 - (1-data_retention)/2
+bottom = (1-data_retention)/2
+q_high = data.meter_reading.quantile(top)
+q_low = data.meter_reading.quantile(bottom)
+data.loc[data.meter_reading >= q_high, "meter_reading"] = None
+data.loc[data.meter_reading <= q_low, "meter_reading"] = None
 
-# print(f"Outlier limits: {q_low}, {q_high}")
+print(f"Outlier limits: {q_low}, {q_high}")
 
-# array_list = []
-# dataframe_list = []
+array_list = []
+dataframe_list = []
 
-# for chosen_building in range(0, 1448+1):
-#     building = data.loc[data.building_id == chosen_building].copy()
+for chosen_building in range(0, meta_data.shape[0]):
+    building = data.loc[data.building_id == chosen_building].copy()
 
    
 
-#     building = building.groupby("timestamp", as_index=False).sum()
-#     # This adds meter readings together if there multiple energy meters.
+    building = building.groupby("timestamp", as_index=False).sum()
+    # This adds meter readings together if there multiple energy meters.
 
-#     building = fix_time_gaps(building, start=start, end=end)
+    building = fix_time_gaps(building, start=start, end=end)
 
-#     building_array = building.meter_reading
-#     building.meter_reading = nan_mean_interpolation(building.meter_reading)
-#     nan_count = nan_count_total(building.meter_reading)
-#     if nan_count > 0:
-#         print(f"NaN count is {nan_count} at building: {chosen_building}\n{building.head}")
+    building_array = building.meter_reading
+    building.meter_reading = nan_mean_interpolation(building.meter_reading)
+    nan_count = nan_count_total(building.meter_reading)
+    if nan_count > 0:
+        print(f"NaN count is {nan_count} at building: {chosen_building}\n{building.head}")
 
-#     building_array = building.meter_reading.to_numpy()
-
-#     array_list.append(building_array)
-#     dataframe_list.append(building)
+    daily_energy = building.copy().resample("D", on="timestamp").sum()
+    monthly_energy = building.copy().resample("M", on="timestamp").mean()
+    monthly_energy = monthly_energy.drop("meter_reading", axis=1)
+    monthly_energy["mean_daily_energy"] = daily_energy.copy().resample("M").mean().meter_reading
+    monthly_energy["total_energy"] = building.copy().resample("M", on="timestamp").sum().meter_reading
     
-# all_sites_energy = np.concatenate(array_list, axis=None)
-# energy_dataframe = pd.concat(dataframe_list)
+ 
+    array_list.append(monthly_energy.total_energy.to_numpy())
+    dataframe_list.append(monthly_energy)
+    
+all_sites_energy = np.concatenate(array_list, axis=None)
+energy_dataframe = pd.concat(dataframe_list)
 
-# if all_sites_energy.shape[0] == 12728016:
-#     print("\nSuccessfully stacked energy for all buildings!")
-# else:
-#     print(f"Error occurred, energy array shape is {all_sites_energy.shape[0]}.")
+if all_sites_energy.shape[0] == all_sites_weather.shape[0]:
+    print("\nSuccessfully stacked energy for all buildings!")
+else:
+    print(f"Error occurred, weather array shape is {all_sites_weather.shape[0]} but energy array shape is {all_sites_energy.shape[0]}.")
 
 
-# save_folder = "data/processed_arrays/"
+save_folder = "data/processed_arrays/"
 
-# if include_meta_data is True:
-#     np.savetxt(f"{code_home_folder}{save_folder}weather_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
-# elif include_meta_data is False:
-#     np.savetxt(f"{code_home_folder}{save_folder}weather_only_processed_stacked_buildings.csv", all_sites_weather, delimiter=",")
+if include_meta_data is True:
+    np.savetxt(f"{code_home_folder}{save_folder}monthly_weather.csv", all_sites_weather, delimiter=",")
+    weather_dataframe.to_csv(f"{code_home_folder}{save_folder}monthly_weather_dataframe.csv", index=True)
+elif include_meta_data is False:
+    np.savetxt(f"{code_home_folder}{save_folder}monthly_weather_nometa.csv", all_sites_weather, delimiter=",")
+    weather_dataframe.to_csv(f"{code_home_folder}{save_folder}monthly_weather_dataframe_nometa.csv", index=True)
 
-#np.savetxt(f"{code_home_folder}{save_folder}energy_processed_stacked_buildings.csv", all_sites_energy, delimiter=",")
-# energy_dataframe.to_csv(f"{code_home_folder}{save_folder}energy_stacked_buildings_dataframe.csv", index=False)
-# print("\n Successfully saved data files for weather and energy.")
+np.savetxt(f"{code_home_folder}{save_folder}monthly_energy.csv", all_sites_energy, delimiter=",")
+energy_dataframe.to_csv(f"{code_home_folder}{save_folder}monthly_energy_dataframe.csv", index=True)
+print("\n Successfully saved data files for weather and energy.")
+
+print(monthly_weather.head)
+print(monthly_energy.head)
