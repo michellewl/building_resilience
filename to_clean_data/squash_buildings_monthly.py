@@ -81,8 +81,7 @@ for chosen_building in range(0,1448+1):
 
     #_______________________squash to monthly data
     monthly_weather = daily_weather.copy().resample("M").mean()
-
-
+    monthly_weather.insert(loc=monthly_weather.shape[-1], column="number_of_days_per_month", value=monthly_weather.index.day)
 
     if include_meta_data is True:
         #daily_weather.insert(loc=daily_weather.shape[-1], column="year_built", value=pd.Series([year_built] * daily_weather.shape[0]))
