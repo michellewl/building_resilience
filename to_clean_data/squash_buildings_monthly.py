@@ -86,7 +86,7 @@ for chosen_building in range(0,meta_data.shape[0]):
 
     if include_meta_data is True:
         #daily_weather.insert(loc=daily_weather.shape[-1], column="year_built", value=pd.Series([year_built] * daily_weather.shape[0]))
-        monthly_weather.insert(loc=monthly_weather.shape[-1], column="year_built", value=pd.Series([year_built] * monthly_weather.shape[0]))
+        monthly_weather['year_built'] = [year_built] * monthly_weather.shape[0]
         average_year = meta_data.year_built.mean()
         #daily_weather.year_built = daily_weather.year_built.fillna(average_year)
         monthly_weather.year_built = monthly_weather.year_built.fillna(average_year)
@@ -95,12 +95,17 @@ for chosen_building in range(0,meta_data.shape[0]):
 
 
         #daily_weather.insert(loc=daily_weather.shape[-1], column="square_feet", value=pd.Series([sq_ft] * daily_weather.shape[0]))
-        monthly_weather.insert(loc=monthly_weather.shape[-1], column="square_feet", value=pd.Series([sq_ft] * monthly_weather.shape[0]))
+        monthly_weather['square_feet'] = [sq_ft] * monthly_weather.shape[0]
         average_sqft = meta_data.square_feet.mean()
         #daily_weather.square_feet = daily_weather.square_feet.fillna(average_sqft)
         monthly_weather.square_feet = monthly_weather.square_feet.fillna(average_sqft)
         if nan_count > 0:
             print(f"NaN count (square feet) is {nan_count} at building: {chosen_building}")
+
+        #daily_weather.insert(loc=daily_weather.shape[-1], column="square_feet", value=pd.Series([sq_ft] * daily_weather.shape[0]))
+        monthly_weather['site_id'] = [chosen_site] * monthly_weather.shape[0]
+        if nan_count > 0:
+            print(f"NaN count (site_id) is {nan_count} at building: {chosen_building}")
 
 
     array_list.append(monthly_weather.to_numpy())
