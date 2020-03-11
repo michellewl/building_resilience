@@ -1,3 +1,2 @@
-*.egg-info/
 /bias_correction/plots
 .ipynb_checkpoints/

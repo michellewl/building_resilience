@@ -1,0 +1,13 @@
+#!/bin/bash 
+
+        # BSUB -q short-serial 
+
+        # BSUB -J R_job 
+
+        # BSUB -oo R-%J.o 
+
+        # BSUB -eo R-%J.e 
+
+        # BSUB -W 23:00 
+
+        python -c 'import os; os.chdir("/home/users/omer/PYTHON/"); import thresholds as th; th.model_wrap(-90, 89,30,35)'
