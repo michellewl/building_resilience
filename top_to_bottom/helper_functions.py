@@ -49,8 +49,36 @@ def choose_UN_scenario(un_pop_data, scenario):
         kappa = kappa['PopTotal']
         kappa = list(kappa)
         check_countries.iloc[j,2:] = kappa
-
+        
+    print(scenario + ' scenario population prediction data succesfully extracted in your variable!')
     return check_countries
+
+#---------------------------------------------------------------------------------------------------------------------
+
+def get_year_of_WB_data(year,WB_data):
+    
+    ## The dataset from WorldBank has 216 countries (first 216 entries) and the rest of them are aggregated territories.
+    countries_limit = 217 #
+    year_string = str(year)+' [YR'+str(year)+']'
+
+    #Set up new DF    
+    countries_list = list(WB_data['Country Name'].unique()[0:countries_limit])
+    country_code_list = list(WB_data['Country Code'].unique()[0:countries_limit])
+
+    new_df = pd.DataFrame(countries_list, columns =['Country Name'])
+    new_df['Country Code'] = country_code_list
+    
+    #Add the WB data into new DF
+    series_list = list(WB_data['Series Name'].unique())
+    for i in range(len(series_list)-1):
+        series_name = series_list[i]
+        WB_data_series = WB_data.loc[WB_data['Series Name'] == series_name].reset_index(drop=True)
+        WB_data_series = WB_data_series.iloc[0:countries_limit,:]
+        current_series_list = WB_data_series[year_string]
+        new_df[series_name] = current_series_list
+        
+    print('WB data for the year '+str(year)+ ' was succesfully imported!')
+    return new_df
 
 #---------------------------------------------------------------------------------------------------------------------
 
