@@ -149,18 +149,16 @@ for chosen_building in range(0, meta_data.shape[0]):
     
     building = data.loc[data.building_id == chosen_building].copy()
 
-   
-
-    building = building.groupby("timestamp", as_index=False).sum()
-    # This adds meter readings together if there multiple energy meters.
+    building = building.loc[building.meter ==0,:]
+    building.meter_reading = building.meter_reading* 0.000293071
+    # This retains only the electricity meter and converts from kBTU to kWh
 
     building = fix_time_gaps(building, start=start, end=end)
 
-    building_array = building.meter_reading
     building.meter_reading = nan_mean_interpolation(building.meter_reading)
     nan_count = nan_count_total(building.meter_reading)
     if nan_count > 0:
-        print(f"NaN count is {nan_count} at building: {chosen_building}\n{building.head}")
+        print(f"NaN count meter_reading is {nan_count} at building: {chosen_building}\n{building.head}")
 
     daily_energy = building.copy().resample("D", on="timestamp").sum()
     if monthly_data is True:
@@ -180,6 +178,7 @@ for chosen_building in range(0, meta_data.shape[0]):
 all_sites_energy_daily = np.concatenate(array_list_daily, axis=None)
 energy_dataframe_daily = pd.concat(dataframe_list_daily)
 print(all_sites_energy_daily.shape)
+
 
 if all_sites_energy_daily.shape[0] == all_sites_weather_daily.shape[0]:
     print("\nSuccess!")
