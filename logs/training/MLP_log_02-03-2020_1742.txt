@@ -1,0 +1,32 @@
+02-03-2020_1742
+WEATHER TRAINING DATA
+
+All buildings. Does not include meta data
+Data shape: (12728016, 5)
+
+BUILDING TRAINING DATA
+
+All buildings.
+Data shape: (12728016,)
+
+MODEL TRAIN
+
+Training size: 0.6699999999999999
+Test size: 0.33
+Training array dimensions: (8527770, 5) (8527770, 1)
+Test array dimensions: (4200246, 5) (4200246, 1)
+
+Normalised the training data and applied the same to the test set.
+02-03-2020_1743
+Architecture: (100, 100)
+Batch size: 16
+
+02-03-2020_1855
+
+Best loss: 0.5000515373148462
+Iterations: 4
+Layers: 4
+Outputs: 1
+Activation function: relu
+Output activation function: identity
+Solver: adam

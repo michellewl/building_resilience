@@ -1,0 +1,5 @@
+All buildings.
+Data shape: (12728016, 5)
+
+BUILDING TRAINING DATA
+
