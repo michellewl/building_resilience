@@ -70,7 +70,6 @@ daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timest
 new_variables.extend(["max_air_temp", "max_dew_temp", "max_wind_speed", "max_cos_wind_dir", "max_sin_wind_dir"])
 daily_weather.columns = new_variables
 
-
 # Additional temperature metrics
 temperature_array = weather_array.iloc[:,:2].copy().set_index("timestamp")
 # temperature thresholds
@@ -80,31 +79,33 @@ daily_weather["hours_above_25_degc"] = temperature_array.copy().resample("D")["a
 daily_weather["hours_below_15_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<15.5).sum())
 
 
-print(daily_weather)
-
 
 #_______________________squash to monthly data
 monthly_weather = daily_weather.copy().resample("M").mean()
-print(monthly_weather)
 
-exit
+
 
 if include_meta_data is True:
-    year_column = [year_built] * weather_array.shape[0]
-    year_column = pd.Series(year_column)
-    weather_array.insert(loc=weather_array.shape[-1], column="year_built", value=year_column)
+    daily_weather.insert(loc=daily_weather.shape[-1], column="year_built", value=pd.Series([year_built] * daily_weather.shape[0]))
+    monthly_weather.insert(loc=monthly_weather.shape[-1], column="year_built", value=pd.Series([year_built] * monthly_weather.shape[0]))
     average_year = meta_data.year_built.mean()
-    weather_array.year_built = weather_array.year_built.fillna(average_year)
+    daily_weather.year_built = daily_weather.year_built.fillna(average_year)
+    monthly_weather.year_built = monthly_weather.year_built.fillna(average_year)
     if nan_count > 0:
         print(f"NaN count (year built) is {nan_count} at building: {chosen_building}")
 
-    sqft_column = [sq_ft] * weather_array.shape[0]
-    sqft_column = pd.Series(sqft_column)
-    weather_array.insert(loc=weather_array.shape[-1], column="square_feet", value=sqft_column)
+
+    daily_weather.insert(loc=daily_weather.shape[-1], column="square_feet", value=pd.Series([sq_ft] * daily_weather.shape[0]))
+    monthly_weather.insert(loc=monthly_weather.shape[-1], column="square_feet", value=pd.Series([sq_ft] * monthly_weather.shape[0]))
     average_sqft = meta_data.square_feet.mean()
-    weather_array.square_feet = weather_array.square_feet.fillna(average_sqft)
+    daily_weather.square_feet = daily_weather.square_feet.fillna(average_sqft)
+    monthly_weather.square_feet = monthly_weather.square_feet.fillna(average_sqft)
     if nan_count > 0:
         print(f"NaN count (square feet) is {nan_count} at building: {chosen_building}")
+
+print(daily_weather)
+print(monthly_weather)
+exit
 
 weather_array = weather_array.drop("timestamp", axis=1).to_numpy()
     #array_list.append(weather_array)
