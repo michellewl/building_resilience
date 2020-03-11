@@ -1,0 +1,1 @@
+curl https://www.eia.gov/consumption/commercial/data/2012/xls/2012_public_use_data_aug2016.csv > ~/Downloads/2012_elec_consump.csv
