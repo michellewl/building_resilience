@@ -7,9 +7,12 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
 from functions.functions import write, current_time
 
-title = f"linear_regression_monthly_log_{current_time()}"
 
 code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
+
+title = f"{code_home_folder}logs/training/monthly_data/linear_regression_log_{current_time()}"
+
+
 data_folder = "data/processed_arrays/"
 
 print("WEATHER TRAINING DATA")
