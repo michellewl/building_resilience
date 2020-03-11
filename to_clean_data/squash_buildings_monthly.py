@@ -38,7 +38,8 @@ array_list = []
 dataframe_list = []
 
 for chosen_building in range(0,meta_data.shape[0]):
-    
+    if chosen_building%50==0:
+        print(f"We're on building #{chosen_building}...")
     chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
     year_built = meta_data.loc[meta_data.building_id == chosen_building, "year_built"].values[0]
     sq_ft = meta_data.loc[meta_data.building_id == chosen_building, "square_feet"].values[0]
@@ -115,8 +116,6 @@ all_sites_weather = np.vstack(array_list)
 weather_dataframe = pd.concat(dataframe_list)
 print(all_sites_weather.shape)
 
-# if all_sites_weather.shape[0] == 12728016:
-#     print("Successfully stacked weather for all buildings.")
 
 print("\nBUILDING TRAINING DATA")
 print("Reading dataset...")
@@ -139,6 +138,9 @@ array_list = []
 dataframe_list = []
 
 for chosen_building in range(0, meta_data.shape[0]):
+    if chosen_building%50==0:
+        print(f"We're on building #{chosen_building}...")
+    
     building = data.loc[data.building_id == chosen_building].copy()
 
    
@@ -166,9 +168,10 @@ for chosen_building in range(0, meta_data.shape[0]):
     
 all_sites_energy = np.concatenate(array_list, axis=None)
 energy_dataframe = pd.concat(dataframe_list)
+print(all_sites_energy.shape)
 
 if all_sites_energy.shape[0] == all_sites_weather.shape[0]:
-    print("\nSuccessfully stacked energy for all buildings!")
+    print("\nSuccess!")
 else:
     print(f"Error occurred, weather array shape is {all_sites_weather.shape[0]} but energy array shape is {all_sites_energy.shape[0]}.")
 
