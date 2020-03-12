@@ -29,10 +29,9 @@ data["timestamp"] = pd.to_datetime(data.timestamp)
 print("Processing dataset...")
 
 
-array_list_daily = []
+
 dataframe_list_daily = []
 if monthly_data is True:
-    array_list_monthly = []
     dataframe_list_monthly = []
 
 for chosen_building in range(0, meta_data.shape[0]):
@@ -112,20 +111,15 @@ for chosen_building in range(0, meta_data.shape[0]):
     daily_weather = daily_weather.set_index(keys = ["timestamp", "building_id"])
 
 
-    array_list_daily.append(daily_weather.to_numpy())
     dataframe_list_daily.append(daily_weather)
     if monthly_data is True:
-        array_list_monthly.append(monthly_weather.to_numpy())
         dataframe_list_monthly.append(monthly_weather)
 
-all_sites_weather_daily = np.vstack(array_list_daily)
+
 weather_dataframe_daily = pd.concat(dataframe_list_daily)
-print(all_sites_weather_daily.shape)
 
 if monthly_data is True:
-    all_sites_weather_monthly = np.vstack(all_sites_weather_monthly)
     weather_dataframe_monthly = pd.concat(dataframe_list_monthly)
-    print(all_sites_weather_monthly.shape)
 
 print("\nBUILDING TRAINING DATA")
 print("Reading dataset...")
@@ -144,10 +138,8 @@ data.loc[data.meter_reading <= q_low, "meter_reading"] = None
 
 print(f"Outlier limits: {q_low}, {q_high}")
 
-array_list_daily = []
 dataframe_list_daily = []
 if monthly_data is True:
-    array_list_monthly = []
     dataframe_list_monthly = []
 
 for chosen_building in range(0, meta_data.shape[0]):
@@ -191,28 +183,20 @@ for chosen_building in range(0, meta_data.shape[0]):
     daily_energy = daily_energy.reset_index()
     daily_energy = daily_energy.set_index(keys = ["timestamp", "building_id"])
  
-    array_list_daily.append(daily_energy.to_numpy())
-
-
     dataframe_list_daily.append(daily_energy)
     if monthly_data is True:
-        array_list_monthly.append(monthly_energy.total_energy.to_numpy())
         dataframe_list_monthly.append(monthly_energy)
 
 
-all_sites_energy_daily = np.vstack(array_list_daily)
 energy_dataframe_daily = pd.concat(dataframe_list_daily)
-print(all_sites_energy_daily.shape)
 
 if monthly_data is True:
-    all_sites_energy_monthly = np.concatenate(array_list_monthly, axis=None)
     energy_dataframe_monthly = pd.concat(dataframe_list_monthly)
-    print(all_sites_energy_monthly.shape)
 
-print(f"Weather array shape is {all_sites_weather_daily.shape[0]} but energy array shape is {all_sites_energy_daily.shape[0]}.")
+print(f"Weather array shape is {weather_dataframe_daily.shape[0]} and energy array shape is {energy_dataframe_daily.shape[0]}.")
 
 if monthly_data is True:
-    print(f"Weather array shape is {all_sites_weather_monthly.shape[0]} but energy array shape is {all_sites_energy_monthly.shape[0]}.")
+    print(f"Weather array shape is {weather_dataframe_monthly.shape[0]} and energy array shape is {energy_dataframe_monthly.shape[0]}.")
 
 
 
@@ -225,8 +209,13 @@ full_dataframe_daily = full_dataframe_daily.dropna(axis=0)
 #print(f"\nShape after dropna: {full_dataframe_daily.shape}")
 
 
-##### NEXT check for NaNs in the final table and remove the whole row (these should just have been reintroduced by the dataframe join).
-####       Change code for saving the CSV file.
+
+
+
+
+
+
+##### NEXT 
 ####       Change code for producing the normalised train/test files.
 
 
