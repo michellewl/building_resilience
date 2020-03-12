@@ -35,7 +35,7 @@ if monthly_data is True:
     array_list_monthly = []
     dataframe_list_monthly = []
 
-for chosen_building in range(700, 800):
+for chosen_building in range(750, 800):
     if chosen_building%50==0:
         print(f"We're on building #{chosen_building}...")
     chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
@@ -106,6 +106,12 @@ for chosen_building in range(700, 800):
             monthly_weather.square_feet = monthly_weather.square_feet.fillna(average_sqft)
             monthly_weather['site_id'] = [chosen_site] * monthly_weather.shape[0]
 
+    # include the building ID for joining dataframes later
+    daily_weather['building_id'] = [chosen_building] * daily_weather.shape[0]
+    daily_weather = daily_weather.reset_index()
+    daily_weather = daily_weather.set_index(keys = ["timestamp", "building_id"])
+
+
     array_list_daily.append(daily_weather.to_numpy())
     dataframe_list_daily.append(daily_weather)
     if monthly_data is True:
@@ -144,9 +150,10 @@ if monthly_data is True:
     array_list_monthly = []
     dataframe_list_monthly = []
 
-for chosen_building in range(700, 800):
+for chosen_building in range(750, 800):
     if chosen_building%50==0:
         print(f"We're on building #{chosen_building}...")
+    
     
     building = data.loc[data.building_id == chosen_building].copy()
 
@@ -154,30 +161,46 @@ for chosen_building in range(700, 800):
     building.meter_reading = building.meter_reading* 0.000293071
     # This retains only the electricity meter and converts from kBTU to kWh
 
-    if all(np.isnan(building.meter_reading)) is False:
-        building = fix_time_gaps(building, start=start, end=end)
-
-        building.meter_reading = nan_mean_interpolation(building.meter_reading)
-        nan_count = nan_count_total(building.meter_reading)
-        if nan_count > 0:
-            print(f"NaN count meter_reading is {nan_count} at building: {chosen_building}\n{building.head}")
-
-        daily_energy = building.copy().resample("D", on="timestamp").sum()
-        if monthly_data is True:
-            monthly_energy = building.copy().resample("M", on="timestamp").mean()
-            monthly_energy = monthly_energy.drop("meter_reading", axis=1)
-            monthly_energy["mean_daily_energy"] = daily_energy.copy().resample("M").mean().meter_reading
-            monthly_energy["total_energy"] = building.copy().resample("M", on="timestamp").sum().meter_reading
-        
-        
-        array_list_daily.append(daily_energy.to_numpy())
-        dataframe_list_daily.append(daily_energy)
-        if monthly_data is True:
-            array_list_monthly.append(monthly_energy.total_energy.to_numpy())
-            dataframe_list_monthly.append(monthly_energy)
 
 
-all_sites_energy_daily = np.concatenate(array_list_daily, axis=None)
+    if all(np.isnan(building.meter_reading)) is True:
+        print(f"Skipped building #{chosen_building}.")
+        continue
+    building = fix_time_gaps(building, start=start, end=end)
+
+  
+
+    building.meter_reading = nan_mean_interpolation(building.meter_reading)
+    nan_count = nan_count_total(building.meter_reading)
+    if nan_count > 0:
+        print(f"NaN count meter_reading is {nan_count} at building: {chosen_building}\n{building.head}")
+
+    
+
+    daily_energy = building.copy().resample("D", on="timestamp").mean()
+    daily_energy.meter_reading = building.copy().resample("D", on="timestamp").sum().meter_reading
+    
+ 
+
+    if monthly_data is True:
+        monthly_energy = building.copy().resample("M", on="timestamp").mean()
+        monthly_energy = monthly_energy.drop("meter_reading", axis=1)
+        monthly_energy["mean_daily_energy"] = daily_energy.copy().resample("M").mean().meter_reading
+        monthly_energy["total_energy"] = building.copy().resample("M", on="timestamp").sum().meter_reading
+  
+    daily_energy = daily_energy.reset_index()
+    daily_energy = daily_energy.set_index(keys = ["timestamp", "building_id"])
+ 
+    array_list_daily.append(daily_energy.to_numpy())
+
+
+    dataframe_list_daily.append(daily_energy)
+    if monthly_data is True:
+        array_list_monthly.append(monthly_energy.total_energy.to_numpy())
+        dataframe_list_monthly.append(monthly_energy)
+
+
+all_sites_energy_daily = np.vstack(array_list_daily)
 energy_dataframe_daily = pd.concat(dataframe_list_daily)
 print(all_sites_energy_daily.shape)
 
@@ -198,6 +221,12 @@ if monthly_data is True:
         print(f"Error occurred, weather array shape is {all_sites_weather_monthly.shape[0]} but energy array shape is {all_sites_energy_monthly.shape[0]}.")
 
 
+print(weather_dataframe_daily)
+print(energy_dataframe_daily)
+
+full_dataframe_daily = weather_dataframe_daily.join(energy_dataframe_daily, how="left")
+print(full_dataframe_daily)
+print(all(np.isnan(full_dataframe_daily.meter_reading)))
 
 # save_folder = "data/processed_arrays/"
 
