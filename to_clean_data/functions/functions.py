@@ -72,3 +72,17 @@ def wind_direction_trigonometry(weather_array):
     weather_array["sin_wind_direction"] = np.sin(np.deg2rad(weather_array["wind_direction"]))
     weather_array = weather_array.drop("wind_direction", axis=1)
     return weather_array
+
+def one_hot(df, columns):
+    '''
+    one-hot encode variables in a specified column
+    ----------
+    Parameters: 
+    df (pandas dataframe)
+    columns (list of strings): columns to one hot encode
+    -------
+    Return:
+     One pandas dataframe with the one hot encoded columns 
+    '''
+    new_df = pd.concat((df, pd.get_dummies(df[columns])), axis=1)
+    return new_df.drop(columns, axis=1)

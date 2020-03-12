@@ -12,22 +12,19 @@ data_folder = "data/processed_arrays/"
 save_folder = "data/train_test_arrays/"
 
 
-print("WEATHER TRAINING DATA")
+print("\nFULL DATASET\n")
 print("Reading dataset...")
-files = glob.glob(f"{code_home_folder}{data_folder}monthly_weather.csv")
-weather_array = np.genfromtxt(files[0], delimiter=",")
-print("Done.")
+files = glob.glob(f"{code_home_folder}{data_folder}full_dataframe_daily.csv")
+data = pd.read_csv(files[0])
+data["timestamp"] = pd.to_datetime(data.timestamp)
+print("Processing dataset...")
+
+y = data.meter_reading.to_numpy()
+X = data.drop(["timestamp", "building_id", "meter", "meter_reading"], axis=1).to_numpy()
+
+print(f"X: {X.shape}\ny: {y.shape}")
 
 
-
-print("\nBUILDING TRAINING DATA")
-print("Reading dataset...")
-files = glob.glob(f"{code_home_folder}{data_folder}monthly_energy.csv")
-energy_array = np.genfromtxt(files[0], delimiter=",")
-print("Done.")
-
-X = weather_array
-y = energy_array
 
 print("Splitting into train and test sets...")
 test_size = 0.15
@@ -42,11 +39,12 @@ y_train = scaler.fit_transform(y_train)
 X_test = scaler.transform(X_test)
 y_test = scaler.transform(y_test)
 
+print("Saving train/test files...")
 
 np.savetxt(f"{code_home_folder}{save_folder}X_train.csv", X_train, delimiter=",")
 np.savetxt(f"{code_home_folder}{save_folder}y_train.csv", y_train, delimiter=",")
 np.savetxt(f"{code_home_folder}{save_folder}X_test.csv", X_test, delimiter=",")
 np.savetxt(f"{code_home_folder}{save_folder}y_test.csv", y_test, delimiter=",")
 
-print("Saved train/test files.")
+print("Saved.")
 

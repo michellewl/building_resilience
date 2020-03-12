@@ -5,8 +5,8 @@ from functions.functions import nan_mean_interpolation, nan_count_total, nan_cou
     get_building_ids, fix_time_gaps, wind_direction_trigonometry
 import datetime as dt
 
-folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/"
-#folder = "C:\\Users\\Michelle\\PycharmProjects\\GTC\\data_ashrae_raw\\"
+raw_folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/"
+#raw_folder = "C:\\Users\\Michelle\\PycharmProjects\\GTC\\data_ashrae_raw\\"
 
 code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
 
@@ -14,7 +14,7 @@ include_meta_data = True
 monthly_data = False
 
 print("\nBUILDING META DATA\n")
-files = glob.glob(f"{folder}*meta*.csv")
+files = glob.glob(f"{raw_folder}*meta*.csv")
 meta_data = pd.read_csv(files[0])
 
 start = dt.datetime(day=1, month=1, year=2016, hour=0, minute=0)
@@ -23,23 +23,24 @@ end = dt.datetime(day=31, month=12, year=2016, hour=23, minute=0)
 
 print("WEATHER TRAINING DATA")
 print("Reading dataset...")
-files = glob.glob(f"{folder}weather_train.csv")
+files = glob.glob(f"{raw_folder}weather_train.csv")
 data = pd.read_csv(files[0])
 data["timestamp"] = pd.to_datetime(data.timestamp)
 print("Processing dataset...")
 
 
-array_list_daily = []
-dataframe_list_daily = []
-array_list_monthly = []
-dataframe_list_monthly = []
 
-for chosen_building in range(0,meta_data.shape[0]):
+dataframe_list_daily = []
+if monthly_data is True:
+    dataframe_list_monthly = []
+
+for chosen_building in range(0, meta_data.shape[0]):
     if chosen_building%50==0:
         print(f"We're on building #{chosen_building}...")
     chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
     year_built = meta_data.loc[meta_data.building_id == chosen_building, "year_built"].values[0]
     sq_ft = meta_data.loc[meta_data.building_id == chosen_building, "square_feet"].values[0]
+    primary_use = meta_data.loc[meta_data.building_id == chosen_building, "primary_use"].values[0]
 
     site_weather = data.loc[data.site_id == chosen_site]
 
@@ -59,11 +60,11 @@ for chosen_building in range(0,meta_data.shape[0]):
     new_variables = ["mean_air_temp", "mean_dew_temp", "mean_wind_speed", "mean_cos_wind_dir", "mean_sin_wind_dir"]
     daily_weather = weather_array.copy().resample("D", on="timestamp").mean()
     daily_weather.columns = new_variables
-    daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").min().iloc[:,1:])
-    new_variables.extend(["min_air_temp", "min_dew_temp", "min_wind_speed", "min_cos_wind_dir", "min_sin_wind_dir"])
+    daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").min().iloc[:,1:-2])
+    new_variables.extend(["min_air_temp", "min_dew_temp", "min_wind_speed"])
     daily_weather.columns = new_variables
-    daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").max().iloc[:,1:])
-    new_variables.extend(["max_air_temp", "max_dew_temp", "max_wind_speed", "max_cos_wind_dir", "max_sin_wind_dir"])
+    daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").max().iloc[:,1:-2])
+    new_variables.extend(["max_air_temp", "max_dew_temp", "max_wind_speed"])
     daily_weather.columns = new_variables
 
     # Additional temperature metrics
@@ -89,19 +90,16 @@ for chosen_building in range(0,meta_data.shape[0]):
 
     if include_meta_data is True:
         daily_weather['year_built'] = [year_built] * daily_weather.shape[0]
-        
         average_year = meta_data.year_built.mean()
         daily_weather.year_built = daily_weather.year_built.fillna(average_year)
-        
-        
+                
         daily_weather['square_feet'] = [sq_ft] * daily_weather.shape[0]
-        
         average_sqft = meta_data.square_feet.mean()
         daily_weather.square_feet = daily_weather.square_feet.fillna(average_sqft)
-        
-        
+                
         daily_weather['site_id'] = [chosen_site] * daily_weather.shape[0]
-        
+
+        daily_weather['primary_use'] = [primary_use] * daily_weather.shape[0]
         
         if monthly_data is True:
             monthly_weather['year_built'] = [year_built] * monthly_weather.shape[0]
@@ -110,20 +108,25 @@ for chosen_building in range(0,meta_data.shape[0]):
             monthly_weather.square_feet = monthly_weather.square_feet.fillna(average_sqft)
             monthly_weather['site_id'] = [chosen_site] * monthly_weather.shape[0]
 
-    array_list_daily.append(daily_weather.to_numpy())
+    # include the building ID for joining dataframes later
+    daily_weather['building_id'] = [chosen_building] * daily_weather.shape[0]
+    daily_weather = daily_weather.reset_index()
+    daily_weather = daily_weather.set_index(keys = ["timestamp", "building_id"])
+
+
     dataframe_list_daily.append(daily_weather)
     if monthly_data is True:
-        array_list_monthly.append(monthly_weather.to_numpy())
         dataframe_list_monthly.append(monthly_weather)
 
-all_sites_weather_daily = np.vstack(array_list_daily)
-weather_dataframe_daily = pd.concat(dataframe_list_daily)
-print(all_sites_weather_daily.shape)
 
+weather_dataframe_daily = pd.concat(dataframe_list_daily)
+
+if monthly_data is True:
+    weather_dataframe_monthly = pd.concat(dataframe_list_monthly)
 
 print("\nBUILDING TRAINING DATA")
 print("Reading dataset...")
-files = glob.glob(f"{folder}train.csv")
+files = glob.glob(f"{raw_folder}train.csv")
 data = pd.read_csv(files[0])
 data["timestamp"] = pd.to_datetime(data.timestamp)
 print("Processing dataset...")
@@ -138,67 +141,86 @@ data.loc[data.meter_reading <= q_low, "meter_reading"] = None
 
 print(f"Outlier limits: {q_low}, {q_high}")
 
-array_list_daily = []
 dataframe_list_daily = []
-array_list_monthly = []
-dataframe_list_monthly = []
+if monthly_data is True:
+    dataframe_list_monthly = []
 
 for chosen_building in range(0, meta_data.shape[0]):
     if chosen_building%50==0:
         print(f"We're on building #{chosen_building}...")
     
+    
     building = data.loc[data.building_id == chosen_building].copy()
 
-   
+    building = building.loc[building.meter ==0,:]
+    building.meter_reading = building.meter_reading* 0.000293071
+    # This retains only the electricity meter and converts from kBTU to kWh
 
-    building = building.groupby("timestamp", as_index=False).sum()
-    # This adds meter readings together if there multiple energy meters.
 
+
+    if all(np.isnan(building.meter_reading)) is True:
+        #print(f"Skipped building #{chosen_building}.")
+        continue
     building = fix_time_gaps(building, start=start, end=end)
 
-    building_array = building.meter_reading
+  
+
     building.meter_reading = nan_mean_interpolation(building.meter_reading)
     nan_count = nan_count_total(building.meter_reading)
     if nan_count > 0:
-        print(f"NaN count is {nan_count} at building: {chosen_building}\n{building.head}")
+        print(f"NaN count meter_reading is {nan_count} at building: {chosen_building}\n{building.head}")
 
-    daily_energy = building.copy().resample("D", on="timestamp").sum()
+    
+
+    daily_energy = building.copy().resample("D", on="timestamp").mean()
+    daily_energy.meter_reading = building.copy().resample("D", on="timestamp").sum().meter_reading
+    
+ 
+
     if monthly_data is True:
         monthly_energy = building.copy().resample("M", on="timestamp").mean()
         monthly_energy = monthly_energy.drop("meter_reading", axis=1)
         monthly_energy["mean_daily_energy"] = daily_energy.copy().resample("M").mean().meter_reading
         monthly_energy["total_energy"] = building.copy().resample("M", on="timestamp").sum().meter_reading
-    
+  
+    daily_energy = daily_energy.reset_index()
+    daily_energy = daily_energy.set_index(keys = ["timestamp", "building_id"])
  
-    array_list_daily.append(daily_energy.to_numpy())
     dataframe_list_daily.append(daily_energy)
     if monthly_data is True:
-        array_list_monthly.append(monthly_energy.total_energy.to_numpy())
         dataframe_list_monthly.append(monthly_energy)
 
 
-all_sites_energy_daily = np.concatenate(array_list_daily, axis=None)
 energy_dataframe_daily = pd.concat(dataframe_list_daily)
-print(all_sites_energy_daily.shape)
 
-if all_sites_energy_daily.shape[0] == all_sites_weather_daily.shape[0]:
-    print("\nSuccess!")
-else:
-    print(f"Error occurred, weather array shape is {all_sites_weather_daily.shape[0]} but energy array shape is {all_sites_energy_daily.shape[0]}.")
+if monthly_data is True:
+    energy_dataframe_monthly = pd.concat(dataframe_list_monthly)
+
+print(f"Weather array shape is {weather_dataframe_daily.shape[0]} and energy array shape is {energy_dataframe_daily.shape[0]}.")
+
+if monthly_data is True:
+    print(f"Weather array shape is {weather_dataframe_monthly.shape[0]} and energy array shape is {energy_dataframe_monthly.shape[0]}.")
+
+
+
+full_dataframe_daily = weather_dataframe_daily.join(energy_dataframe_daily, how="left")
+#print(f"\nShape after joining: {full_dataframe_daily.shape}\n")
+
+
+
+full_dataframe_daily = full_dataframe_daily.dropna(axis=0)
+#print(f"\nShape after dropna: {full_dataframe_daily.shape}")
+
 
 
 save_folder = "data/processed_arrays/"
 
 if include_meta_data is True:
-    np.savetxt(f"{code_home_folder}{save_folder}daily_weather.csv", all_sites_weather_daily, delimiter=",")
-    weather_dataframe_daily.to_csv(f"{code_home_folder}{save_folder}daily_weather_dataframe.csv", index=True)
+    full_dataframe_daily.to_csv(f"{code_home_folder}{save_folder}full_dataframe_daily.csv", index=True)
 elif include_meta_data is False:
-    np.savetxt(f"{code_home_folder}{save_folder}daily_weather_nometa.csv", all_sites_weather_daily, delimiter=",")
-    weather_dataframe_daily.to_csv(f"{code_home_folder}{save_folder}daily_weather_dataframe_nometa.csv", index=True)
+    full_dataframe_daily.to_csv(f"{code_home_folder}{save_folder}full_dataframe_daily_nometa.csv", index=True)
 
-np.savetxt(f"{code_home_folder}{save_folder}daily_energy.csv", all_sites_energy_daily, delimiter=",")
-energy_dataframe_daily.to_csv(f"{code_home_folder}{save_folder}daily_energy_dataframe.csv", index=True)
-print("\n Successfully saved data files for weather and energy.")
 
-print(daily_weather.head)
-print(daily_energy.head)
+print("\n Successfully saved full dataframe.")
+
+print(full_dataframe_daily)

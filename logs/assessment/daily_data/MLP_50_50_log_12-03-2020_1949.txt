@@ -1,0 +1,18 @@
+MLP model uses weather variables and building meta data (year built and square feet).
+
+
+Architecture: (50, 50)
+Batch size: 16
+
+Best loss: 0.07362504192750986
+Iterations: 102
+Layers: 4
+Outputs: 1
+Activation function: relu
+Output activation function: identity
+Solver: adam
+Training array dimensions: (428286, 50) (428286,)
+Test array dimensions: (75580, 50) (75580,)
+
+Mean squared error (training data): 0.12491036377548333
+Mean squared error (test data): 2417834098.621995

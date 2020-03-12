@@ -9,8 +9,8 @@ import pickle
 
 code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
 
-arch = "_100_100"
-title = f"{code_home_folder}logs/assessment/monthly_data/MLP{arch}_log_{current_time()}"
+arch = "_50_50"
+title = f"{code_home_folder}logs/assessment/daily_data/MLP{arch}_log_{current_time()}"
 
 data_folder = "data/train_test_arrays/"
 
