@@ -10,3 +10,4 @@ pandas, reverse_geocoder
 
 returns the 3-letter UN country code from the lat/lon coordinates;
 tuple required for the operation: coord = (lat, lon);
++ **don't forget to change the path to the required datafile**
