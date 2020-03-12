@@ -12,6 +12,7 @@ code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilie
 
 include_meta_data = True
 monthly_data = False
+timely = "daily"
 
 print("\nBUILDING META DATA\n")
 files = glob.glob(f"{raw_folder}*meta*.csv")
@@ -30,9 +31,9 @@ print("Processing dataset...")
 
 
 
-dataframe_list_daily = []
-if monthly_data is True:
-    dataframe_list_monthly = []
+dataframe_list= []
+# if monthly_data is True:
+#     dataframe_list_monthly = []
 
 for chosen_building in range(0, meta_data.shape[0]):
     if chosen_building%50==0:
@@ -74,55 +75,55 @@ for chosen_building in range(0, meta_data.shape[0]):
     daily_weather["hours_below_18_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<18.5).sum())
     daily_weather["hours_above_25_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x>25).sum())
     daily_weather["hours_below_15_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<15.5).sum())
-
+    weather = daily_weather.copy()
 
     if monthly_data is True:
         #_______________________squash to monthly data
-        monthly_weather = daily_weather.copy().resample("M").mean()
-        monthly_weather.insert(loc=monthly_weather.shape[-1], column="number_of_days_per_month", value=monthly_weather.index.day)
-        monthly_weather["three_month_average_temp"] = monthly_weather.mean_air_temp.rolling(window=3).mean()
+        weather = daily_weather.copy().resample("M").mean()
+        weather.insert(loc=weather.shape[-1], column="number_of_days_per_month", value=weather.index.day)
+        weather["three_month_average_temp"] = weather.mean_air_temp.rolling(window=3).mean()
         # Fill NaN gaps for January & February (only have 1 year of data)
-        monthly_weather.iloc[0,-1] = monthly_weather.mean_air_temp.values[0]
-        monthly_weather.iloc[1,-1] = monthly_weather.mean_air_temp.values[0:2].mean()
+        weather.iloc[0,-1] = weather.mean_air_temp.values[0]
+        weather.iloc[1,-1] = weather.mean_air_temp.values[0:2].mean()
     
 
     #________________________Add in the meta data about each building
 
     if include_meta_data is True:
-        daily_weather['year_built'] = [year_built] * daily_weather.shape[0]
+        weather['year_built'] = [year_built] * weather.shape[0]
         average_year = meta_data.year_built.mean()
-        daily_weather.year_built = daily_weather.year_built.fillna(average_year)
+        weather.year_built = weather.year_built.fillna(average_year)
                 
-        daily_weather['square_feet'] = [sq_ft] * daily_weather.shape[0]
+        weather['square_feet'] = [sq_ft] * weather.shape[0]
         average_sqft = meta_data.square_feet.mean()
-        daily_weather.square_feet = daily_weather.square_feet.fillna(average_sqft)
+        weather.square_feet = weather.square_feet.fillna(average_sqft)
                 
-        daily_weather['site_id'] = [chosen_site] * daily_weather.shape[0]
+        weather['site_id'] = [chosen_site] * weather.shape[0]
 
-        daily_weather['primary_use'] = [primary_use] * daily_weather.shape[0]
+        weather['primary_use'] = [primary_use] * weather.shape[0]
         
-        if monthly_data is True:
-            monthly_weather['year_built'] = [year_built] * monthly_weather.shape[0]
-            monthly_weather.year_built = monthly_weather.year_built.fillna(average_year)
-            monthly_weather['square_feet'] = [sq_ft] * monthly_weather.shape[0]
-            monthly_weather.square_feet = monthly_weather.square_feet.fillna(average_sqft)
-            monthly_weather['site_id'] = [chosen_site] * monthly_weather.shape[0]
+        # if monthly_data is True:
+        #     monthly_weather['year_built'] = [year_built] * monthly_weather.shape[0]
+        #     monthly_weather.year_built = monthly_weather.year_built.fillna(average_year)
+        #     monthly_weather['square_feet'] = [sq_ft] * monthly_weather.shape[0]
+        #     monthly_weather.square_feet = monthly_weather.square_feet.fillna(average_sqft)
+        #     monthly_weather['site_id'] = [chosen_site] * monthly_weather.shape[0]
 
     # include the building ID for joining dataframes later
-    daily_weather['building_id'] = [chosen_building] * daily_weather.shape[0]
-    daily_weather = daily_weather.reset_index()
-    daily_weather = daily_weather.set_index(keys = ["timestamp", "building_id"])
+    weather['building_id'] = [chosen_building] * weather.shape[0]
+    weather = weather.reset_index()
+    weather = weather.set_index(keys = ["timestamp", "building_id"])
 
 
-    dataframe_list_daily.append(daily_weather)
-    if monthly_data is True:
-        dataframe_list_monthly.append(monthly_weather)
+    dataframe_list.append(weather)
+    # if monthly_data is True:
+    #     dataframe_list_monthly.append(monthly_weather)
 
 
-weather_dataframe_daily = pd.concat(dataframe_list_daily)
+weather_dataframe = pd.concat(dataframe_list)
 
-if monthly_data is True:
-    weather_dataframe_monthly = pd.concat(dataframe_list_monthly)
+# if monthly_data is True:
+#     weather_dataframe_monthly = pd.concat(dataframe_list_monthly)
 
 print("\nBUILDING TRAINING DATA")
 print("Reading dataset...")
@@ -141,9 +142,9 @@ data.loc[data.meter_reading <= q_low, "meter_reading"] = None
 
 print(f"Outlier limits: {q_low}, {q_high}")
 
-dataframe_list_daily = []
-if monthly_data is True:
-    dataframe_list_monthly = []
+dataframe_list= []
+# if monthly_data is True:
+#     dataframe_list_monthly = []
 
 for chosen_building in range(0, meta_data.shape[0]):
     if chosen_building%50==0:
@@ -174,53 +175,53 @@ for chosen_building in range(0, meta_data.shape[0]):
 
     daily_energy = building.copy().resample("D", on="timestamp").mean()
     daily_energy.meter_reading = building.copy().resample("D", on="timestamp").sum().meter_reading
-    
+    energy = daily_energy.copy()
  
 
     if monthly_data is True:
-        monthly_energy = building.copy().resample("M", on="timestamp").mean()
-        monthly_energy = monthly_energy.drop("meter_reading", axis=1)
-        monthly_energy["mean_daily_energy"] = daily_energy.copy().resample("M").mean().meter_reading
-        monthly_energy["total_energy"] = building.copy().resample("M", on="timestamp").sum().meter_reading
+        energy = building.copy().resample("M", on="timestamp").mean()
+        energy = energy.drop("meter_reading", axis=1)
+        energy["mean_daily_energy"] = daily_energy.copy().resample("M").mean().meter_reading
+        energy["total_energy"] = building.copy().resample("M", on="timestamp").sum().meter_reading
   
-    daily_energy = daily_energy.reset_index()
-    daily_energy = daily_energy.set_index(keys = ["timestamp", "building_id"])
+    energy = energy.reset_index()
+    energy = energy.set_index(keys = ["timestamp", "building_id"])
  
-    dataframe_list_daily.append(daily_energy)
-    if monthly_data is True:
-        dataframe_list_monthly.append(monthly_energy)
+    dataframe_list.append(energy)
+    # if monthly_data is True:
+    #     dataframe_list_monthly.append(monthly_energy)
 
 
-energy_dataframe_daily = pd.concat(dataframe_list_daily)
+energy_dataframe = pd.concat(dataframe_list)
 
-if monthly_data is True:
-    energy_dataframe_monthly = pd.concat(dataframe_list_monthly)
+# if monthly_data is True:
+#     energy_dataframe_monthly = pd.concat(dataframe_list_monthly)
 
-print(f"Weather array shape is {weather_dataframe_daily.shape[0]} and energy array shape is {energy_dataframe_daily.shape[0]}.")
+print(f"Weather array shape is {weather_dataframe.shape[0]} and energy array shape is {energy_dataframe.shape[0]}.")
 
-if monthly_data is True:
-    print(f"Weather array shape is {weather_dataframe_monthly.shape[0]} and energy array shape is {energy_dataframe_monthly.shape[0]}.")
-
-
-
-full_dataframe_daily = weather_dataframe_daily.join(energy_dataframe_daily, how="left")
-#print(f"\nShape after joining: {full_dataframe_daily.shape}\n")
+# if monthly_data is True:
+#     print(f"Weather array shape is {weather_dataframe_monthly.shape[0]} and energy array shape is {energy_dataframe_monthly.shape[0]}.")
 
 
 
-full_dataframe_daily = full_dataframe_daily.dropna(axis=0)
-#print(f"\nShape after dropna: {full_dataframe_daily.shape}")
+full_dataframe= weather_dataframe.join(energy_dataframe, how="left")
+
+
+
+
+full_dataframe = full_dataframe.dropna(axis=0)
+
 
 
 
 save_folder = "data/processed_arrays/"
 
 if include_meta_data is True:
-    full_dataframe_daily.to_csv(f"{code_home_folder}{save_folder}full_dataframe_daily.csv", index=True)
+    full_dataframe.to_csv(f"{code_home_folder}{save_folder}full_dataframe{timely}.csv", index=True)
 elif include_meta_data is False:
-    full_dataframe_daily.to_csv(f"{code_home_folder}{save_folder}full_dataframe_daily_nometa.csv", index=True)
+    full_dataframe.to_csv(f"{code_home_folder}{save_folder}full_dataframe_nometa{timely}.csv", index=True)
 
 
 print("\n Successfully saved full dataframe.")
 
-print(full_dataframe_daily)
+print(full_dataframe)
