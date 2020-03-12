@@ -1,8 +1,7 @@
 import pandas as pd
 import numpy as np
 import glob
-from functions.functions import nan_mean_interpolation, nan_count_total, nan_count_by_variable, write, \
-    get_building_ids, fix_time_gaps, wind_direction_trigonometry
+from functions.functions import one_hot
 import datetime as dt
 
 raw_folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/"
@@ -22,23 +21,10 @@ data["timestamp"] = pd.to_datetime(data.timestamp)
 print("Processing dataset...")
 
 
-def one_hot(df, columns):
-    '''
-    one-hot encode variables in a specified column
-    ----------
-    Parameters: 
-    df (pandas dataframe)
-    columns (list of strings): columns to one hot encode
-    -------
-    Return:
-     One pandas dataframe with the one hot encoded columns 
-    '''
-    new_df = pd.concat((df, pd.get_dummies(df[columns])), axis=1)
-    return new_df.drop(columns, axis=1)
 
 print(f"Before one-hot encoding:\n{data.columns}")
 
-hot_data = one_hot(data, "site_id")
+hot_data = one_hot(data, ["site_id", "primary_use"])
 
 sites = list(set(data.site_id.values))
 site_dict = {}
