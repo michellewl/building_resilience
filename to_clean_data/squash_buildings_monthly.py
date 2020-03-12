@@ -228,6 +228,11 @@ full_dataframe_daily = weather_dataframe_daily.join(energy_dataframe_daily, how=
 print(full_dataframe_daily)
 print(all(np.isnan(full_dataframe_daily.meter_reading)))
 
+##### NEXT check for NaNs in the final table and remove the whole row (these should just have been reintroduced by the dataframe join).
+####       Change code for saving the CSV file.
+####       Change code for producing the normalised train/test files.
+
+
 # save_folder = "data/processed_arrays/"
 
 # if include_meta_data is True:
