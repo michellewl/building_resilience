@@ -13,34 +13,52 @@ import matplotlib.pyplot as plt
 import matplotlib 
 import scipy.io  
 
-#code
-
-folder = "/space/mwlw3/GTC_data_exploration/data_train_test/"
-#folder = "C:\\Users\\Michelle\\PycharmProjects\\GTC\\data_train_test\\"
-
-now = current_time()
-title = f"GP_log_{now}"
-
-data_type = "buildings"
-
-write(title, f"{current_time()}\nWEATHER TRAINING DATA\n")
-write(title, f"All {data_type}. Does not include meta data")
-
-vars = "_no_meta"
-
-write(title, "\nBUILDING TRAINING DATA")
-write(title, f"All {data_type}.")
-
-print("Importing data...")
-X_train = np.genfromtxt(glob.glob(f"{folder}X_train{vars}.csv")[0], delimiter=",")
-y_train = np.genfromtxt(glob.glob(f"{folder}y_train{vars}.csv")[0], delimiter=",")
-X_test = np.genfromtxt(glob.glob(f"{folder}X_test{vars}.csv")[0], delimiter=",")
-y_test = np.genfromtxt(glob.glob(f"{folder}y_test{vars}.csv")[0], delimiter=",")
-
-write(title, f"Training array dimensions: {X_train.shape} {y_train.shape}")
-write(title, f"Test array dimensions: {X_test.shape} {y_test.shape}")
 
 
+code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
+data_folder = "data/processed_arrays/"
+save_folder = "data/train_test_arrays/"
+title = f"{code_home_folder}logs/training/daily_data/GP_log_{current_time()}"
+
+print("\nFULL DATASET\n")
+print("Reading dataset...")
+files = glob.glob(f"{code_home_folder}{data_folder}full_dataframe_daily.csv")
+data = pd.read_csv(files[0])
+data["timestamp"] = pd.to_datetime(data.timestamp)
+print("Processing dataset...")
+
+y = data.meter_reading.to_numpy()
+X = data[["mean_air_temp", "mean_wind_speed", "mean_dew_temp", "min_air_temp", "max_air_temp"]]
+X["mean_RH"] = (data.mean_dew_temp - data.mean_air_temp + 20) * 5
+X = X.drop("mean_dew_temp", axis=1).to_numpy()
+
+
+print(f"X: {X.shape}\ny: {y.shape}")
+
+
+
+print("Splitting into train and test sets...")
+test_size = 0.15
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
+y_train = y_train.reshape(-1,1)
+y_test = y_test.reshape(-1,1)
+
+print("Applying normalisation...")
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+y_train = scaler.fit_transform(y_train)
+X_test = scaler.transform(X_test)
+y_test = scaler.transform(y_test)
+
+
+print("Saving train/test files...")
+
+np.savetxt(f"{code_home_folder}{save_folder}X_train_GP.csv", X_train, delimiter=",")
+np.savetxt(f"{code_home_folder}{save_folder}y_train_GP.csv", y_train, delimiter=",")
+np.savetxt(f"{code_home_folder}{save_folder}X_test_GP.csv", X_test, delimiter=",")
+np.savetxt(f"{code_home_folder}{save_folder}y_test_GP.csv", y_test, delimiter=",")
+
+print("Saved.")
 print("Fitting Gaussian process model...")
 
 # set up covariance function
@@ -63,7 +81,7 @@ write(title, f"{current_time()}\nOptimised kernel: {model_GP.kernel}")
 write(title, f"log marginal likelihood = {str(round(model_GP.log_marginal_likelihood(),4))}")
 
 
-filename = f"GP_model{vars}.sav"
+filename = f"GP_model.sav"
 pickle.dump(model, open(filename, "wb"))
 
 print("Saved model.")
