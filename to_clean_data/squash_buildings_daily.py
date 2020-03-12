@@ -40,6 +40,7 @@ for chosen_building in range(0, meta_data.shape[0]):
     chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
     year_built = meta_data.loc[meta_data.building_id == chosen_building, "year_built"].values[0]
     sq_ft = meta_data.loc[meta_data.building_id == chosen_building, "square_feet"].values[0]
+    primary_use = meta_data.loc[meta_data.building_id == chosen_building, "primary_use"].values[0]
 
     site_weather = data.loc[data.site_id == chosen_site]
 
@@ -97,6 +98,8 @@ for chosen_building in range(0, meta_data.shape[0]):
         daily_weather.square_feet = daily_weather.square_feet.fillna(average_sqft)
                 
         daily_weather['site_id'] = [chosen_site] * daily_weather.shape[0]
+
+        daily_weather['primary_use'] = [primary_use] * daily_weather.shape[0]
         
         if monthly_data is True:
             monthly_weather['year_built'] = [year_built] * monthly_weather.shape[0]
