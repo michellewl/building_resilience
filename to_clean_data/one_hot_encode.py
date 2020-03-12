@@ -24,7 +24,7 @@ print("Processing dataset...")
 
 print(f"Before one-hot encoding:\n{data.columns}")
 
-hot_data = one_hot(data, ["site_id", "primary_use"])
+hot_data = one_hot(data, "site_id")
 
 sites = list(set(data.site_id.values))
 site_dict = {}
@@ -32,7 +32,8 @@ for i in sites:
     site_dict[i] = f"site_{i}"
 
 hot_data = hot_data.rename(mapper=site_dict, axis=1)
+hot_data = one_hot(hot_data, "primary_use")
 
 print(f"After one-hot encoding:\n{hot_data.columns}")
 
-hot_data.to_csv(f"{code_home_folder}{save_folder}full_dataframe_daily.csv", index=True)
+#hot_data.to_csv(f"{code_home_folder}{save_folder}full_dataframe_daily.csv", index=True)
