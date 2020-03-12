@@ -60,11 +60,11 @@ for chosen_building in range(0, meta_data.shape[0]):
     new_variables = ["mean_air_temp", "mean_dew_temp", "mean_wind_speed", "mean_cos_wind_dir", "mean_sin_wind_dir"]
     daily_weather = weather_array.copy().resample("D", on="timestamp").mean()
     daily_weather.columns = new_variables
-    daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").min().iloc[:,1:])
-    new_variables.extend(["min_air_temp", "min_dew_temp", "min_wind_speed", "min_cos_wind_dir", "min_sin_wind_dir"])
+    daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").min().iloc[:,1:-2])
+    new_variables.extend(["min_air_temp", "min_dew_temp", "min_wind_speed"])
     daily_weather.columns = new_variables
-    daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").max().iloc[:,1:])
-    new_variables.extend(["max_air_temp", "max_dew_temp", "max_wind_speed", "max_cos_wind_dir", "max_sin_wind_dir"])
+    daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").max().iloc[:,1:-2])
+    new_variables.extend(["max_air_temp", "max_dew_temp", "max_wind_speed"])
     daily_weather.columns = new_variables
 
     # Additional temperature metrics
