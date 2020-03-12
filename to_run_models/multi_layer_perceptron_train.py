@@ -47,6 +47,6 @@ write(title, f"\n{current_time()}\n\nBest loss: {model.best_loss_}"
              f"\nSolver: {model.solver}")
 
 arch = "_50_50"
-filename = f"{code_home_folder}models/MLP_model_monthly{arch}.sav"
+filename = f"{code_home_folder}models/MLP_model_daily{arch}.sav"
 pickle.dump(model, open(filename, "wb"))
 print("Saved model.")
