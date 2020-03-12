@@ -5,8 +5,8 @@ from functions.functions import nan_mean_interpolation, nan_count_total, nan_cou
     get_building_ids, fix_time_gaps, wind_direction_trigonometry
 import datetime as dt
 
-folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/"
-#folder = "C:\\Users\\Michelle\\PycharmProjects\\GTC\\data_ashrae_raw\\"
+raw_folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/"
+#raw_folder = "C:\\Users\\Michelle\\PycharmProjects\\GTC\\data_ashrae_raw\\"
 
 code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
 
@@ -14,7 +14,7 @@ include_meta_data = True
 monthly_data = False
 
 print("\nBUILDING META DATA\n")
-files = glob.glob(f"{folder}*meta*.csv")
+files = glob.glob(f"{raw_folder}*meta*.csv")
 meta_data = pd.read_csv(files[0])
 
 start = dt.datetime(day=1, month=1, year=2016, hour=0, minute=0)
@@ -23,7 +23,7 @@ end = dt.datetime(day=31, month=12, year=2016, hour=23, minute=0)
 
 print("WEATHER TRAINING DATA")
 print("Reading dataset...")
-files = glob.glob(f"{folder}weather_train.csv")
+files = glob.glob(f"{raw_folder}weather_train.csv")
 data = pd.read_csv(files[0])
 data["timestamp"] = pd.to_datetime(data.timestamp)
 print("Processing dataset...")
@@ -123,7 +123,7 @@ if monthly_data is True:
 
 print("\nBUILDING TRAINING DATA")
 print("Reading dataset...")
-files = glob.glob(f"{folder}train.csv")
+files = glob.glob(f"{raw_folder}train.csv")
 data = pd.read_csv(files[0])
 data["timestamp"] = pd.to_datetime(data.timestamp)
 print("Processing dataset...")
@@ -208,15 +208,6 @@ full_dataframe_daily = weather_dataframe_daily.join(energy_dataframe_daily, how=
 full_dataframe_daily = full_dataframe_daily.dropna(axis=0)
 #print(f"\nShape after dropna: {full_dataframe_daily.shape}")
 
-
-
-
-
-
-
-
-##### NEXT 
-####       Change code for producing the normalised train/test files.
 
 
 save_folder = "data/processed_arrays/"
