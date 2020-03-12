@@ -26,23 +26,6 @@ print(f"X: {X.shape}\ny: {y.shape}")
 
 
 
-# print("WEATHER TRAINING DATA")
-# print("Reading dataset...")
-# files = glob.glob(f"{code_home_folder}{data_folder}monthly_weather.csv")
-# weather_array = np.genfromtxt(files[0], delimiter=",")
-# print("Done.")
-
-
-
-# print("\nBUILDING TRAINING DATA")
-# print("Reading dataset...")
-# files = glob.glob(f"{code_home_folder}{data_folder}monthly_energy.csv")
-# energy_array = np.genfromtxt(files[0], delimiter=",")
-# print("Done.")
-
-# X = weather_array
-# y = energy_array
-
 print("Splitting into train and test sets...")
 test_size = 0.15
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
