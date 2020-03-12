@@ -1,0 +1,72 @@
+12-03-2020_1615
+WEATHER TRAINING DATA
+
+All buildings. Daily data, including meta data.
+
+BUILDING TRAINING DATA
+
+All buildings, daily total energy.
+Training array dimensions: (428286, 50) (428286,)
+Test array dimensions: (75580, 50) (75580,)
+
+Linear regression model fit:
+R²: 0.405888858710303
+Mean squared error: 0.594111141289697
+
+Linear regression model test:
+Mean squared error: 436432435.725265
+
+Model coefficients:
+Unnamed: 0 : [-0.015344301130860993]
+mean_air_temp : [0.06417050380133871]
+mean_dew_temp : [0.015445883669282262]
+mean_wind_speed : [0.010505002886906372]
+mean_cos_wind_dir : [-0.005228668822882953]
+mean_sin_wind_dir : [-0.00022409133999853878]
+min_air_temp : [-0.04765985985949545]
+min_dew_temp : [-0.0038243650456207456]
+min_wind_speed : [-0.004316988959737231]
+max_air_temp : [-0.024626472771144117]
+max_dew_temp : [-0.0020866182989562596]
+max_wind_speed : [-0.0042211277627610105]
+hours_above_18_5_degc : [0.016699243044545623]
+hours_below_18_5_degc : [-0.0002651585437787886]
+hours_above_25_degc : [0.004884269031054189]
+hours_below_15_5_degc : [0.000831276673609362]
+year_built : [0.0395960146173614]
+square_feet : [0.46499063408708646]
+site_0 : [0.1546280017046757]
+site_1 : [0.008665475032308682]
+site_2 : [-0.04461993858966434]
+site_3 : [-0.0395193758769025]
+site_4 : [-0.014186021876912583]
+site_5 : [-0.055452580601193395]
+site_6 : [-0.0038510032692809287]
+site_7 : [0.27759730520882275]
+site_8 : [-0.006306097348043643]
+site_9 : [-0.02920194167737664]
+site_10 : [-0.028610495140926118]
+site_11 : [-0.003291699685888416]
+site_12 : [-0.035375233773220785]
+site_13 : [0.01655644778232221]
+site_14 : [-0.004835446283232931]
+site_15 : [-0.02325913382763884]
+Education : [0.07358407070892131]
+Entertainment/public assembly : [0.001526970482275178]
+Food sales and service : [0.0038122896775086624]
+Healthcare : [0.01687444953069841]
+Lodging/residential : [-0.04525949783538154]
+Manufacturing/industrial : [0.005119765792573027]
+Office : [-0.00441009213806282]
+Other : [0.0023897028792693163]
+Parking : [-0.1610368351871087]
+Public services : [-0.0005666628379695399]
+Religious worship : [0.0012712199488751415]
+Retail : [0.0024964722813757482]
+Services : [-0.057549919891099054]
+Technology/science : [0.006520755131894756]
+Utility : [0.016015366948518753]
+Warehouse/storage : [-0.00725358201931714]
+
+Model intercept: 
+0.0
