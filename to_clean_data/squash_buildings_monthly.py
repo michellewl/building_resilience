@@ -35,7 +35,7 @@ if monthly_data is True:
     array_list_monthly = []
     dataframe_list_monthly = []
 
-for chosen_building in range(750, 800):
+for chosen_building in range(0, meta_data.shape[0]):
     if chosen_building%50==0:
         print(f"We're on building #{chosen_building}...")
     chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
@@ -150,7 +150,7 @@ if monthly_data is True:
     array_list_monthly = []
     dataframe_list_monthly = []
 
-for chosen_building in range(750, 800):
+for chosen_building in range(0, meta_data.shape[0]):
     if chosen_building%50==0:
         print(f"We're on building #{chosen_building}...")
     
@@ -164,7 +164,7 @@ for chosen_building in range(750, 800):
 
 
     if all(np.isnan(building.meter_reading)) is True:
-        print(f"Skipped building #{chosen_building}.")
+        #print(f"Skipped building #{chosen_building}.")
         continue
     building = fix_time_gaps(building, start=start, end=end)
 
@@ -209,42 +209,35 @@ if monthly_data is True:
     energy_dataframe_monthly = pd.concat(dataframe_list_monthly)
     print(all_sites_energy_monthly.shape)
 
-if all_sites_energy_daily.shape[0] == all_sites_weather_daily.shape[0]:
-    print("\nSuccess!")
-else:
-    print(f"Error occurred, weather array shape is {all_sites_weather_daily.shape[0]} but energy array shape is {all_sites_energy_daily.shape[0]}.")
+print(f"Weather array shape is {all_sites_weather_daily.shape[0]} but energy array shape is {all_sites_energy_daily.shape[0]}.")
 
 if monthly_data is True:
-    if all_sites_energy_monthly.shape[0] == all_sites_weather_monthly.shape[0]:
-        print("\nSuccess!")
-    else:
-        print(f"Error occurred, weather array shape is {all_sites_weather_monthly.shape[0]} but energy array shape is {all_sites_energy_monthly.shape[0]}.")
+    print(f"Weather array shape is {all_sites_weather_monthly.shape[0]} but energy array shape is {all_sites_energy_monthly.shape[0]}.")
 
 
-print(weather_dataframe_daily)
-print(energy_dataframe_daily)
 
 full_dataframe_daily = weather_dataframe_daily.join(energy_dataframe_daily, how="left")
-print(full_dataframe_daily)
-print(all(np.isnan(full_dataframe_daily.meter_reading)))
+#print(f"\nShape after joining: {full_dataframe_daily.shape}\n")
+
+
+
+full_dataframe_daily = full_dataframe_daily.dropna(axis=0)
+#print(f"\nShape after dropna: {full_dataframe_daily.shape}")
+
 
 ##### NEXT check for NaNs in the final table and remove the whole row (these should just have been reintroduced by the dataframe join).
 ####       Change code for saving the CSV file.
 ####       Change code for producing the normalised train/test files.
 
 
-# save_folder = "data/processed_arrays/"
+save_folder = "data/processed_arrays/"
 
-# if include_meta_data is True:
-#     np.savetxt(f"{code_home_folder}{save_folder}daily_weather.csv", all_sites_weather_daily, delimiter=",")
-#     weather_dataframe_daily.to_csv(f"{code_home_folder}{save_folder}daily_weather_dataframe.csv", index=True)
-# elif include_meta_data is False:
-#     np.savetxt(f"{code_home_folder}{save_folder}daily_weather_nometa.csv", all_sites_weather_daily, delimiter=",")
-#     weather_dataframe_daily.to_csv(f"{code_home_folder}{save_folder}daily_weather_dataframe_nometa.csv", index=True)
+if include_meta_data is True:
+    full_dataframe_daily.to_csv(f"{code_home_folder}{save_folder}full_dataframe_daily.csv", index=True)
+elif include_meta_data is False:
+    full_dataframe_daily.to_csv(f"{code_home_folder}{save_folder}full_dataframe_daily_nometa.csv", index=True)
 
-# np.savetxt(f"{code_home_folder}{save_folder}daily_energy.csv", all_sites_energy_daily, delimiter=",")
-# energy_dataframe_daily.to_csv(f"{code_home_folder}{save_folder}daily_energy_dataframe.csv", index=True)
-# print("\n Successfully saved data files for weather and energy.")
 
-# print(daily_weather.head)
-# print(daily_energy.head)
+print("\n Successfully saved full dataframe.")
+
+print(full_dataframe_daily)
