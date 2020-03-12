@@ -10,7 +10,7 @@ import pickle
 
 code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
 
-title = f"{code_home_folder}logs/training/monthly_data/MLP_log_{current_time()}"
+title = f"{code_home_folder}logs/training/daily_data/MLP_log_{current_time()}"
 
 data_folder = "data/train_test_arrays/"
 
@@ -19,10 +19,10 @@ data_folder = "data/train_test_arrays/"
 
 
 write(title, f"{current_time()}\nWEATHER TRAINING DATA\n")
-write(title, f"All buildings. Monthly data, including meta data.")
+write(title, f"All buildings. Daily data, including meta data.")
 
 write(title, "\nBUILDING TRAINING DATA\n")
-write(title, f"All buildings, monthly total energy.")
+write(title, f"All buildings, daily total energy.")
 
 print("Importing data...")
 X_train = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}X_train.csv")[0], delimiter=",")
