@@ -1,8 +1,6 @@
 import pandas as pd
-import numpy as np
 import glob
 from functions.functions import one_hot
-import datetime as dt
 
 raw_folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/"
 code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"

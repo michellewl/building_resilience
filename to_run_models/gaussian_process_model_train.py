@@ -3,15 +3,12 @@
 import glob
 import numpy as np
 import pandas as pd
-from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 import sklearn.gaussian_process as gp 
 from sklearn.preprocessing import StandardScaler
 from functions.functions import write, current_time
 import pickle
-import matplotlib.pyplot as plt  
-import matplotlib 
-import scipy.io  
+import matplotlib.pyplot as plt
 
 
 

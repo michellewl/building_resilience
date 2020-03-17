@@ -3,14 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
-import numpy as np
 import glob
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_squared_error
-from functions.functions import nan_mean_interpolation, nan_count_total, nan_count_by_variable, write, \
-    get_building_ids, fix_time_gaps, wind_direction_trigonometry
 import datetime as dt
 
 
