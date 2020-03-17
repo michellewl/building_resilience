@@ -4,7 +4,7 @@ sh eia_buildings/download_eia_data.sh
 ```
 * This will download the data as a csv file in your Downloads folder.
 
-#### To download ASHARE kaggle data: 
+#### To download ASHRAE kaggle data: 
 1. Ensure you run python3, then:
 ```
 pip3 install kaggle (on windows), pip3 install --user kaggle (mac)
