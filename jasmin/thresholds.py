@@ -74,14 +74,20 @@ def get_days_below_abv_thres_temp(df, var='tas', gr='yr'):
     data (pd.DataFrame):
         with threshold columns (e.g. column 32 will contain # days above 32)
     '''
-    print('below_above:', df)
+    # print('below_above:', df)
+
+
     df['cel'] = df[var] - 273.15
 
-    for temperature in range(-10, 19, 1):
-        df[temperature] = df['cel'] < temperature
+    # for temperature in range(-10, 19, 1):
+    #     df[temperature] = df['cel'] < temperature
 
-    for temperature in range(22, 40, 1):
-        df[temperature] = df['cel'] > temperature
+    # for temperature in range(22, 40, 1):
+    #     df[temperature] = df['cel'] > temperature
+
+    df['CDD'] = df['cel'] - 24
+
+    df = df[df['CDD'] >= 0]
 
     grouped_df = df.groupby([gr]).sum().reset_index()
 
@@ -102,8 +108,8 @@ def slice_lat_lon(xr_df, loni, lati):
     data (Xarray):
         with latitude, longitude specified in slice
     '''
-    sliced_xr_temp = xr_df.sel(lon=slice(loni - 2, loni),
-                               lat=slice(lati - 2, lati))
+    sliced_xr_temp = xr_df.sel(lon=slice(loni - 1, loni),
+                               lat=slice(lati - 1, lati))
 
     return sliced_xr_temp
 
@@ -158,8 +164,8 @@ def grouped_df(dfs, params):
         dfs[key] = get_days_below_abv_thres_temp(dfs[key], var=c_var)
         dfs[key]['run'] = run
         dfs[key]['model'] = model
-        dfs[key]['lati_st'] = lati - 2
-        dfs[key]['longi_st'] = longi - 2
+        dfs[key]['lati_st'] = lati - 1
+        dfs[key]['longi_st'] = longi - 1
         dfs[key]['lati'] = lati
         dfs[key]['longi'] = longi
 
@@ -193,7 +199,7 @@ def bias_cor_methods(sliced_xr_temp, sliced_xr_obs, params):
     return bias_cor_dict
 
 
-def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t2max', c_var='tas', catl_model=None, run=0, exper="", model=""):
+def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t2max', c_var='tasmax', catl_model=None, run=0, exper="", model=""):
     '''
     Get 
     Parameters:
@@ -242,15 +248,16 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
 
     now = datetime.datetime.now()
     while (longi < lon_end):
-        longi += 2
+        longi += 1
         if(lati == lati_end + 1):
             check_time(now)
             now = datetime.datetime.now()
         lati = lati_st
         while (lati < lati_end):
-            lati += 2
+            lati += 1
             sliced_xr_temp = slice_lat_lon(xr_temp, longi, lati)
             if (era):
+                sliced_xr_temp = sliced_xr_temp.reduce(np.mean, ('lat', 'lon'))
                 sliced_xr_temp = sliced_xr_temp.to_dataframe(
                 ).reset_index().rename(columns={'year': 'yr'})
                 dfs = {}
@@ -285,12 +292,12 @@ def cube_wrap(lati_st, lati_end, lon_st, lon_end, model):
 
     '''
     catalog = read_catalog(model)
-    for item in range(len(catalog)):
+    for item in range(1):
         cat_item = catalog.iloc[item, :]
         experi = cat_item.loc['Experiment']
         runi = cat_item.loc['RunID']
         get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=False, era_var='t2max',
-                            c_var='tas', catl_model=pd.DataFrame(cat_item), run=runi, exper=experi, model=model)
+                            c_var='tasmax', catl_model=pd.DataFrame(cat_item), run=runi, exper=experi, model=model)
 
 
 # a bit of a bad code here - reading twice the catalog
