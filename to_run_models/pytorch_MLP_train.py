@@ -1,15 +1,10 @@
-import glob
-import numpy as np
 from functions.functions import write, current_time
-import pickle
 
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
-from torch.autograd import Variable
 from datasets.building_dataset import BuildingDataset
-from matplotlib import pyplot as plt
 
 ### Folder formatting ###
 
