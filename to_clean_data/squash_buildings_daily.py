@@ -46,6 +46,12 @@ for chosen_building in range(0, meta_data.shape[0]):
     if chosen_building%50==0:
         print(f"We're on building #{chosen_building}...")
     chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
+
+    # removing dodgy sites
+    if chosen_site is 7 or 9:
+        continue
+
+
     year_built = meta_data.loc[meta_data.building_id == chosen_building, "year_built"].values[0]
     sq_ft = meta_data.loc[meta_data.building_id == chosen_building, "square_feet"].values[0]
     primary_use = meta_data.loc[meta_data.building_id == chosen_building, "primary_use"].values[0]
@@ -157,8 +163,12 @@ dataframe_list= []
 for chosen_building in range(0, meta_data.shape[0]):
     if chosen_building%50==0:
         print(f"We're on building #{chosen_building}...")
-    
-    
+
+    # removing dodgy sites
+    chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
+    if chosen_site is 7 or 9:
+        continue
+
     building = data.loc[data.building_id == chosen_building].copy()
 
     building = building.loc[building.meter ==0,:]
