@@ -37,7 +37,6 @@ data["timestamp"] = pd.to_datetime(data.timestamp)
 print("Processing dataset...")
 
 
-
 dataframe_list= []
 # if monthly_data is True:
 #     dataframe_list_monthly = []
@@ -48,7 +47,7 @@ for chosen_building in range(0, meta_data.shape[0]):
     chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
 
     # removing dodgy sites
-    if chosen_site is 7 or 9:
+    if chosen_site == 7 or chosen_site == 9:
         continue
 
 
@@ -232,7 +231,6 @@ full_dataframe['electricity_per_sqft'] = full_dataframe['meter_reading'] / full_
 
 full_dataframe["mean_RH"] = (full_dataframe.mean_dew_temp - full_dataframe.mean_air_temp + 20) * 5
 full_dataframe = full_dataframe.drop(["meter_reading", "mean_dew_temp"], axis=1)
-
 
 
 if include_meta_data is True:
