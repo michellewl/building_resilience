@@ -25,9 +25,8 @@ data["timestamp"] = pd.to_datetime(data.timestamp)
 print("Processing dataset...")
 
 y = data.meter_reading.to_numpy()
-X = data[["mean_air_temp", "mean_wind_speed", "mean_dew_temp", "min_air_temp", "max_air_temp"]]
-X["mean_RH"] = (data.mean_dew_temp - data.mean_air_temp + 20) * 5
-X = X.drop("mean_dew_temp", axis=1).to_numpy()
+X = data[["mean_air_temp", "mean_wind_speed", "mean_RH", "min_air_temp", "max_air_temp"]].to_numpy()
+
 
 
 print(f"X: {X.shape}\ny: {y.shape}")
