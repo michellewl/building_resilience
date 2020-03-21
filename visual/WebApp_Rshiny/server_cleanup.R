@@ -71,9 +71,11 @@ ridges = function(input) {
     city = input$City
     thres_max = input$slider_max
     thres_min = input$slider_min
+    partial_df = cities[[city]]$df
+    partial_df = partial_df[partial_df$year %in% c(1983, 1987, 1991, 1995, 1999, 2004, 2008, 2012, 2016), ]
     (
-      ggplot(cities[[city]]$df, aes(x = mx2t_cel, y = factor(year)), fill = factor(mon_no)) +
-        geom_density_ridges2(alpha = 0.2) + theme_ridges() + geom_vline(
+      ggplot(partial_df, aes(x = mx2t_cel, y = factor(year)), fill = factor(mon_no)) +
+        geom_density_ridges2(alpha = 0.2, scale = 0.8) + theme_ridges() + geom_vline(
           xintercept = thres_max,
           colour = "red",
           linetype = "longdash"

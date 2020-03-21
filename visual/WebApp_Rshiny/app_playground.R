@@ -35,8 +35,8 @@ library(plotly)
 library(rhandsontable)
 library(DT)
 
-load(file = '/Users/omer/Downloads/energy_map/energy_london')
-df2 = df[df$en_consm_curr > 500, ]
+# load(file = '/Users/omer/Downloads/energy_map/energy_london')
+# df2 = df[df$en_consm_curr > 500, ]
 
 ui <-
   fluidPage(
