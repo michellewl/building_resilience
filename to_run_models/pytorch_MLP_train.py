@@ -15,16 +15,18 @@ from matplotlib import pyplot as plt
 
 windows_os = True
 
+arch = "_100_100"
+
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
     title = f"{code_home_folder}logs\\training\\daily_data\\MLP_pytorch_log_{current_time()}"
     data_folder = "data\\train_test_arrays\\"
-    #filename = f"{code_home_folder}models\\MLP_model_daily{arch}.sav"
+    filename = f"{code_home_folder}models\\MLP_pytorch_model_daily{arch}.sav"
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
     title = f"{code_home_folder}logs/training/daily_data/MLP_log_{current_time()}"
     data_folder = "data/train_test_arrays/"
-    #filename = f"{code_home_folder}models/MLP_model_daily{arch}.sav"
+    filename = f"{code_home_folder}models/MLP_pytorch_model_daily{arch}.sav"
 
 ### Code ###
 
@@ -41,8 +43,8 @@ num_epochs = 20
 batches_per_print = 2000
 
 ### Run with the smaller test set for now to develop code ###
-X_filepath = f"{code_home_folder}{data_folder}X_test.npy"
-y_filepath = f"{code_home_folder}{data_folder}y_test.npy"
+X_filepath = f"{code_home_folder}{data_folder}X_train.npy"
+y_filepath = f"{code_home_folder}{data_folder}y_train.npy"
 
 dataset = BuildingDataset(X_filepath, y_filepath)
 
@@ -93,5 +95,13 @@ for epoch in range(num_epochs):
         if batch_num % batches_per_print == batches_per_print-1:  # print every 2000 mini-batches
             print(f"Epoch {epoch+1} batch {batch_num+1} loss: {running_loss / batches_per_print}")
             running_loss = 0.0
+
+    if epoch % 5 == 0:
+        torch.save({
+            'epoch': epoch,
+            'model_state_dict': simple_net.state_dict(),
+            'optimiser_state_dict': optimiser.state_dict(),
+            'loss': loss},
+            filename)
 
 print('Finished Training')
