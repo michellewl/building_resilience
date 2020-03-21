@@ -43,4 +43,4 @@ print(f"After one-hot encoding:\n{hot_data.columns}")
 
 hot_data.to_csv(f"{code_home_folder}{data_folder}full_dataframe_daily.csv", index=True)
 
-print("Saved.")
+print("Saved file.")
