@@ -75,6 +75,7 @@ for chosen_building in range(0, meta_data.shape[0]):
     daily_weather["hours_below_18_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<18.5).sum())
     daily_weather["hours_above_25_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x>25).sum())
     daily_weather["hours_below_15_5_degc"] = temperature_array.copy().resample("D")["air_temperature"].apply(lambda x: (x<15.5).sum())
+    daily_weather["28_day_average_temp"] = daily_weather.mean_air_temp.rolling(window=28).mean()
     weather = daily_weather.copy()
 
     if monthly_data is True:
@@ -210,8 +211,8 @@ full_dataframe= weather_dataframe.join(energy_dataframe, how="left")
 
 
 full_dataframe = full_dataframe.dropna(axis=0)
-
-
+full_dataframe['electricity_per_sqft'] = full_dataframe['meter_reading'] / full_dataframe['square_feet']
+full_dataframe = full_dataframe.drop("meter_reading", axis=1)
 
 
 save_folder = "data/processed_arrays/"
