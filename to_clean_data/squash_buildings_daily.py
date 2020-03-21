@@ -233,9 +233,9 @@ full_dataframe = full_dataframe.drop("meter_reading", axis=1)
 
 
 if include_meta_data is True:
-    full_dataframe.to_csv(f"{code_home_folder}{data_folder}full_dataframe{timely}.csv", index=True)
+    full_dataframe.to_csv(f"{code_home_folder}{data_folder}full_dataframe_{timely}.csv", index=True)
 elif include_meta_data is False:
-    full_dataframe.to_csv(f"{code_home_folder}{data_folder}full_dataframe_nometa{timely}.csv", index=True)
+    full_dataframe.to_csv(f"{code_home_folder}{data_folder}full_dataframe_nometa_{timely}.csv", index=True)
 
 
 print("\n Successfully saved full dataframe.")
