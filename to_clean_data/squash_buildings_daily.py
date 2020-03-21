@@ -61,7 +61,8 @@ for chosen_building in range(0, meta_data.shape[0]):
 
     weather_array = site_weather.drop("site_id", axis=1)
     weather_array = wind_direction_trigonometry(weather_array)
-    weather_array = weather_array.drop(["cloud_coverage", "precip_depth_1_hr", "sea_level_pressure"], axis=1)
+    weather_array["RH"] = (weather_array.dew_temperature - weather_array.air_temperature + 20) * 5
+    weather_array = weather_array.drop(["cloud_coverage", "precip_depth_1_hr", "sea_level_pressure", "dew_temperature"], axis=1)
 
     weather_array.iloc[:, 1:] = nan_mean_interpolation(weather_array.iloc[:, 1:])
     nan_count = nan_count_total(weather_array)
@@ -70,14 +71,14 @@ for chosen_building in range(0, meta_data.shape[0]):
     
     #_______________________squash to daily data
     # All variables
-    new_variables = ["mean_air_temp", "mean_dew_temp", "mean_wind_speed", "mean_cos_wind_dir", "mean_sin_wind_dir"]
+    new_variables = ["mean_air_temp", "mean_RH", "mean_wind_speed", "mean_cos_wind_dir", "mean_sin_wind_dir"]
     daily_weather = weather_array.copy().resample("D", on="timestamp").mean()
     daily_weather.columns = new_variables
     daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").min().iloc[:,1:-2])
-    new_variables.extend(["min_air_temp", "min_dew_temp", "min_wind_speed"])
+    new_variables.extend(["min_air_temp", "min_RH", "min_wind_speed"])
     daily_weather.columns = new_variables
     daily_weather = daily_weather.join(weather_array.copy().resample("D", on="timestamp").max().iloc[:,1:-2])
-    new_variables.extend(["max_air_temp", "max_dew_temp", "max_wind_speed"])
+    new_variables.extend(["max_air_temp", "max_RH", "max_wind_speed"])
     daily_weather.columns = new_variables
 
     # Additional temperature metrics
@@ -228,9 +229,7 @@ full_dataframe= weather_dataframe.join(energy_dataframe, how="left")
 
 full_dataframe = full_dataframe.dropna(axis=0)
 full_dataframe['electricity_per_sqft'] = full_dataframe['meter_reading'] / full_dataframe['square_feet']
-
-full_dataframe["mean_RH"] = (full_dataframe.mean_dew_temp - full_dataframe.mean_air_temp + 20) * 5
-full_dataframe = full_dataframe.drop(["meter_reading", "mean_dew_temp"], axis=1)
+full_dataframe = full_dataframe.drop("meter_reading", axis=1)
 
 
 if include_meta_data is True:
