@@ -2,6 +2,18 @@
 import pandas as pd
 import numpy as np
 
+def format_col_to_str(df, cols):
+    '''
+    Convert multiple columns to str format
+    ---------------------
+    Parameters:
+    df (pandas DataFrame)
+    cols (list of strings): cols to convert
+    '''
+    
+    return df[cols] = df[cols].astype(str)
+
+
 
 def formatting(df, time_col, cols_to_str):
     '''
