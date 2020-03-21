@@ -39,7 +39,7 @@ else:
 
 
 batch_size = 16
-num_epochs = 20
+num_epochs = 1000
 batches_per_print = 2000
 
 ### Run with the smaller test set for now to develop code ###
@@ -72,7 +72,7 @@ print(simple_net)
 criterion = nn.MSELoss()
 optimiser = optim.Adam(simple_net.parameters())
 
-
+epoch_losses = []
 
 print("Begin training...")
 for epoch in range(num_epochs):
@@ -81,7 +81,7 @@ for epoch in range(num_epochs):
     for batch_num, data in enumerate(dataloader):
         inputs = data["inputs"]
         targets = data["targets"]
-
+        loss_sum = 0
 
         optimiser.zero_grad()
 
@@ -95,13 +95,16 @@ for epoch in range(num_epochs):
         if batch_num % batches_per_print == batches_per_print-1:  # print every 2000 mini-batches
             print(f"Epoch {epoch+1} batch {batch_num+1} loss: {running_loss / batches_per_print}")
             running_loss = 0.0
+        loss_sum += loss.item()*batch_size
+    epoch_losses = loss_sum/len(dataset)
 
     if epoch % 5 == 0:
         torch.save({
             'epoch': epoch,
             'model_state_dict': simple_net.state_dict(),
             'optimiser_state_dict': optimiser.state_dict(),
-            'loss': loss},
+            'loss': loss,
+            'loss_history':epoch_losses},
             filename)
 
 print('Finished Training')
