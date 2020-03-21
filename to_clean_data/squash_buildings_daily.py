@@ -165,7 +165,7 @@ for chosen_building in range(0, meta_data.shape[0]):
 
     # removing dodgy sites
     chosen_site = meta_data.loc[meta_data.building_id == chosen_building, "site_id"].values[0]
-    if chosen_site is 7 or 9:
+    if chosen_site is 7 or chosen_site == 9:
         continue
 
     building = data.loc[data.building_id == chosen_building].copy()
