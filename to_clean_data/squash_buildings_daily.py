@@ -5,10 +5,17 @@ from functions.functions import nan_mean_interpolation, nan_count_total, nan_cou
     get_building_ids, fix_time_gaps, wind_direction_trigonometry
 import datetime as dt
 
-raw_folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/"
-#raw_folder = "C:\\Users\\Michelle\\PycharmProjects\\GTC\\data_ashrae_raw\\"
+windows_os = True
 
-code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
+if windows_os:
+    code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
+    raw_folder = f"{code_home_folder}data\\ashrae-energy-prediction\\kaggle_provided\\" # raw data
+    data_folder = "data\\processed_arrays\\" # where to save the processed data
+else:
+    code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
+    raw_folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/" # raw data
+    data_folder = "data/processed_arrays/" # where to save the processed data
+
 
 include_meta_data = True
 monthly_data = False
@@ -217,12 +224,11 @@ full_dataframe["mean_RH"] = (full_dataframe.mean_dew_temp - full_dataframe.mean_
 full_dataframe = full_dataframe.drop(["meter_reading", "mean_dew_temp"], axis=1)
 
 
-save_folder = "data/processed_arrays/"
 
 if include_meta_data is True:
-    full_dataframe.to_csv(f"{code_home_folder}{save_folder}full_dataframe{timely}.csv", index=True)
+    full_dataframe.to_csv(f"{code_home_folder}{data_folder}full_dataframe{timely}.csv", index=True)
 elif include_meta_data is False:
-    full_dataframe.to_csv(f"{code_home_folder}{save_folder}full_dataframe_nometa{timely}.csv", index=True)
+    full_dataframe.to_csv(f"{code_home_folder}{data_folder}full_dataframe_nometa{timely}.csv", index=True)
 
 
 print("\n Successfully saved full dataframe.")
