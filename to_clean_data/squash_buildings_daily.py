@@ -212,7 +212,9 @@ full_dataframe= weather_dataframe.join(energy_dataframe, how="left")
 
 full_dataframe = full_dataframe.dropna(axis=0)
 full_dataframe['electricity_per_sqft'] = full_dataframe['meter_reading'] / full_dataframe['square_feet']
-full_dataframe = full_dataframe.drop("meter_reading", axis=1)
+
+full_dataframe["mean_RH"] = (full_dataframe.mean_dew_temp - full_dataframe.mean_air_temp + 20) * 5
+full_dataframe = full_dataframe.drop(["meter_reading", "mean_dew_temp"], axis=1)
 
 
 save_folder = "data/processed_arrays/"
