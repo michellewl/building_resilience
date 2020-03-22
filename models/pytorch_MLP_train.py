@@ -51,7 +51,7 @@ validation_dataloader = DataLoader(validation_dataset, batch_size=batch_size, sh
 
 ### Define neural network model ###
 
-simple_net = SimpleNet(number_of_features=int(training_dataset.nfeatures()))
+simple_net = SimpleNet(int(training_dataset.nfeatures()), hidden_layer_1, hidden_layer_2)
 
 print(simple_net)
 
