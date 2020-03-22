@@ -11,8 +11,8 @@ from copy import deepcopy
 
 windows_os = True
 
-hidden_layer_1 = 100
-hidden_layer_2 = 100
+hidden_layer_1 = 500
+hidden_layer_2 = 500
 
 arch = f"_{hidden_layer_1}_{hidden_layer_2}"
 
