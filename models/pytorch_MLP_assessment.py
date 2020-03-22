@@ -88,7 +88,8 @@ write(title, f"\nArchitecture: {arch}"
              f"\nLoss function: Mean Squared Error"
              f"\nSolver: adam"
              f"\nBest training loss: {best_loss}"
-             f"\nBest validation loss: {best_val_loss}")
+             f"\nBest validation loss: {best_val_loss}"
+             f"\nTest set MSE: {mean_squared_error(targets_array, prediction_array)}")
 
 write(title, f"\nTest set RMSE: {rmse_test_set}\nTest set coefficient of variation: {cv_test_set}"
       f"\nTest set SMAPE: {smape_test_set}")
