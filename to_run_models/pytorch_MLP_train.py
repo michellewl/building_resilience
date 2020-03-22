@@ -89,7 +89,7 @@ for epoch in range(num_epochs):
         if batch_num % batches_per_print == 0:  # print every 2000 mini-batches
             print(f"Epoch {epoch} batch {batch_num} loss: {running_loss / batches_per_print}")
             running_loss = 0.0
-            
+
         loss_sum += loss.item()*batch_size
     epoch_losses.append(loss_sum/len(training_dataset))
 
