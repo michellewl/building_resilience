@@ -50,7 +50,6 @@ for chosen_building in range(0, meta_data.shape[0]):
     if chosen_site == 7 or chosen_site == 9:
         continue
 
-
     year_built = meta_data.loc[meta_data.building_id == chosen_building, "year_built"].values[0]
     sq_ft = meta_data.loc[meta_data.building_id == chosen_building, "square_feet"].values[0]
     primary_use = meta_data.loc[meta_data.building_id == chosen_building, "primary_use"].values[0]
@@ -58,6 +57,15 @@ for chosen_building in range(0, meta_data.shape[0]):
     site_weather = data.loc[data.site_id == chosen_site]
 
     site_weather = fix_time_gaps(site_weather, start=start, end=end)
+    if chosen_site == 0:
+        site_weather = site_weather.loc[site_weather.timestamp >=
+                                        dt.datetime.strptime("2016-06-01 00:00:00", '%Y-%m-%d %H:%M:%S')]
+
+    if chosen_site == 15:
+        site_weather_a = site_weather.loc[site_weather.timestamp <
+                                        dt.datetime.strptime("2016-02-11 00:00:00", '%Y-%m-%d %H:%M:%S')]
+        site_weather = site_weather_a.append(site_weather.loc[site_weather.timestamp >=
+                                        dt.datetime.strptime("2016-03-30 00:00:00", '%Y-%m-%d %H:%M:%S')])
 
     weather_array = site_weather.drop("site_id", axis=1)
     weather_array = wind_direction_trigonometry(weather_array)
@@ -68,7 +76,7 @@ for chosen_building in range(0, meta_data.shape[0]):
     nan_count = nan_count_total(weather_array)
     if nan_count > 0:
         print(f"NaN count is {nan_count} at building: {chosen_building}")
-    
+
     #_______________________squash to daily data
     # All variables
     new_variables = ["mean_air_temp", "mean_RH", "mean_wind_speed", "mean_cos_wind_dir", "mean_sin_wind_dir"]
@@ -99,7 +107,7 @@ for chosen_building in range(0, meta_data.shape[0]):
         # Fill NaN gaps for January & February (only have 1 year of data)
         weather.iloc[0,-1] = weather.mean_air_temp.values[0]
         weather.iloc[1,-1] = weather.mean_air_temp.values[0:2].mean()
-    
+
 
     #________________________Add in the meta data about each building
 
@@ -107,15 +115,15 @@ for chosen_building in range(0, meta_data.shape[0]):
         weather['year_built'] = [year_built] * weather.shape[0]
         average_year = meta_data.year_built.mean()
         weather.year_built = weather.year_built.fillna(average_year)
-                
+
         weather['square_feet'] = [sq_ft] * weather.shape[0]
         average_sqft = meta_data.square_feet.mean()
         weather.square_feet = weather.square_feet.fillna(average_sqft)
-                
+
         weather['site_id'] = [chosen_site] * weather.shape[0]
 
         weather['primary_use'] = [primary_use] * weather.shape[0]
-        
+
         # if monthly_data is True:
         #     monthly_weather['year_built'] = [year_built] * monthly_weather.shape[0]
         #     monthly_weather.year_built = monthly_weather.year_built.fillna(average_year)
@@ -182,29 +190,29 @@ for chosen_building in range(0, meta_data.shape[0]):
         continue
     building = fix_time_gaps(building, start=start, end=end)
 
-  
+
 
     building.meter_reading = nan_mean_interpolation(building.meter_reading)
     nan_count = nan_count_total(building.meter_reading)
     if nan_count > 0:
         print(f"NaN count meter_reading is {nan_count} at building: {chosen_building}\n{building.head}")
 
-    
+
 
     daily_energy = building.copy().resample("D", on="timestamp").mean()
     daily_energy.meter_reading = building.copy().resample("D", on="timestamp").sum().meter_reading
     energy = daily_energy.copy()
- 
+
 
     if monthly_data is True:
         energy = building.copy().resample("M", on="timestamp").mean()
         energy = energy.drop("meter_reading", axis=1)
         energy["mean_daily_energy"] = daily_energy.copy().resample("M").mean().meter_reading
         energy["total_energy"] = building.copy().resample("M", on="timestamp").sum().meter_reading
-  
+
     energy = energy.reset_index()
     energy = energy.set_index(keys = ["timestamp", "building_id"])
- 
+
     dataframe_list.append(energy)
     # if monthly_data is True:
     #     dataframe_list_monthly.append(monthly_energy)
