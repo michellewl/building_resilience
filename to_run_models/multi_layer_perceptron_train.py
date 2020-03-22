@@ -4,6 +4,24 @@ from sklearn.neural_network import MLPRegressor
 from functions.functions import write, current_time
 import pickle
 
+windows_os = True
+
+arch = "_100_100"
+
+if windows_os:
+    code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
+    title = f"{code_home_folder}logs\\training\\daily_data\\MLP_pytorch_log_{current_time()}"
+    data_folder = "data\\train_test_arrays\\"
+    filename = f"{code_home_folder}models\\MLP_pytorch_model_daily{arch}.tar"
+else:
+    code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
+    title = f"{code_home_folder}logs/training/daily_data/MLP_log_{current_time()}"
+    data_folder = "data/train_test_arrays/"
+    filename = f"{code_home_folder}models/MLP_pytorch_model_daily{arch}.tar"
+
+
+
+
 code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
 
 title = f"{code_home_folder}logs/training/daily_data/MLP_log_{current_time()}"
