@@ -6,5 +6,5 @@ __pycache__/
 *.sav
 *.npy
 .idea/
-
+*.tar
 
