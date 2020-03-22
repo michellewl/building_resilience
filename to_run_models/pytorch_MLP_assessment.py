@@ -83,11 +83,12 @@ best_val_loss = min(checkpoint["validation_loss_history"])
 
 write(title, f"MLP model uses weather variables and building meta data.\n")
 write(title, f"\nArchitecture: {arch}"
-             f"\nBest training loss: {best_loss}"
-             f"\nBest validation loss: {best_val_loss}"
              f"\nEpochs: {epochs}"
              f"\nActivation function: relu"
-             f"\nSolver: adam")
+             f"\nLoss function: Mean Squared Error"
+             f"\nSolver: adam"
+             f"\nBest training loss: {best_loss}"
+             f"\nBest validation loss: {best_val_loss}")
 
 write(title, f"\nTest set RMSE: {rmse_test_set}\nTest set coefficient of variation: {cv_test_set}"
       f"\nTest set SMAPE: {smape_test_set}")
