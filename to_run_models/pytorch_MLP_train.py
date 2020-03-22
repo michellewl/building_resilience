@@ -5,6 +5,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from datasets.building_dataset import BuildingDataset
+from neural_networks.multilayer_perceptron import SimpleNet
 from copy import deepcopy
 
 ### Folder formatting ###
@@ -68,7 +69,7 @@ class SimpleNet(nn.Module):
         return x
 
 
-simple_net = SimpleNet()
+simple_net = SimpleNet(number_of_features=int(training_dataset.nfeatures()))
 
 print(simple_net)
 
