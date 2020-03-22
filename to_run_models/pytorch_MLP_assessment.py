@@ -51,12 +51,10 @@ simple_net.eval()
 # Model prediction
 
 criterion = nn.MSELoss()
-
+loss_sum = 0
 for batch_num, data in enumerate(test_dataloader):
     inputs = data["inputs"]
     targets = data["targets"]
-    loss_sum = 0
-
 
     outputs = simple_net(inputs)
     loss = criterion(outputs, targets)
