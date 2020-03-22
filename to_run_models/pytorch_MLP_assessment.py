@@ -41,7 +41,7 @@ test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
 print("Importing model...")
 checkpoint = torch.load(filename)
-best_weights = checkpoint["best_weights"]
+best_weights = checkpoint["best_state_dict"]
 
 simple_net = SimpleNet(number_of_features=int(test_dataset.nfeatures()))
 simple_net.load_state_dict(best_weights)
@@ -70,8 +70,8 @@ for batch_num, data in enumerate(test_dataloader):
 final_loss = loss_sum / len(test_dataset)
 print(f"Test set MSE: {final_loss}")
 
-best_loss = min(checkpoint["loss_history"])
-epochs = checkpoint["epoch"]
+best_loss = min(checkpoint["training_loss_history"])
+epochs = checkpoint["total_epochs"]
 best_val_loss = min(checkpoint["validation_loss_history"])
 
 write(title, f"MLP model uses weather variables and building meta data.\n")
