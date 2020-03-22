@@ -78,7 +78,7 @@ write(title, f"MLP model uses weather variables and building meta data.\n")
 write(title, f"\nArchitecture: {arch}"
              f"\nBest training loss: {best_loss}"
              f"\nBest validation loss: {best_val_loss}"
-             f"\nIterations: {epochs}"
+             f"\nEpochs: {epochs}"
              f"\nActivation function: relu"
              f"\nSolver: adam")
 

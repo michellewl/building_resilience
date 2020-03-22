@@ -1,5 +1,3 @@
-from functions.functions import write, current_time
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -7,6 +5,7 @@ from torch.utils.data import DataLoader
 from datasets.building_dataset import BuildingDataset
 from neural_networks.multilayer_perceptron import SimpleNet
 from copy import deepcopy
+from functions.functions import current_time
 
 ### Folder formatting ###
 
@@ -27,19 +26,12 @@ else:
 
 ### Code ###
 
-
-# write(title, f"{current_time()}\nWEATHER TRAINING DATA\n")
-# write(title, f"All buildings. Daily data, including meta data.")
-#
-# write(title, "\nBUILDING TRAINING DATA\n")
-# write(title, f"All buildings, daily total energy.")
-
-
 batch_size = 16
 num_epochs = 1000
 batches_per_print = 5000
 
 ### Load data ###
+
 X_train_filepath = f"{code_home_folder}{data_folder}X_train.npy"
 y_train_filepath = f"{code_home_folder}{data_folder}y_train.npy"
 X_validation_filepath = f"{code_home_folder}{data_folder}X_val.npy"
