@@ -11,10 +11,11 @@ from copy import deepcopy
 
 windows_os = True
 
-hidden_layer_1 = 500
-hidden_layer_2 = 500
+hidden_layer_1 = 200
+hidden_layer_2 = 200
+hidden_layer_3 = 200
 
-arch = f"_{hidden_layer_1}_{hidden_layer_2}"
+arch = f"_{hidden_layer_1}_{hidden_layer_2}_{hidden_layer_3}"
 
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
@@ -49,7 +50,7 @@ validation_dataloader = DataLoader(validation_dataset, batch_size=batch_size, sh
 
 ### Define neural network model ###
 
-simple_net = SimpleNet(int(training_dataset.nfeatures()), hidden_layer_1, hidden_layer_2)
+simple_net = SimpleNet(int(training_dataset.nfeatures()), hidden_layer_1, hidden_layer_2, hidden_layer_3)
 
 print(simple_net)
 
