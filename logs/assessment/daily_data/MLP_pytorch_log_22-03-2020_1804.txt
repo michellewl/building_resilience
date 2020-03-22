@@ -8,7 +8,8 @@ Loss function: Mean Squared Error
 Solver: adam
 Best training loss: 2.682485321168476e-09
 Best validation loss: 8.995525149291289e-10
+Test set MSE: 1.022858131527471e-09
 
 Test set RMSE: 3.198215350466338e-05
-Test set coefficient of variation: 182.1785364423614
-Test set SMAPE: 41.00513636768549
+Test set coefficient of variation: 182.1785553186639
+Test set SMAPE: 41.00513946076491
