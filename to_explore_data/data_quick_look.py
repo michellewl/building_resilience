@@ -1,9 +1,5 @@
 import pandas as pd
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import figure
-import numpy as np
 import glob
-from sklearn.linear_model import LinearRegression
 from functions.functions import show_data, nan_mean_interpolation, nan_count_by_variable
 
 folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/"

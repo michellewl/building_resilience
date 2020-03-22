@@ -3,15 +3,12 @@
 import glob
 import numpy as np
 import pandas as pd
-from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 import sklearn.gaussian_process as gp 
 from sklearn.preprocessing import StandardScaler
 from functions.functions import write, current_time
 import pickle
-import matplotlib.pyplot as plt  
-import matplotlib 
-import scipy.io  
+import matplotlib.pyplot as plt
 
 
 
@@ -28,9 +25,8 @@ data["timestamp"] = pd.to_datetime(data.timestamp)
 print("Processing dataset...")
 
 y = data.meter_reading.to_numpy()
-X = data[["mean_air_temp", "mean_wind_speed", "mean_dew_temp", "min_air_temp", "max_air_temp"]]
-X["mean_RH"] = (data.mean_dew_temp - data.mean_air_temp + 20) * 5
-X = X.drop("mean_dew_temp", axis=1).to_numpy()
+X = data[["mean_air_temp", "mean_wind_speed", "mean_RH", "min_air_temp", "max_air_temp"]].to_numpy()
+
 
 
 print(f"X: {X.shape}\ny: {y.shape}")

@@ -1,29 +1,39 @@
 import glob
 import numpy as np
-import pandas as pd
 from sklearn.metrics import mean_squared_error
-from sklearn.neural_network import MLPRegressor
 from functions.functions import write, current_time
 import pickle
 
-
-code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
+windows_os = True
 
 arch = "_50_50"
-title = f"{code_home_folder}logs/assessment/daily_data/MLP{arch}_log_{current_time()}"
 
-data_folder = "data/train_test_arrays/"
+if windows_os:
+    code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
+    title = f"{code_home_folder}logs\\training\\daily_data\\MLP_pytorch_log_{current_time()}"
+    data_folder = "data\\train_test_arrays\\"
+    filename = f"{code_home_folder}models\\MLP_model_daily{arch}.sav"
+    title = f"{code_home_folder}logs\\assessment\\daily_data\\MLP{arch}_log_{current_time()}"
+else:
+    code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
+    title = f"{code_home_folder}logs/training/daily_data/MLP_log_{current_time()}"
+    data_folder = "data/train_test_arrays/"
+    filename = f"{code_home_folder}models/MLP_model_daily{arch}.sav"
+    title = f"{code_home_folder}logs/assessment/daily_data/MLP{arch}_log_{current_time()}"
+
+arch = "_50_50"
+
+
 
 
 print("Importing data...")
-X_train = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}X_train.csv")[0], delimiter=",")
-y_train = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}y_train.csv")[0], delimiter=",")
-X_test = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}X_test.csv")[0], delimiter=",")
-y_test = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}y_test.csv")[0], delimiter=",")
+X_train = np.load(f"{code_home_folder}{data_folder}X_train.npy")
+y_train = np.load(f"{code_home_folder}{data_folder}y_train.npy")
+X_test = np.load(f"{code_home_folder}{data_folder}X_test.csv")
+y_test = np.load(f"{code_home_folder}{data_folder}y_test.csv")
 
 print("Importing model...")
 
-filename = f"{code_home_folder}models/MLP_model_monthly{arch}.sav"
 model = pickle.load(open(filename, 'rb'))
 
 write(title, f"MLP model uses weather variables and building meta data (year built and square feet).\n")
