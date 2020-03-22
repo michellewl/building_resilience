@@ -61,8 +61,8 @@ for batch_num, data in enumerate(test_dataloader):
 
     outputs = simple_net(inputs)
 
-    target_list.append(targets)
-    prediction_list.append(outputs)
+    target_list.append(targets.detach().numpy())
+    prediction_list.append(outputs.detach().numpy())
 
 targets_array = np.concatenate(target_list, axis=None)
 prediction_array = np.concatenate(prediction_list, axis=None)
