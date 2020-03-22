@@ -23,8 +23,7 @@ else:
     data_folder = "data/train_test_arrays/"
     filename = f"{code_home_folder}models/MLP_pytorch_model_daily{arch}.tar"
 
-model = torch.load(filename)
-epoch_losses = model["loss_history"]
+epoch_losses = torch.load(filename)["loss_history"]
 
 print(epoch_losses)
 
