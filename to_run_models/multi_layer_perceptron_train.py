@@ -13,21 +13,13 @@ if windows_os:
     title = f"{code_home_folder}logs\\training\\daily_data\\MLP_pytorch_log_{current_time()}"
     data_folder = "data\\train_test_arrays\\"
     filename = f"{code_home_folder}models\\MLP_model_daily{arch}.sav"
+    title = f"{code_home_folder}logs\\training\\daily_data\\MLP{arch}_log_{current_time()}"
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
     title = f"{code_home_folder}logs/training/daily_data/MLP_log_{current_time()}"
     data_folder = "data/train_test_arrays/"
     filename = f"{code_home_folder}models/MLP_model_daily{arch}.sav"
-
-
-
-
-title = f"{code_home_folder}logs/training/daily_data/MLP_log_{current_time()}"
-
-
-
-
-
+    title = f"{code_home_folder}logs/training/daily_data/MLP{arch}_log_{current_time()}"
 
 
 write(title, f"{current_time()}\nWEATHER TRAINING DATA\n")
@@ -37,10 +29,10 @@ write(title, "\nBUILDING TRAINING DATA\n")
 write(title, f"All buildings, daily total energy.")
 
 print("Importing data...")
-X_train = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}X_train.csv")[0], delimiter=",")
-y_train = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}y_train.csv")[0], delimiter=",")
-X_test = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}X_test.csv")[0], delimiter=",")
-y_test = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}y_test.csv")[0], delimiter=",")
+X_train = np.load(f"{code_home_folder}{data_folder}X_train.npy")
+y_train = np.load(f"{code_home_folder}{data_folder}y_train.npy")
+X_test = np.load(f"{code_home_folder}{data_folder}X_test.csv")
+y_test = np.load(f"{code_home_folder}{data_folder}y_test.csv")
 
 write(title, f"Training array dimensions: {X_train.shape} {y_train.shape}")
 write(title, f"Test array dimensions: {X_test.shape} {y_test.shape}")
