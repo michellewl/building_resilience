@@ -18,12 +18,12 @@ if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
     title = f"{code_home_folder}logs\\assessment\\daily_data\\MLP_pytorch_log_{current_time()}"
     data_folder = "data\\train_test_arrays\\"
-    filename = f"{code_home_folder}models\\MLP_pytorch_model_daily{arch}.tar"
+    filename = f"{code_home_folder}models\\saved\\MLP_pytorch_model_daily{arch}.tar"
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
     title = f"{code_home_folder}logs/assessment/daily_data/MLP_pytorch_log_{current_time()}"
     data_folder = "data/train_test_arrays/"
-    filename = f"{code_home_folder}models/MLP_pytorch_model_daily{arch}.tar"
+    filename = f"{code_home_folder}models/saved/MLP_pytorch_model_daily{arch}.tar"
 
 batch_size = 16
 
