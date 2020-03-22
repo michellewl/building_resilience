@@ -54,19 +54,6 @@ print(f"Training dataset size:{len(training_dataset)}"
 training_dataloader = DataLoader(training_dataset, batch_size=batch_size, shuffle=True)
 validation_dataloader = DataLoader(validation_dataset, batch_size=batch_size, shuffle=True)
 
-class SimpleNet(nn.Module):
-    def __init__(self):
-        super(SimpleNet, self).__init__()
-
-        self.fc1 = nn.Linear(int(training_dataset.nfeatures()), 100)
-        self.fc2 = nn.Linear(100, 100)
-        self.fc3 = nn.Linear(100, 1)
-
-    def forward(self, x):
-        x = torch.relu(self.fc1(x))
-        x = torch.relu(self.fc2(x))
-        x = self.fc3(x)
-        return x
 
 
 simple_net = SimpleNet(number_of_features=int(training_dataset.nfeatures()))
@@ -82,13 +69,13 @@ epoch_losses_validation = []
 print("Begin training...")
 for epoch in range(num_epochs):
     running_loss = 0.0
-
+    loss_sum = 0
     # Training batches
     simple_net.train()
     for batch_num, data in enumerate(training_dataloader):
         inputs = data["inputs"]
         targets = data["targets"]
-        loss_sum = 0
+
 
         optimiser.zero_grad()
 
@@ -102,16 +89,18 @@ for epoch in range(num_epochs):
         if batch_num % batches_per_print == 0:  # print every 2000 mini-batches
             print(f"Epoch {epoch} batch {batch_num} loss: {running_loss / batches_per_print}")
             running_loss = 0.0
+            
         loss_sum += loss.item()*batch_size
     epoch_losses.append(loss_sum/len(training_dataset))
 
     # Validation batches
     simple_net.eval()
+    validation_loss_sum = 0
     with torch.no_grad():
         for batch_num, data in enumerate(validation_dataloader):
             validation_inputs = data["inputs"]
             validation_targets = data["targets"]
-            validation_loss_sum = 0
+
 
             validation_outputs = simple_net(validation_inputs)
             validation_loss = criterion(validation_outputs, validation_targets)
