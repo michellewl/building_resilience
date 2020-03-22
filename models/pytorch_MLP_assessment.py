@@ -92,5 +92,6 @@ write(title, f"\nArchitecture: {arch}"
              f"\nTest set MSE: {mean_squared_error(targets_array, prediction_array)}")
 
 write(title, f"\nTest set RMSE: {rmse_test_set}\nTest set coefficient of variation: {cv_test_set}"
-      f"\nTest set SMAPE: {smape_test_set}")
+             f"\nTest set SMAPE: {smape_test_set}"
+             f"\nTest set MAE: {np.mean(np.abs(targets_array - prediction_array))}")
 
