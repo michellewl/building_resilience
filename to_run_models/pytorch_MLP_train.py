@@ -91,7 +91,7 @@ for epoch in range(num_epochs):
             print(f"Epoch {epoch+1} batch {batch_num+1} loss: {running_loss / batches_per_print}")
             running_loss = 0.0
         loss_sum += loss.item()*batch_size
-    epoch_losses = loss_sum/len(dataset)
+    epoch_losses.append(loss_sum/len(dataset))
 
     if epoch % 5 == 0:
         torch.save({
