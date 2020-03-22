@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 from datasets.building_dataset import BuildingDataset
 from neural_networks.multilayer_perceptron import SimpleNet
 from copy import deepcopy
-from functions.functions import current_time
+
 
 ### Folder formatting ###
 
