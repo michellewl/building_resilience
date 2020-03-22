@@ -12,7 +12,10 @@ from copy import deepcopy
 
 windows_os = True
 
-arch = "_100_100"
+hidden_layer_1 = 100
+hidden_layer_2 = 100
+
+arch = f"_{hidden_layer_1}_{hidden_layer_2}"
 
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
@@ -44,7 +47,7 @@ print("Importing model...")
 checkpoint = torch.load(filename)
 best_weights = checkpoint["best_state_dict"]
 
-simple_net = SimpleNet(number_of_features=int(test_dataset.nfeatures()))
+simple_net = SimpleNet(int(test_dataset.nfeatures()), hidden_layer_1, hidden_layer_2)
 simple_net.load_state_dict(best_weights)
 print(simple_net)
 simple_net.eval()
@@ -82,7 +85,7 @@ epochs = checkpoint["total_epochs"]
 best_val_loss = min(checkpoint["validation_loss_history"])
 
 write(title, f"MLP model uses weather variables and building meta data.\n")
-write(title, f"\nArchitecture: {arch}"
+write(title, f"\nArchitecture: {hidden_layer_1}, {hidden_layer_2}"
              f"\nEpochs: {epochs}"
              f"\nActivation function: relu"
              f"\nLoss function: Mean Squared Error"

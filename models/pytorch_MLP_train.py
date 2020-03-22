@@ -11,7 +11,10 @@ from functions.functions import current_time
 
 windows_os = True
 
-arch = "_100_100"
+hidden_layer_1 = 100
+hidden_layer_2 = 100
+
+arch = f"_{hidden_layer_1}_{hidden_layer_2}"
 
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
