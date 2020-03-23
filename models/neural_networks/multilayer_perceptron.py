@@ -6,15 +6,19 @@ class SimpleNet(nn.Module):
         super(SimpleNet, self).__init__()
 
         self.fc1 = nn.Linear(number_of_features, hl1)
+        self.bn1 = nn.BatchNorm1d(hl1)
         self.fc2 = nn.Linear(hl1, hl2)
+        self.bn2 = nn.BatchNorm1d(hl2)
         self.fc3 = nn.Linear(hl2, hl3)
+        self.bn3 = nn.BatchNorm1d(hl3)
         self.fc4 = nn.Linear(hl3, hl4)
+        self.bn4 = nn.BatchNorm1d(hl4)
         self.fc5 = nn.Linear(hl4, 1)
 
     def forward(self, x):
-        x = torch.relu(self.fc1(x))
-        x = torch.relu(self.fc2(x))
-        x = torch.relu(self.fc3(x))
-        x = torch.relu(self.fc4(x))
+        x = torch.relu(self.bn1(self.fc1(x)))
+        x = torch.relu(self.bn2(self.fc2(x)))
+        x = torch.relu(self.bn3(self.fc3(x)))
+        x = torch.relu(self.bn4(self.fc4(x)))
         x = self.fc5(x)
         return x
