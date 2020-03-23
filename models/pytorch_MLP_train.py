@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from datasets.building_dataset import BuildingDataset
-from neural_networks.multilayer_perceptron import SimpleNet, SimpleNet_3
+from neural_networks.multilayer_perceptron import SimpleNet_3bn, SimpleNet_3
 from copy import deepcopy
 
 ### Hyperparameters ###
@@ -13,9 +13,9 @@ all_hidden_layers = 25
 hidden_layer_1 = all_hidden_layers
 hidden_layer_2 = all_hidden_layers
 hidden_layer_3 = all_hidden_layers
-hidden_layer_4 = all_hidden_layers
+#hidden_layer_4 = all_hidden_layers
 
-arch = f"_{hidden_layer_1}_{hidden_layer_2}_{hidden_layer_3}_{hidden_layer_4}"
+arch = f"_{hidden_layer_1}_{hidden_layer_2}_{hidden_layer_3}"#_{hidden_layer_4}"
 
 batch_size = 16
 num_epochs = 1000
@@ -55,7 +55,7 @@ validation_dataloader = DataLoader(validation_dataset, batch_size=batch_size, sh
 
 ### Define neural network model ###
 
-simple_net = SimpleNet(int(training_dataset.nfeatures()), hidden_layer_1, hidden_layer_2, hidden_layer_3, hidden_layer_4)
+simple_net = SimpleNet_3bn(int(training_dataset.nfeatures()), hidden_layer_1, hidden_layer_2, hidden_layer_3)
 
 print(simple_net)
 

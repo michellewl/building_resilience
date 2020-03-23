@@ -1,11 +1,11 @@
 import torch
 import torch.nn as nn
 
-### latest network
+### 4 hidden layers with batch norm
 
-class SimpleNet(nn.Module):
+class SimpleNet_4bn(nn.Module):
     def __init__(self, number_of_features, hl1, hl2, hl3, hl4):
-        super(SimpleNet, self).__init__()
+        super(SimpleNet_4bn, self).__init__()
 
         self.fc1 = nn.Linear(number_of_features, hl1)
         self.bn1 = nn.BatchNorm1d(hl1)
@@ -81,5 +81,5 @@ class SimpleNet_3bn(nn.Module):
         x = torch.relu(self.bn1(self.fc1(x)))
         x = torch.relu(self.bn2(self.fc2(x)))
         x = torch.relu(self.bn3(self.fc3(x)))
-        x = self.bn4(self.fc4(x))
+        x = self.fc4(x)
         return x
