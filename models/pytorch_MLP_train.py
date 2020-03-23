@@ -58,7 +58,6 @@ validation_dataloader = DataLoader(validation_dataset, batch_size=batch_size, sh
 simple_net = SimpleNet(int(training_dataset.nfeatures()), hidden_layer_1, hidden_layer_2, hidden_layer_3, hidden_layer_4)
 
 print(simple_net)
-#print(simple_net.state_dict())
 
 criterion = nn.MSELoss()
 optimiser = optim.Adam(simple_net.parameters())#, weight_decay=)

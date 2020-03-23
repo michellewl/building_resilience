@@ -37,8 +37,6 @@ batch_size = 16
 
 
 print("Importing data...")
-#X_train = np.load(f"{code_home_folder}{data_folder}X_train.npy")
-#y_train = np.load(f"{code_home_folder}{data_folder}y_train.npy")
 X_test_filepath = f"{code_home_folder}{data_folder}X_test.npy"
 y_test_filepath = f"{code_home_folder}{data_folder}y_test.npy"
 
@@ -49,8 +47,6 @@ test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
 print("Importing model...")
 checkpoint = torch.load(filename)
-#best_weights = checkpoint["best_state_dict"]
-#print(checkpoint["best_state_dict"])
 
 simple_net = SimpleNet(int(test_dataset.nfeatures()), hidden_layer_1, hidden_layer_2, hidden_layer_3, hidden_layer_4)
 simple_net.load_state_dict(checkpoint["best_state_dict"], strict=True)
