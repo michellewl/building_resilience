@@ -8,7 +8,7 @@ from copy import deepcopy
 
 ### Hyperparameters ###
 
-all_hidden_layers = 25
+all_hidden_layers = 75
 
 hidden_layer_1 = all_hidden_layers
 hidden_layer_2 = all_hidden_layers
