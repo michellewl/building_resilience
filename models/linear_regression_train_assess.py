@@ -4,14 +4,22 @@ import glob
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from functions.functions import write, current_time
+from functions.metrics import cv_metric, rmse, smape
 
+windows_os = True
 
-code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
+if windows_os:
+    code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
+    data_folder = "data\\train_test_arrays\\"
+    #filename = f"{code_home_folder}models\\saved\\MLP_pytorch_model_daily{arch}.tar"
+    title = f"{code_home_folder}logs\\assessment\\daily_data\\linear_regression_log_{current_time()}"
 
-title = f"{code_home_folder}logs/training/daily_data/linear_regression_log_{current_time()}"
+else:
+    code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
+    data_folder = "data/train_test_arrays/"
+    #filename = f"{code_home_folder}models/saved/MLP_pytorch_model_daily{arch}.tar"
+    title = f"{code_home_folder}logs/assessment/daily_data/linear_regression_log_{current_time()}"
 
-
-data_folder = "data/train_test_arrays/"
 
 write(title, f"{current_time()}\nWEATHER TRAINING DATA\n")
 write(title, f"All buildings. Daily data, including meta data.")
@@ -20,10 +28,10 @@ write(title, "\nBUILDING TRAINING DATA\n")
 write(title, f"All buildings, daily total energy.")
 
 print("Importing data...")
-X_train = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}X_train.csv")[0], delimiter=",")
-y_train = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}y_train.csv")[0], delimiter=",")
-X_test = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}X_test.csv")[0], delimiter=",")
-y_test = np.genfromtxt(glob.glob(f"{code_home_folder}{data_folder}y_test.csv")[0], delimiter=",")
+X_train = np.load(f"{code_home_folder}{data_folder}X_train.npy")
+y_train = np.load(f"{code_home_folder}{data_folder}y_train.npy")
+X_test = np.load(f"{code_home_folder}{data_folder}X_test.npy")
+y_test = np.load(f"{code_home_folder}{data_folder}y_test.npy")
 
 write(title, f"Training array dimensions: {X_train.shape} {y_train.shape}")
 write(title, f"Test array dimensions: {X_test.shape} {y_test.shape}")
@@ -33,8 +41,8 @@ write(title, f"Test array dimensions: {X_test.shape} {y_test.shape}")
 # files = glob.glob(f"{code_home_folder}{data_folder}monthly_weather.csv")
 # weather_array = pd.read_csv(files[0])
 # write(title, f"Filename: {files[0]}")
-weather_variables = pd.read_csv(glob.glob(f"{code_home_folder}data/processed_arrays/full_dataframe_daily.csv")[0]).drop(["timestamp", 
-"building_id", "meter", "meter_reading"], axis=1).columns
+# weather_variables = pd.read_csv(glob.glob(f"{code_home_folder}data/processed_arrays/full_dataframe_daily.csv")[0]).drop(["timestamp",
+# "building_id", "meter", "meter_reading"], axis=1).columns
 # print(weather_variables)
 # print("Done.")
 
@@ -93,13 +101,24 @@ y_predicted = model.predict(X_test)
 
 print(f"Mean squared error: {mean_squared_error(y_test, y_predicted)}")
 write(title, f"Mean squared error: {mean_squared_error(y_test, y_predicted)}")
-print("Model coefficients:")
-write(title, "\nModel coefficients:")
-coefficients = model.coef_.reshape(-1,1).tolist()
-for i in range(len(weather_variables)):
-    print(f"{weather_variables[i]} : {coefficients[i]}")
-    write(title, f"{weather_variables[i]} : {coefficients[i]}")
+# print("Model coefficients:")
+# write(title, "\nModel coefficients:")
+# coefficients = model.coef_.reshape(-1,1).tolist()
+# for i in range(len(weather_variables)):
+#     print(f"{weather_variables[i]} : {coefficients[i]}")
+#     write(title, f"{weather_variables[i]} : {coefficients[i]}")
 
 print("Model intercept:")
 print(model.intercept_)
 write(title, f"\nModel intercept: \n{model.intercept_}")
+
+cv_test_set = cv_metric(y_test, y_predicted)
+rmse_test_set = rmse(y_test, y_predicted)
+smape_test_set = smape(y_test, y_predicted)
+
+
+
+write(title, f"\nTest set RMSE: {rmse_test_set}"
+             f"\nTest set coefficient of variation: {cv_test_set}"
+             f"\nTest set SMAPE: {smape_test_set}"
+             f"\nTest set MAE: {np.mean(np.abs(y_test - y_predicted))}")
