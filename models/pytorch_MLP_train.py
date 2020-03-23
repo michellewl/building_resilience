@@ -6,10 +6,7 @@ from datasets.building_dataset import BuildingDataset
 from neural_networks.multilayer_perceptron import SimpleNet
 from copy import deepcopy
 
-
-### Folder formatting ###
-
-windows_os = True
+### Hyperparameters ###
 
 hidden_layer_1 = 50
 hidden_layer_2 = 50
@@ -17,6 +14,14 @@ hidden_layer_3 = 50
 hidden_layer_4 = 50
 
 arch = f"_{hidden_layer_1}_{hidden_layer_2}_{hidden_layer_3}_{hidden_layer_4}"
+
+batch_size = 16
+num_epochs = 1000
+batches_per_print = 5000
+
+### Folder formatting ###
+
+windows_os = True
 
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
@@ -29,9 +34,6 @@ else:
 
 ### Code ###
 
-batch_size = 16
-num_epochs = 1000
-batches_per_print = 5000
 
 ### Load data ###
 

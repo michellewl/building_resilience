@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from datasets.building_dataset import BuildingDataset
-from neural_networks.multilayer_perceptron import SimpleNet
+from neural_networks.multilayer_perceptron import SimpleNet, SimpleNet_3
 from copy import deepcopy
 
 windows_os = True
@@ -48,7 +48,7 @@ print("Importing model...")
 checkpoint = torch.load(filename)
 best_weights = checkpoint["best_state_dict"]
 
-simple_net = SimpleNet(int(test_dataset.nfeatures()), hidden_layer_1, hidden_layer_2, hidden_layer_3)
+simple_net = SimpleNet_3(int(test_dataset.nfeatures()), hidden_layer_1, hidden_layer_2, hidden_layer_3)
 simple_net.load_state_dict(best_weights)
 print(simple_net)
 simple_net.eval()
@@ -86,7 +86,7 @@ epochs = checkpoint["total_epochs"]
 best_val_loss = min(checkpoint["validation_loss_history"])
 
 write(title, f"MLP model uses weather variables and building meta data.\n")
-write(title, f"\nArchitecture: {hidden_layer_1}, {hidden_layer_2}"
+write(title, f"\nArchitecture: {hidden_layer_1}, {hidden_layer_2}, {hidden_layer_3}"
              f"\nEpochs: {epochs}"
              f"\nActivation function: relu"
              f"\nLoss function: Mean Squared Error"
