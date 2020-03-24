@@ -1,19 +1,19 @@
 MLP model uses weather variables and building meta data.
-
+(take 5, no batch norm. torch.manual_seed(5))
 
 Architecture: 50, 50, 50
-Epochs: 52
+Epochs: 50
 Activation function: relu
 Loss function: Mean Squared Error
 Solver: adam
-Best training loss: 1.405914418237495e-09
-Best validation loss: 2.627529404906299e-10
-Test set MSE: 2.7691240966909447e-10
+Best training loss: 2.26277489610799e-09
+Best validation loss: 6.797939451032466e-10
+Test set MSE: 7.220906650395875e-10
 
-Test set RMSE: 1.6640684975088782e-05
-Test set coefficient of variation: 106.851760781885
-Test set SMAPE: 28.74945210433384
-Test set MAE: 8.333967343787663e-06
+Test set RMSE: 2.687174466949988e-05
+Test set coefficient of variation: 172.5465972633361
+Test set SMAPE: 35.146166388271766
+Test set MAE: 1.1160037502122577e-05
 
 
 

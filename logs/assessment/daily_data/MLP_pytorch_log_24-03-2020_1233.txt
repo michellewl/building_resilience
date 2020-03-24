@@ -2,18 +2,18 @@ MLP model uses weather variables and building meta data.
 
 
 Architecture: 50, 50, 50
-Epochs: 52
+Epochs: 58
 Activation function: relu
 Loss function: Mean Squared Error
 Solver: adam
-Best training loss: 1.405914418237495e-09
-Best validation loss: 2.627529404906299e-10
-Test set MSE: 2.7691240966909447e-10
+Best training loss: 2.282852304196541e-09
+Best validation loss: 6.737299683868434e-10
+Test set MSE: 7.157070491814466e-10
 
-Test set RMSE: 1.6640684975088782e-05
-Test set coefficient of variation: 106.851760781885
-Test set SMAPE: 28.74945210433384
-Test set MAE: 8.333967343787663e-06
+Test set RMSE: 2.675270209006307e-05
+Test set coefficient of variation: 171.78219095402366
+Test set SMAPE: 37.09766907309006
+Test set MAE: 1.1936765986320097e-05
 
 
 
