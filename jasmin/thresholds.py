@@ -8,7 +8,7 @@ import datetime
 import bias_correction as bc
 
 
-def read_catalog(model=None, data='cmip5', freq='day', var='tas'):
+def read_catalog(model=None, data='cmip5', freq='day', var='tasmax'):
     '''
     Read in catalogue of climate models
     Parameters:
@@ -55,11 +55,11 @@ def catalog_to_xr(catl_model):
     for index, row in catl_model.iterrows():
         ds = bp.open_dataset(row)
 
-    df_xr = ds.tas
+    df_xr = ds.tasmax
     return df_xr
 
 
-def get_days_below_abv_thres_temp(df, var='tas', gr='yr'):
+def get_days_below_abv_thres_temp(df, var='tasmax', gr='yr'):
     '''
     get # days above/below different thresholds
 
@@ -76,7 +76,6 @@ def get_days_below_abv_thres_temp(df, var='tas', gr='yr'):
     '''
     # print('below_above:', df)
 
-
     df['cel'] = df[var] - 273.15
 
     # for temperature in range(-10, 19, 1):
@@ -88,6 +87,7 @@ def get_days_below_abv_thres_temp(df, var='tas', gr='yr'):
     df['CDD'] = df['cel'] - 24
 
     df = df[df['CDD'] >= 0]
+    print('are there CDDs?', df)
 
     grouped_df = df.groupby([gr]).sum().reset_index()
 
@@ -108,8 +108,8 @@ def slice_lat_lon(xr_df, loni, lati):
     data (Xarray):
         with latitude, longitude specified in slice
     '''
-    sliced_xr_temp = xr_df.sel(lon=slice(loni - 1, loni),
-                               lat=slice(lati - 1, lati))
+    sliced_xr_temp = xr_df.sel(lon=slice(loni - 2, loni),
+                               lat=slice(lati - 2, lati))
 
     return sliced_xr_temp
 
@@ -160,14 +160,16 @@ def grouped_df(dfs, params):
         if (key != 'era'):
             c_var = dfs[key].columns[list(
                 pd.Series(dfs[key].columns).str.startswith('bc'))][0]
+            print(c_var)
         dfs[key] = get_time_from_netcdftime(dfs[key])
         dfs[key] = get_days_below_abv_thres_temp(dfs[key], var=c_var)
         dfs[key]['run'] = run
         dfs[key]['model'] = model
-        dfs[key]['lati_st'] = lati - 1
-        dfs[key]['longi_st'] = longi - 1
+        dfs[key]['lati_st'] = lati - 2
+        dfs[key]['longi_st'] = longi - 2
         dfs[key]['lati'] = lati
         dfs[key]['longi'] = longi
+        print(dfs)
 
     return dfs
 
@@ -176,25 +178,15 @@ def bias_cor_methods(sliced_xr_temp, sliced_xr_obs, params):
     bias_cor_dict = {}
     model, run, exper, lat_st, lon_st = list(params)
 
-    # sliced_xr_temp_bc_mean = bc.mean_bias_correct(
-    #     sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
-    # sliced_xr_temp_bc_mean.name = 'bc_mean'
-    # sliced_xr_temp_bc_mean.to_netcdf(str(model) + '_' + str(run) + '_' + str(
-    #     exper) + '_' + str(lat_st) + '_' + str(lon_st) + '_' + 'mean_bc.nc')
-    # bias_cor_dict['bc_mean'] = sliced_xr_temp_bc_mean.to_dataframe().reset_index()
-
-
     sliced_xr_temp_bc_qm = bc.ecdf_bias_correction(sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
-    sliced_xr_temp_bc_qm.name = 'bc_qm'
-    sliced_xr_temp_bc_qm.to_netcdf(str(model) + '_' + str(run) + '_' + str(
-        exper) + '_' + str(lat_st) + '_' + str(lon_st) + '_' + 'qm_bc.nc')
-    bias_cor_dict['qm'] = sliced_xr_temp_bc_qm.to_dataframe().reset_index()
-
-    # sliced_xr_temp_bc_delta = bc.delta_change_correct(sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
-    # print('values after bc:', sliced_xr_temp_bc_mean.values)
-    # future = sliced_xr_temp.sel(time=slice('2020-01-01', '2030-01-01')).time
-    # sliced_xr_temp_bc_delta = sliced_xr_temp_bc_delta.assign_coords(time=future)
-    # sliced_xr_temp_bc_delta.to_netcdf(str(model) + '_' + str(run) + '_' + str(exper) + '_'  + str(lat_st) + '_' + str(lon_st) + '_' + 'delta_bc.nc')
+    try:
+        sliced_xr_temp_bc_qm.name = 'bc_qm'
+        sliced_xr_temp_bc_qm.to_netcdf("NC/" + str(model) + '_' + str(run) + '_' + str(
+            exper) + '_' + str(lat_st) + '_' + str(lon_st) + '_' + 'qm_bc.nc')
+        bias_cor_dict['qm'] = sliced_xr_temp_bc_qm.to_dataframe().reset_index()
+    except:
+        print('failed on lat-lon: ' + str(lat_st) + '_' + str(lon_st))
+        bias_cor_dict['qm']  = pd.DataFrame()
 
     return bias_cor_dict
 
@@ -248,13 +240,13 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
 
     now = datetime.datetime.now()
     while (longi < lon_end):
-        longi += 1
+        longi += 2
         if(lati == lati_end + 1):
             check_time(now)
             now = datetime.datetime.now()
         lati = lati_st
         while (lati < lati_end):
-            lati += 1
+            lati += 2
             sliced_xr_temp = slice_lat_lon(xr_temp, longi, lati)
             if (era):
                 sliced_xr_temp = sliced_xr_temp.reduce(np.mean, ('lat', 'lon'))
@@ -270,11 +262,12 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
             df_list = grouped_df(dfs, (run, model, lati, longi, c_var))
             for key in df_list.keys():
                 dict_df[key] = dict_df[key].append(df_list[key])
+            print(dict_df)
 
     for item in dict_df.keys():
         if(dict_df[item].shape[0] > 0):
             dict_df[item].to_csv(str(item) + '_' + str(model) + '_' + str(exper) + '_' +
-                                 str(run) + '_' + str(lon_st) + '.csv')
+                                 str(run) + '_lat: ' + str(lat_st) + '_longitude_' + str(lon_st) + '_' + str(lon_end) + '.csv')
     return dict_df
 
 
