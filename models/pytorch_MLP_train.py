@@ -8,7 +8,7 @@ from copy import deepcopy
 
 ### Hyperparameters ###
 
-all_hidden_layers = 75
+all_hidden_layers = 50
 
 hidden_layer_1 = all_hidden_layers
 hidden_layer_2 = all_hidden_layers
@@ -21,6 +21,8 @@ batch_size = 16
 num_epochs = 1000
 batches_per_print = 5000
 
+torch.manual_seed(7)
+
 ### Folder formatting ###
 
 windows_os = True
@@ -28,7 +30,7 @@ windows_os = True
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
     data_folder = "data\\train_test_arrays\\"
-    filename = f"{code_home_folder}models\\saved\\MLP_pytorch_model_daily{arch}.tar"
+    filename = f"{code_home_folder}models\\saved\\MLP_pytorch_model_daily{arch}_take7_no_bn.tar"
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
     data_folder = "data/train_test_arrays/"
@@ -55,7 +57,7 @@ validation_dataloader = DataLoader(validation_dataset, batch_size=batch_size, sh
 
 ### Define neural network model ###
 
-simple_net = SimpleNet_3bn(int(training_dataset.nfeatures()), hidden_layer_1, hidden_layer_2, hidden_layer_3)
+simple_net = SimpleNet_3(int(training_dataset.nfeatures()), hidden_layer_1, hidden_layer_2, hidden_layer_3)
 
 print(simple_net)
 

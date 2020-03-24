@@ -7,13 +7,13 @@ class SimpleNet_4bn(nn.Module):
     def __init__(self, number_of_features, hl1, hl2, hl3, hl4):
         super(SimpleNet_4bn, self).__init__()
 
-        self.fc1 = nn.Linear(number_of_features, hl1)
+        self.fc1 = nn.Linear(number_of_features, hl1, bias=False)
         self.bn1 = nn.BatchNorm1d(hl1)
-        self.fc2 = nn.Linear(hl1, hl2)
+        self.fc2 = nn.Linear(hl1, hl2, bias=False)
         self.bn2 = nn.BatchNorm1d(hl2)
-        self.fc3 = nn.Linear(hl2, hl3)
+        self.fc3 = nn.Linear(hl2, hl3, bias=False)
         self.bn3 = nn.BatchNorm1d(hl3)
-        self.fc4 = nn.Linear(hl3, hl4)
+        self.fc4 = nn.Linear(hl3, hl4, bias=False)
         self.bn4 = nn.BatchNorm1d(hl4)
         self.fc5 = nn.Linear(hl4, 1)
 
@@ -69,11 +69,11 @@ class SimpleNet_3bn(nn.Module):
     def __init__(self, number_of_features, hl1, hl2, hl3):
         super(SimpleNet_3bn, self).__init__()
 
-        self.fc1 = nn.Linear(number_of_features, hl1)
+        self.fc1 = nn.Linear(number_of_features, hl1, bias=False)
         self.bn1 = nn.BatchNorm1d(hl1)
-        self.fc2 = nn.Linear(hl1, hl2)
+        self.fc2 = nn.Linear(hl1, hl2, bias=False)
         self.bn2 = nn.BatchNorm1d(hl2)
-        self.fc3 = nn.Linear(hl2, hl3)
+        self.fc3 = nn.Linear(hl2, hl3, bias=False)
         self.bn3 = nn.BatchNorm1d(hl3)
         self.fc4 = nn.Linear(hl3, 1)
 

@@ -4,7 +4,7 @@ import numpy as np
 
 windows_os = True
 
-all_hidden_layers = 25
+all_hidden_layers = 50
 
 hidden_layer_1 = all_hidden_layers
 hidden_layer_2 = all_hidden_layers
@@ -15,7 +15,7 @@ arch = f"_{hidden_layer_1}_{hidden_layer_2}_{hidden_layer_3}"#_{hidden_layer_4}"
 
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
-    filename = f"{code_home_folder}models\\saved\\MLP_pytorch_model_daily{arch}.tar"
+    filename = f"{code_home_folder}models\\saved\\MLP_pytorch_model_daily{arch}_take3_no_bn.tar"
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
     filename = f"{code_home_folder}models/saved/MLP_pytorch_model_daily{arch}.tar"

@@ -12,7 +12,7 @@ from copy import deepcopy
 
 windows_os = True
 
-all_hidden_layers = 25
+all_hidden_layers = 50
 
 hidden_layer_1 = all_hidden_layers
 hidden_layer_2 = all_hidden_layers
@@ -25,7 +25,7 @@ if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
     title = f"{code_home_folder}logs\\assessment\\daily_data\\MLP_pytorch_log_{current_time()}"
     data_folder = "data\\train_test_arrays\\"
-    filename = f"{code_home_folder}models\\saved\\MLP_pytorch_model_daily{arch}.tar"
+    filename = f"{code_home_folder}models\\saved\\MLP_pytorch_model_daily{arch}_take7_no_bn.tar"
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
     title = f"{code_home_folder}logs/assessment/daily_data/MLP_pytorch_log_{current_time()}"
@@ -48,7 +48,7 @@ test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 print("Importing model...")
 checkpoint = torch.load(filename)
 
-simple_net = SimpleNet_3bn(int(test_dataset.nfeatures()), hidden_layer_1, hidden_layer_2, hidden_layer_3)
+simple_net = SimpleNet_3(int(test_dataset.nfeatures()), hidden_layer_1, hidden_layer_2, hidden_layer_3)
 simple_net.load_state_dict(checkpoint["best_state_dict"], strict=True)
 print(simple_net)
 simple_net.eval()
