@@ -2,12 +2,22 @@ import pandas as pd
 import glob
 from functions.functions import show_data, nan_mean_interpolation, nan_count_by_variable
 
-folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/"
-#folder = "C:\\Users\\Michelle\\PycharmProjects\\GTC\\data\\ashrae-energy-prediction\\"
+windows_os = True
+
+if windows_os:
+    code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
+    raw_folder = f"{code_home_folder}data\\ashrae-energy-prediction\\kaggle_provided\\" # raw data
+    data_folder = "data\\processed_arrays\\" # where to save the processed data
+else:
+    code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
+    raw_folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/" # raw data
+    data_folder = "data/processed_arrays/" # where to save the processed data
+
+
 
 print("\nWEATHER TRAINING DATA\n")
-files = glob.glob(f"{folder}weather_train.csv")
-data = show_data(folder,files[0])
+files = glob.glob(f"{raw_folder}weather_train.csv")
+data = show_data(raw_folder,files[0])
 
 print(f"\nFull dataset: {data.shape}")
 print(f"\nNaN count: \n{nan_count_by_variable(data)}")
@@ -17,8 +27,8 @@ print(f"\nNaN count: \n{nan_count_by_variable(data)}")
 
 
 print("\nBUILDING TRAINING DATA\n")
-files = glob.glob(f"{folder}train.csv")
-data = show_data(folder,files[0])
+files = glob.glob(f"{raw_folder}train.csv")
+data = show_data(raw_folder,files[0])
 
 print(f"\nFull dataset: {data.shape}")
 print(f"\nNaN count: \n{nan_count_by_variable(data)}")
@@ -30,8 +40,8 @@ print(f"Years {data.timestamp.dt.year.unique()}")
 print(f"Meter types:\n{data.meter.value_counts()}")
 
 print("\nBUILDING META DATA\n")
-files = glob.glob(f"{folder}*meta*.csv")
-data = show_data(folder,files[0])
+files = glob.glob(f"{raw_folder}*meta*.csv")
+data = show_data(raw_folder,files[0])
 
 print(f"\nFull dataset: {data.shape}")
 print(f"\nNaN count: \n{nan_count_by_variable(data)}")
