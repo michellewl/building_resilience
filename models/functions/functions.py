@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime as dt
 import numpy as np
+import re
 
 def show_data(folder,file_name):
     open_data = pd.read_csv(file_name)
@@ -72,3 +73,11 @@ def wind_direction_trigonometry(weather_array):
     weather_array["sin_wind_direction"] = np.sin(np.deg2rad(weather_array["wind_direction"]))
     weather_array = weather_array.drop("wind_direction", axis=1)
     return weather_array
+
+def get_models_by_hidden_layers(models_list, hidden_layers):
+    list = []
+    for model in models_list:
+        nodes = re.compile(r'\d+').findall(model)
+        if len(nodes) == hidden_layers:
+            list.append(model)
+    return list

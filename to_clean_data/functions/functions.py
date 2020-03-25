@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime as dt
 import numpy as np
+import re
 
 def show_data(folder,file_name):
     open_data = pd.read_csv(file_name)
@@ -86,3 +87,12 @@ def one_hot(df, columns):
     '''
     new_df = pd.concat((df, pd.get_dummies(df[columns])), axis=1)
     return new_df.drop(columns, axis=1)
+
+
+def get_models_by_hidden_layers(models_list, hidden_layers):
+    list = []
+    for model in models_list:
+        nodes = re.compile(r'\d+').findall(model)
+        if len(nodes) == hidden_layers:
+            list.append(model)
+    return list
