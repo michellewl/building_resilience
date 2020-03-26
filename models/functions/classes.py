@@ -4,7 +4,7 @@ from neural_networks.multilayer_perceptron import SimpleNet_2, SimpleNet_3, Simp
 class NNetwork():
     def __init__(self, filename):
         self.filename = filename
-        self.nodes = list(map(int, re.compile(r'\d+').findall(filename)))
+        self.nodes = list(map(int, re.compile(r"\d+").findall(str(re.compile("_"+r"\d+").findall(filename)))))
         self.hidden_layers = len(self.nodes)
 
         if self.hidden_layers == 2:
