@@ -83,3 +83,17 @@ class SimpleNet_3bn(nn.Module):
         x = torch.relu(self.bn3(self.fc3(x)))
         x = self.fc4(x)
         return x
+
+class SimpleNet_2(nn.Module):
+    def __init__(self, number_of_features, hl1, hl2):
+        super(SimpleNet_2, self).__init__()
+
+        self.fc1 = nn.Linear(number_of_features, hl1)
+        self.fc2 = nn.Linear(hl1, hl2)
+        self.fc3 = nn.Linear(hl2, 1)
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
