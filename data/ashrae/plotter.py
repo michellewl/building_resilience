@@ -1,3 +1,15 @@
+# -*- coding: UTF-8 -*-
+
+from IPython.display import display
+from html import HTML
+import matplotlib.pyplot as plt
+plt.style.use('ggplot')
+import seaborn as sns
+import pandas as pd
+import numpy as np
+
+
+
 def nice_display(element, names):
     '''
     Prints a nice version of a series/list/array on the screen
@@ -73,10 +85,28 @@ def check_different_ids_same_class(df, id_col, class_col, xaxis, yaxis, time_uni
         plt.subplots_adjust(hspace=0.45)
 
 
-def plot_sns_box_per_class(df, x, y, class_col):
+
+def plot_sns_multi_boxplots_one_class(df, x, y, title):
     '''
-    Plot a boxplot per class (class col) and x-axis label
-    choose randomly 4 plots
+    One plot with multiple boxplots corresponding to x-axis
+    ----------
+    Parameters:
+
+    title (string)
+
+
+
+    '''
+    fig, axes = plt.subplots(1, 1, figsize=(14, 6))
+    sns.boxplot(x=x, y=y, data=df, showfliers=False).set_title(title);
+    plt.show()
+
+
+
+def plot_sns_usages_multi_boxplots_multi_class(df, x, y, class_col):
+    '''
+    Multiple plots (randomly chosen 4 per class), 
+    each consists of multiple boxplots corresponding to usage (x-axis)
     ----------
     Parameters:
 
@@ -137,7 +167,7 @@ def heatmap_percentage_of_zeros_per_class_and_time(df, zero_col, cls, time_unit=
     newf.index = pd.to_numeric(newf.index, errors='coerce')
     fig, axes = plt.subplots(1, 1, figsize=(14, 10))
     cmap = sns.diverging_palette(220, 10, as_cmap=True)
-    sns.heatmap(newf[cols].sort_index(), cmap=cmap)
+    sns.heatmap(newf.sort_index(), cmap=cmap)
     plt.xlabel(time_unit, fontsize=14)
     plt.ylabel(cls, fontsize=14)
     plt.suptitle('Percentage of {} equal 0 per {} in 2016'.format(
@@ -165,3 +195,12 @@ def describe_df_by_classes(df, class1, class2, cols_to_desc):
             nice_display(HTML(desc.loc[(desc[class1] == cls1) & (
                 desc[cls2] == cls2), cols_to_desc].describe()))
             print('-------')
+
+
+def missing_per_col(df):
+    '''
+    
+    
+    '''
+    miss = df.isnull().sum() / df.shape[0]
+    nice_display((miss[miss > 0].sort_values(ascending = False)), names = ["Missing values percentage"])
