@@ -22,6 +22,15 @@ def feature_engineer(df, time_col):
     return df
 
 
+
+def unique_key_from_two_cols(df, col1, col2):
+    '''
+    
+    '''
+    df['ukey'] = df[[col1, col2]].apply(lambda x: str(x[0]) + chr(int(x[1]) + 65) + str(x[1]), axis =1)
+    return df
+
+
 def one_hot(df, columns):
     '''
     one hot encode columns and concat to original df
@@ -36,3 +45,29 @@ def one_hot(df, columns):
 
     '''
     return pd.concat((df, pd.get_dummies(df[columns])), axis=1)
+
+
+def add_seasonal_feat(df, id_col, val_col, time_unit = 'mon'):
+    '''
+    Add explicit seasonal features for algo. where we expect to have historical data for future observations 
+    --------------
+    Parameters:
+    df (pandas DataFrame)
+    id_col (string): apply seasonal feature per id in id_col
+    val_col (string): what column should we aggregate
+    time_unit (string): deafult month, time unit for aggregation 
+    ---------------
+    Returns:
+    pandas Dataframe with 2 additional columns 
+    
+    '''
+    for idd in df[id_col].unique():
+        monthly_count = np.array(df.loc[df[id_col] == idd, :].groupby(time_unit).count()[val_col]).reshape(-1)
+        prev_mon_avg = np.array(df.loc[df[id_col] == idd, :].groupby(time_unit).mean()[val_col].shift().rolling(window=1).mean())
+        prev_3_mon_avg = np.array(df.loc[df[id_col] == idd, :].groupby(time_unit).mean()[val_col].shift().rolling(window=3).mean())
+        df.loc[df[id_col] == idd, 'prev_avg'] = np.repeat(prev_mon_avg, monthly_count)
+        df.loc[df[id_col] == idd, 'prev_3_avg'] = np.repeat(prev_3_mon_avg, monthly_count)
+
+
+    
+    return df

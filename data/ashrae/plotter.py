@@ -160,9 +160,8 @@ def heatmap_percentage_of_zeros_per_class_and_time(df, zero_col, cls, time_unit=
     zeros = df[df[zero_col] == 0]
     p_zeros = zeros.groupby([time_unit, cls]).count() / \
         df.groupby([time_unit, cls]).count()
-    p_zeros.fillna(0)
     p_zeros.reset_index(inplace=True)
-    newf = p_zeros[[time_unit, cls, zero_col]].sort_index().pivot(
+    newf = p_zeros[[time_unit, cls, zero_col]].sort_values(time_unit).sort_index().pivot(
         index=cls, columns=time_unit, values=zero_col)
     newf.index = pd.to_numeric(newf.index, errors='coerce')
     fig, axes = plt.subplots(1, 1, figsize=(14, 10))
