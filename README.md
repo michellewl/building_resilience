@@ -18,10 +18,12 @@ This approach uses available building energy data for a number of anonymised sit
 - Random Forests
 - XG Boost
 
-### 😒
-Suspicion: a hand wavy model will perform as well or even better than a sophisticated one.
+### Hypothesis
+A heuristic model predicts energy demand with lower error than a machine learning model.
 
-The main goal will be to infer the effect of climate model variables on the target (in our case heating/cooling energy usage). 
+### Goal
+To infer the effect of climate model weather predictions on the energy demand of building heating and cooling. 
+
 What is our probability model? 
 
 In an ideal world we would have all the data we want; more concrretely, we can think of building specifics and area? specifics and population specifics. Building variables that would be of use are its height & size (structure), materials, contents, its insulation (in general efficency and ongoing temporal improvements) levels, the infrastructure by which it consumes electricity or other sources (e.g. gas). A Population (also occupancy rate) that resides in a building will matter - how many people are in a houshold? How rich are they? What is their energy consumption culture (according also to age). All of the aforementioned will relate to the location of the building through regulations in the area, the climate -> this needs to be broken down to the conditions experienced per day and per hour, the richness of the region and the culture (e.g. a location in india might be hot with poor population so even if air condition is wanted it can't be accessed). 
