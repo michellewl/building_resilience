@@ -1,0 +1,25 @@
+MLP model uses weather variables and building meta data.
+(take 7, no batch norm. torch.manual_seed(7))
+
+Architecture: 50, 50, 50
+Epochs: 54
+Activation function: relu
+Loss function: Mean Squared Error
+Solver: adam
+Best training loss: 1.7169127866341976e-09
+Best validation loss: 4.233177447336645e-10
+Test set MSE: 4.40662367706679e-10
+
+Test set RMSE: 2.099195957273903e-05
+Test set coefficient of variation: 134.79178194784882
+Test set SMAPE: 39.01806605005305
+Test set MAE: 1.2332936421444174e-05
+
+
+
+ SimpleNet_3(
+  (fc1): Linear(in_features=49, out_features=50, bias=True)
+  (fc2): Linear(in_features=50, out_features=50, bias=True)
+  (fc3): Linear(in_features=50, out_features=50, bias=True)
+  (fc4): Linear(in_features=50, out_features=1, bias=True)
+)

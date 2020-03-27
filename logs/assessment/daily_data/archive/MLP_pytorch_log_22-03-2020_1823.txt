@@ -1,4 +1,5 @@
 MLP model uses weather variables and building meta data.
+Hadn't removed site 0 & 15 periods yet.
 
 
 Architecture: 100, 100

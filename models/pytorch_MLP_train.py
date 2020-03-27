@@ -3,35 +3,41 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from datasets.building_dataset import BuildingDataset
-from neural_networks.multilayer_perceptron import SimpleNet
+from neural_networks.multilayer_perceptron import SimpleNet_3bn, SimpleNet_3
 from copy import deepcopy
-from functions.functions import current_time
+
+### Hyperparameters ###
+
+all_hidden_layers = 50
+
+hidden_layer_1 = all_hidden_layers
+hidden_layer_2 = all_hidden_layers
+hidden_layer_3 = all_hidden_layers
+#hidden_layer_4 = all_hidden_layers
+
+arch = f"_{hidden_layer_1}_{hidden_layer_2}_{hidden_layer_3}"#_{hidden_layer_4}"
+
+batch_size = 16
+num_epochs = 1000
+batches_per_print = 5000
+
+torch.manual_seed(7)
 
 ### Folder formatting ###
 
 windows_os = True
 
-hidden_layer_1 = 100
-hidden_layer_2 = 100
-
-arch = f"_{hidden_layer_1}_{hidden_layer_2}"
-
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
-    title = f"{code_home_folder}logs\\training\\daily_data\\MLP_pytorch_log_{current_time()}"
     data_folder = "data\\train_test_arrays\\"
-    filename = f"{code_home_folder}models\\saved\\MLP_pytorch_model_daily{arch}.tar"
+    filename = f"{code_home_folder}models\\saved\\MLP_pytorch_model_daily{arch}_take7_no_bn.tar"
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
-    title = f"{code_home_folder}logs/training/daily_data/MLP_log_{current_time()}"
     data_folder = "data/train_test_arrays/"
     filename = f"{code_home_folder}models/saved/MLP_pytorch_model_daily{arch}.tar"
 
 ### Code ###
 
-batch_size = 16
-num_epochs = 1000
-batches_per_print = 5000
 
 ### Load data ###
 
@@ -51,7 +57,7 @@ validation_dataloader = DataLoader(validation_dataset, batch_size=batch_size, sh
 
 ### Define neural network model ###
 
-simple_net = SimpleNet(number_of_features=int(training_dataset.nfeatures()))
+simple_net = SimpleNet_3(int(training_dataset.nfeatures()), hidden_layer_1, hidden_layer_2, hidden_layer_3)
 
 print(simple_net)
 
