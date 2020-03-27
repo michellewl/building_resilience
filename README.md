@@ -9,6 +9,10 @@ It is generally accepted that the current climate crisis will result in an incre
 - To develop suitable machine learning model(s) that can be applied to individual buildings to make energy demand predictions.
 - To compare performance of different prediction models, using common industry evaluation metrics.
 
+#### Hypotheses
+- A heuristic model predicts energy demand with lower error than a machine learning model.
+- In future climate scenarios, the energy demand for space cooling in buildings increases (assuming current space cooling technology).
+
 ## Methodology
 Ideal data would have high spatio-temporal resolution, enabling the mapping of weather data to building energy usage. Features would include information about the buildings, location and population, which are also interlinked.
 
@@ -30,10 +34,6 @@ This approach uses available building energy data for a number of anonymised sit
 - Linear regression (baseline model)
 - Neural networks
 - XG Boost
-
-### Hypotheses
-- A heuristic model predicts energy demand with lower error than a machine learning model.
-- In future climate scenarios, the energy demand for space cooling in buildings increases (assuming current space cooling technology).
 
 ## to edit
 
