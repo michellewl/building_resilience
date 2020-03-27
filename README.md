@@ -31,7 +31,7 @@ This approach uses available building energy data for a number of anonymised sit
 - Neural networks
 - XG Boost
 
-### Hypothesis
+### Hypotheses
 - A heuristic model predicts energy demand with lower error than a machine learning model.
 - In future climate scenarios, the energy demand for space cooling in buildings increases (assuming current space cooling technology).
 
