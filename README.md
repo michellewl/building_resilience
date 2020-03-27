@@ -6,12 +6,14 @@ It is generally accepted that the current climate crisis will result in an incre
 
 ## Our approach
 Ideal data would have high spatio-temporal resolution, enabling the mapping of weather data to building energy usage. Features would include information about the buildings, location and population, which are also interlinked.
+
 Building variables might include:
 - Height & size (structure)
 - Materials
 - Contents & use 
 - Insulation (efficency and ongoing improvements)
 - Infrastructure by which energy is consumed e.g. electricity, gas
+
 Location-dependent variables including local regulations and most notably, local weather, have a large influence on building energy consumption for heating/cooling. However, the more nuanced human decision to use energy for building heating and cooling may also depend on occupation density of a building, the energy consumption culture and the availability of resources. For example, developing countries with poor access to air conditioning units may exhibit lower rates of cooling demand with increased temperature, compared to developed countries. A globally generalisable model could be applied if all of the above factors could be taken into account.
 
 Unfortunately, such data is not widely available (and may not exist). With this in mind, we approach this problem from two key directions: top-down and bottom-up.
