@@ -4,7 +4,12 @@ AI4ER Guided Team Challenge: Team 1 (Future demand for cooling &amp; heating of 
 ## Background
 It is generally accepted that the current climate crisis will result in an increased future global average temperature. However, at a higher spatial resolution, some parts of the globe may experience higher or lower temperatures to greater extremes. This project aims to investigate how the changing future climate will impact the energy demand of buildings, attributed to cooling and/or heating.
 
-## Our approach
+#### Project aims
+- To make a prediction about global future energy demand of building heating and cooling, using weather data readily available from global climate models (GCMs) (these require bias correction before they can be used in further analysis).
+- To develop suitable machine learning model(s) that can be applied to individual buildings to make energy demand predictions.
+- To compare performance of different prediction models, using common industry evaluation metrics.
+
+## Methodology
 Ideal data would have high spatio-temporal resolution, enabling the mapping of weather data to building energy usage. Features would include information about the buildings, location and population, which are also interlinked.
 
 Building variables might include:
@@ -27,12 +32,10 @@ This approach uses available building energy data for a number of anonymised sit
 - XG Boost
 
 ### Hypothesis
-A heuristic model predicts energy demand with lower error than a machine learning model.
+- A heuristic model predicts energy demand with lower error than a machine learning model.
+- In future climate scenarios, the energy demand for space cooling in buildings increases (assuming current space cooling technology).
 
-### Goal
-To infer the effect of climate model weather predictions on the energy demand of building heating and cooling. 
-
-Climate/weather data is readily available from global climate models (GCMs) but require bias correction before they can be used in further analysis.
+## to edit
 
 What is our probability model? 
 
