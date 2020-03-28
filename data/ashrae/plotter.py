@@ -1,26 +1,11 @@
 # -*- coding: UTF-8 -*-
 
+import numpy as np
+import pandas as pd
+import seaborn as sns
 from IPython.display import display
-from html import HTML
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
-import seaborn as sns
-import pandas as pd
-import numpy as np
-
-
-
-def nice_display(element, names):
-    '''
-    Prints a nice version of a series/list/array on the screen
-    ----------
-    Parameters:
-    element: series/pandas df/array/list
-    names: column names to present on screen for provided element
-    ----------
-
-    '''
-    display(HTML(pd.DataFrame(element, columns=names).to_html()))
 
 
 def sns_correlation_per_class(df, class_col, corr_cols):
@@ -85,7 +70,6 @@ def check_different_ids_same_class(df, id_col, class_col, xaxis, yaxis, time_uni
         plt.subplots_adjust(hspace=0.45)
 
 
-
 def plot_sns_multi_boxplots_one_class(df, x, y, title):
     '''
     One plot with multiple boxplots corresponding to x-axis
@@ -98,9 +82,8 @@ def plot_sns_multi_boxplots_one_class(df, x, y, title):
 
     '''
     fig, axes = plt.subplots(1, 1, figsize=(14, 6))
-    sns.boxplot(x=x, y=y, data=df, showfliers=False).set_title(title);
+    sns.boxplot(x=x, y=y, data=df, showfliers=False).set_title(title)
     plt.show()
-
 
 
 def plot_sns_usages_multi_boxplots_multi_class(df, x, y, class_col):
@@ -157,12 +140,14 @@ def heatmap_percentage_of_zeros_per_class_and_time(df, zero_col, cls, time_unit=
     Returns:
     seaborn heatmap
     '''
+    df.loc[:, time_unit] = pd.to_numeric(df[time_unit])
     zeros = df[df[zero_col] == 0]
     p_zeros = zeros.groupby([time_unit, cls]).count() / \
         df.groupby([time_unit, cls]).count()
     p_zeros.reset_index(inplace=True)
-    newf = p_zeros[[time_unit, cls, zero_col]].sort_values(time_unit).sort_index().pivot(
-        index=cls, columns=time_unit, values=zero_col)
+    p_zeros = p_zeros[[time_unit, cls, zero_col]].sort_values(time_unit)
+    p_zeros.fillna(0, inplace=True)
+    newf = p_zeros.sort_index().pivot(index=cls, columns=time_unit, values=zero_col)
     newf.index = pd.to_numeric(newf.index, errors='coerce')
     fig, axes = plt.subplots(1, 1, figsize=(14, 10))
     cmap = sns.diverging_palette(220, 10, as_cmap=True)
@@ -198,11 +183,11 @@ def describe_df_by_classes(df, class1, class2, cols_to_desc):
 
 def missing_per_col(df):
     '''
-    
-    
+
+
     '''
     miss = df.isnull().sum() / df.shape[0]
-    nice_display((miss[miss > 0].sort_values(ascending = False)), names = ["Missing values percentage"])
+    return (miss[miss > 0]).sort_values(ascending=False)
 
 
 def day_vs_night_consumption(df, val_col, time_unit='hr'):
@@ -210,11 +195,13 @@ def day_vs_night_consumption(df, val_col, time_unit='hr'):
 
 
     '''
-    hourly_consump = (df.groupby(['hr']).mean()[val_col] - df[val_col].mean()).reset_index()
+    hourly_consump = (df.groupby(['hr']).mean()[
+                      val_col] - df[val_col].mean()).reset_index()
     plt.style.use('classic')
     fig, axes = plt.subplots(1, 1, figsize=(14, 10))
 
-    barplot = plt.bar(hourly_consump[time_unit], hourly_consump[val_col], color='darkorange')
+    barplot = plt.bar(hourly_consump[time_unit],
+                      hourly_consump[val_col], color='darkorange')
     barplot[0].set_color('steelblue')
     barplot[1].set_color('steelblue')
     barplot[2].set_color('steelblue')
@@ -231,6 +218,6 @@ def day_vs_night_consumption(df, val_col, time_unit='hr'):
     axes.axhspan(0, 30, facecolor='orange', alpha=0.2)
     plt.xlabel('Hour of the day')
     plt.ylabel('Above/below average')
-    plt.suptitle('Day versus Night (hourly) meter readings above/below average', fontsize=20)
+    plt.suptitle(
+        'Day versus Night (hourly) meter readings above/below average', fontsize=20)
     plt.show()
-
