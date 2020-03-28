@@ -203,3 +203,34 @@ def missing_per_col(df):
     '''
     miss = df.isnull().sum() / df.shape[0]
     nice_display((miss[miss > 0].sort_values(ascending = False)), names = ["Missing values percentage"])
+
+
+def day_vs_night_consumption(df, val_col, time_unit='hr'):
+    '''
+
+
+    '''
+    hourly_consump = (df.groupby(['hr']).mean()[val_col] - df[val_col].mean()).reset_index()
+    plt.style.use('classic')
+    fig, axes = plt.subplots(1, 1, figsize=(14, 10))
+
+    barplot = plt.bar(hourly_consump[time_unit], hourly_consump[val_col], color='darkorange')
+    barplot[0].set_color('steelblue')
+    barplot[1].set_color('steelblue')
+    barplot[2].set_color('steelblue')
+    barplot[3].set_color('steelblue')
+    barplot[4].set_color('steelblue')
+    barplot[5].set_color('steelblue')
+    barplot[6].set_color('steelblue')
+    barplot[7].set_color('steelblue')
+    barplot[20].set_color('steelblue')
+    barplot[21].set_color('steelblue')
+    barplot[22].set_color('steelblue')
+    barplot[23].set_color('steelblue')
+    axes.axhspan(0, -30, facecolor='navy', alpha=0.2)
+    axes.axhspan(0, 30, facecolor='orange', alpha=0.2)
+    plt.xlabel('Hour of the day')
+    plt.ylabel('Above/below average')
+    plt.suptitle('Day versus Night (hourly) meter readings above/below average', fontsize=20)
+    plt.show()
+
