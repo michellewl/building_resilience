@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 
-def feature_engineer(df, time_col):
+def feature_engineer(df, time_col, key_col1, key_col2, seasonal=False, val_col=None, time_unit ='mon'):
     '''
     Add date characteristics to df, change wind direction to sine and cosine columns
     -------------------------------
@@ -15,9 +15,15 @@ def feature_engineer(df, time_col):
     df['weekday'] = df[time_col].dt.weekday.astype(str)
     df['year'] = df[time_col].dt.year
     df['date'] = df[time_col].dt.date
+    df['hr'] = df[time_col].dt.hour
+    df['night'] = df['hr'].apply(lambda x: 1 if (x < 6) | (x>=18) else 0)
 
     df['wind_dir_cos'] = np.cos(df['wind_direction'])
     df['wind_dir_sin'] = np.sin(df['wind_direction'])
+    df = unique_key_from_two_cols(df, key_col1, key_col2)
+    if (seasonal):
+        df = add_seasonal_feat(df, 'ukey', val_col, time_unit = 'mon')
+
 
     return df
 

@@ -22,6 +22,23 @@ def percentage_incharge_by_temp(df, cls_col, val_col, xaxis, temp=20):
     return temp_to_meter
 
 
+def multivar_cum_dist_per_class(df, x, y, class_col):
+    '''
+    
+    
+    '''
+    df_cdf = pd.DataFrame({class_col: [0], y: [0], x: [0], 'cdf':[0]})
+    for site in df[class_col].unique():
+        df1 = df[df[class_col] == site]
+        n = df1.shape[0]
+        for yi in sorted(df1[y].unique()):
+            for xi in sorted(df1[x].unique()):
+                cdf = df1[(df1[y] <= yi) & (df1[x] <= xi)].shape[0] / n 
+                df_cdf = df_cdf.append(pd.DataFrame({'site':[site], y: [yi], x: [xi], 'cdf': [cdf]}))
+    df_cdf = df_cdf.iloc[1:,]
+    return df_cdf
+
+
 def CDD_barplot(temp_to_meter, cls_col):
     for site in np.random.choice(temp_to_meter[cls_col].unique(), 4):
         fig, ax = plt.subplots(figsize=(16, 8))
@@ -35,3 +52,5 @@ def CDD_barplot(temp_to_meter, cls_col):
             temp_to_meter['site_id'] == site) & (temp_to_meter['percentage_incharge'] >= 0.8), 'air_temperature'].iloc[0]))
         plt.axhline(0.8)
         plt.xticks(rotation=90)
+
+
