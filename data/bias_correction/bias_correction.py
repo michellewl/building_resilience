@@ -10,11 +10,28 @@ import numpy as np
 def remove_leaps_xarray(xr):
     '''
     Remove all 29-02 days
+    ---------------
+    Parameters: 
+    xr (Xarray)
+    ---------------
+    Returns: 
+    xr (Xarray) without 29-02 days
     '''
     return xr.where(((xr.time.dt.day != 29) | (xr.time.dt.month != 2)), drop=True)
 
 
 def match_calendar(obs, observations=True):
+    '''
+    Matching between a 360 day calendar and regular calendaric year
+    ----------------------
+    Parameters:
+    obs (xarray): must have a time variable
+    observations (boolean): deafult (True), correct the observations or correct climate models
+    ---------------------
+    Returns:
+    xarray corrected to have same calendar for climate model and observations
+
+    '''
     if (observations):
         obs = obs.where(obs.time.dt.day != 31, drop=True)
         obs  = remove_leaps_xarray(obs)
@@ -26,6 +43,8 @@ def match_calendar(obs, observations=True):
 
 def construct_ecdf(np_array):
     '''
+    
+    
     '''
     sorted_values = np.sort(np_array)
     pr_smaller_x = []
