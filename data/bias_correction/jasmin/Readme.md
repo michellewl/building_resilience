@@ -16,6 +16,13 @@ After login, run:
 git clone git@github.com:michellewl/building_resilience.git
 ```
 * note that you will have to ensure you have an access to github (ssh key)
+to do so you can run from terminal: 
+
+```
+ssh-keygen -t rsa -b 4096 -C "your_email_on_github@blabla.com"
+cat ~/.ssh/id_rsa.pub
+```
+Copy the output on the screen and paste it on your github/settings/ssh keys
 
 
 To setup enviornment run from Jasmin terminal:
