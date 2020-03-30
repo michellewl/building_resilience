@@ -1,18 +1,12 @@
-### What is bias correction and why do we do it? 
+#### What is bias correction and why do we do it? 
 Bias correction is a set of approaches to correct output from climate models so that it matches
 with observational data.
 
 
-### Implementation
+#### Implementation
 In order to execute the following bias correction code, one has to be connected to [JASMIN](http://www.jasmin.ac.uk)  
 
-### Bias correction methods 
 
-
-### Problems with methods
-
-
-### How to test? How do others test it?
 
 
 
