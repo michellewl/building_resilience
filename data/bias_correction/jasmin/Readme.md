@@ -51,7 +51,6 @@ To check the status of the job:
 
 ```
 bjobs -a
-
 ```
 
 After the jobs are done run: 
