@@ -1,14 +1,5 @@
 ### Directory to access Jasmin and analyze data
 
-Steps to begin with Jasmin: 
-(these are just bullet points for me - extended explanation soon)
-
-```
-create a PYTHON directory  
-pip install baspy
-module load jaspy
-```
-
 To access Jasmin from any network, run from terminal:
 
 ```
@@ -22,13 +13,14 @@ ssh -X jasmin-sci2
 After login, run:
 
 ```
-git clone git@github.com:michellewl/building_resilience.git
+git clone https://github.com/michellewl/building_resilience.git
 ```
-
 
 To setup enviornment run from Jasmin terminal:
 
 ```
+cd building_resilience/data/bias_correction/jasmin
+
 sh setup.sh
 ```
 
