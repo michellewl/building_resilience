@@ -35,7 +35,7 @@ module load jaspy
 Run:
 
 ```
-sh setup/create_directories_climate_models.sh
+sh ../building_resilience/data/bias_correction/jasmin/setup/create_directories_climate_models.sh
 ```
 
 
