@@ -40,6 +40,9 @@ def multivar_cum_dist_per_class(df, x, y, class_col):
 
 
 def CDD_barplot(temp_to_meter, cls_col):
+    '''
+
+    '''
     for site in np.random.choice(temp_to_meter[cls_col].unique(), 4):
         fig, ax = plt.subplots(figsize=(16, 8))
         ax.set_xlim(45, 20)
