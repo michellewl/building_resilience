@@ -1,3 +1,4 @@
+- many thanks for @Risa Ueno for the downloader folder contents 
 ### Directory to access Jasmin and analyze data
 
 To access Jasmin from any network, run from terminal:
@@ -28,7 +29,6 @@ Then run (this step has to be run each time you login to Jasmin server):
 
 ```
 module load jaspy
-cd PYTHON
 ```
 ** Discover what is Jaspy for [here](https://help.jasmin.ac.uk/article/4729-jaspy-envs)
 
@@ -36,14 +36,14 @@ cd PYTHON
 Run:
 
 ```
-sh setup/create_directories_climate_models.sh
+sh ../building_resilience/data/bias_correction/jasmin/setup/create_directories_climate_models.sh
 ```
 
 
 For creating csv files for the ERA data with threshold of 24c˚ run:
 
 ```
-sh setup/era_bjob.sh
+sh ../building_resilience/data/bias_correction/jasmin/bjobs/era_bjob.sh
 ```  
 - The csv files produced will have to grid point with its associated Cooling Degree Days (CDD)
 
@@ -56,7 +56,7 @@ bjobs -a
 After the jobs are done run: 
 
 ```
-sh setup/mv_era_files.sh
+sh ../building_resilience/data/bias_correction/jasmin/setup/mv_era_files.sh
 ```
 
 
