@@ -40,7 +40,8 @@ sh setup/create_directories_climate_models.sh
 ```
 
 
-For creating csv files for the ERA data with varying thresholds run:
+For creating csv files for the ERA data with threshold of 24c˚ run:
+- The csv files produced will have to grid point with its associated Cooling Degree Days (CDD)
 
 ```
 sh setup/era_bjob.sh
