@@ -1,0 +1,53 @@
+WEATHER TRAINING DATA
+
+Full dataset: (139773, 9)
+Subset by site: (8784, 9)
+Extracted data columns: (8784, 8)
+
+BUILDING TRAINING DATA
+
+Full dataset: (20216100, 4)
+Subset by building: (8784, 4)
+Threshold: 321.486, 0.0
+Outlier removal: 3424 values changed.
+Extracted data columns: (8784,)
+
+MODEL TRAIN
+
+Training size: 0.6699999999999999
+Test size: 0.33
+Training array dimensions: (5885, 8) (5885, 1)
+Test array dimensions: (2899, 8) (2899, 1)
+Normalise the training data and apply the same to the test set:
+
+Before normalisation:
+X_train mean, std: 133.36276611940215, 334.49144978820874
+y_train mean, std: 177.85548276125746, 89.18404699316508
+X_test mean, std: 133.38358332739207, 334.49392561770077
+y_test mean, std: 175.7326607278372, 90.65913164640627
+
+After normalisation:
+X_train mean, std: -3.9766773844420654e-14, 1.0000000000000047
+y_train mean, std: -3.4048097108640315e-16, 1.0
+X_test mean, std: -0.498653076791566, 3.7506026794605525
+y_test mean, std: -0.023802710293949415, 1.0165397815301456
+
+Linear regression model fit:
+R²: 0.5261228959384203
+Mean squared error: 0.47387710406157973
+
+Linear regression model test:
+Mean squared error: 1.5215110360921253
+
+Model coefficients:
+air_temperature : [0.34066738191202284]
+cloud_coverage : [-0.19066313196347687]
+dew_temperature : [0.509892612132494]
+precip_depth_1_hr : [0.022920623963670908]
+sea_level_pressure : [0.07220910526834474]
+wind_speed : [-0.02011770179475319]
+cos_wind_direction : [0.1632933607494076]
+sin_wind_direction : [-0.009560131047826067]
+
+Model intercept:
+0.0

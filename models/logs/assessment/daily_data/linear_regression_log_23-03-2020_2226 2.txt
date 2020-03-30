@@ -1,0 +1,35 @@
+23-03-2020_2226
+WEATHER TRAINING DATA
+
+All buildings. Daily data, including meta data.
+
+BUILDING TRAINING DATA
+
+All buildings, daily total energy.
+Training array dimensions: (273432, 49) (273432, 1)
+Test array dimensions: (60316, 49) (60316, 1)
+23-03-2020_2226
+WEATHER TRAINING DATA
+
+All buildings. Daily data, including meta data.
+
+BUILDING TRAINING DATA
+
+All buildings, daily total energy.
+Training array dimensions: (273432, 49) (273432, 1)
+Test array dimensions: (60316, 49) (60316, 1)
+
+Linear regression model fit:
+R²: -0.150057733419114
+Mean squared error: 8.304890739077623e-10
+
+Linear regression model test:
+Mean squared error: 8.300659911399377e-10
+
+Model intercept: 
+0.0
+
+Test set RMSE: 2.8810865851965257e-05
+Test set coefficient of variation: 184.99789795854622
+Test set SMAPE: 84.39299757454262
+Test set MAE: 1.6815487870128425e-05

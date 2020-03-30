@@ -1,14 +1,5 @@
 ### Directory to access Jasmin and analyze data
 
-Steps to begin with Jasmin: 
-(these are just bullet points for me - extended explanation soon)
-
-```
-create a PYTHON directory  
-pip install baspy
-module load jaspy
-```
-
 To access Jasmin from any network, run from terminal:
 
 ```
@@ -22,13 +13,14 @@ ssh -X jasmin-sci2
 After login, run:
 
 ```
-git clone git@github.com:michellewl/building_resilience.git
+git clone https://github.com/michellewl/building_resilience.git
 ```
-
 
 To setup enviornment run from Jasmin terminal:
 
 ```
+cd building_resilience/data/bias_correction/jasmin/setup
+
 sh setup.sh
 ```
 
@@ -44,27 +36,27 @@ cd PYTHON
 Run:
 
 ```
-sh create_directories_climate_models.sh
+sh setup/create_directories_climate_models.sh
 ```
 
 
-For creating csv files for the ERA data with varying thresholds run:
+For creating csv files for the ERA data with threshold of 24c˚ run:
 
 ```
-sh era_bjob.sh
+sh setup/era_bjob.sh
 ```  
+- The csv files produced will have to grid point with its associated Cooling Degree Days (CDD)
 
 To check the status of the job:
 
 ```
 bjobs -a
-
 ```
 
 After the jobs are done run: 
 
 ```
-sh mv_era_files.sh
+sh setup/mv_era_files.sh
 ```
 
 

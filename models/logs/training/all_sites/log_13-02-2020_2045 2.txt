@@ -1,0 +1,8 @@
+WEATHER TRAINING DATA
+
+Full dataset: (139773, 9)
+Subset by site: (8784, 9)
+Extracted data columns: (8784, 6)
+
+BUILDING TRAINING DATA
+

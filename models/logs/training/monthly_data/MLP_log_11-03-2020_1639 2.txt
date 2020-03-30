@@ -1,0 +1,23 @@
+11-03-2020_1639
+WEATHER TRAINING DATA
+
+All buildings. Monthly data, including meta data.
+
+BUILDING TRAINING DATA
+
+All buildings, monthly total energy.
+Training array dimensions: (11649, 23) (11649,)
+Test array dimensions: (5739, 23) (5739,)
+11-03-2020_1639
+Architecture: (100, 100)
+Batch size: 16
+
+11-03-2020_1639
+
+Best loss: 0.4444175657752461
+Iterations: 36
+Layers: 4
+Outputs: 1
+Activation function: relu
+Output activation function: identity
+Solver: adam
