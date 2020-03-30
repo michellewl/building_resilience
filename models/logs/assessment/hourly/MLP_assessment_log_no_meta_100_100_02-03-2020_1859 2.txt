@@ -1,0 +1,15 @@
+MLP model uses weather variables only (no building meta data).
+
+
+Best loss: 0.5000515373148462
+Iterations: 4
+Layers: 4
+Outputs: 1
+Activation function: relu
+Output activation function: identity
+Solver: adam
+Training array dimensions: (8527770, 5) (8527770,)
+Test array dimensions: (4200246, 5) (4200246,)
+
+Mean squared error (training data): 1.0001342758374916
+Mean squared error (test data): 1.0636469142371812

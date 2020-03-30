@@ -1,0 +1,17 @@
+WEATHER TRAINING DATA
+
+Full dataset: (139773, 9)
+Subset by site: (8783, 9)
+Extracted data columns: (8783, 8)
+
+BUILDING TRAINING DATA
+
+Full dataset: (20216100, 4)
+Subset by site (2): (2530312, 4)
+Threshold: 3502.515575000043, 0.0
+Outlier removal: 254073 values changed.
+Data averaged (mean) across all buildings for site 2: (8784, 3)
+Extracted data columns: (8784,)
+
+MODEL TRAIN
+

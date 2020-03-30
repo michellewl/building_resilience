@@ -1,0 +1,7 @@
+
+MLP regression model fit:
+R²: 0.07002276974492283
+Mean squared error: 0.9299772302550771
+
+MLP regression model test:
+Mean squared error: 0.9400289921269354

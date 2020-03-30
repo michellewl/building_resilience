@@ -1,0 +1,73 @@
+Full dataset: (20216100, 4)
+Subset by site (5): (781776, 4)
+Threshold: 740.305, 0.0
+Outlier removal: 8415 values changed.
+Data averaged (mean) across all buildings for site 5: (8784, 4)
+Extracted data columns: (8784,)
+
+MODEL TRAIN
+
+Training size: 0.6699999999999999
+Test size: 0.33
+Training array dimensions: (5885, 5) (5885, 1)
+Test array dimensions: (2899, 5) (2899, 1)
+
+Normalised the training data and applied the same to the test set.
+
+Linear regression model fit:
+R²: 0.06711720621813067
+Mean squared error: 0.9328827937818693
+
+Linear regression model test:
+Mean squared error: 1.0047596941945975
+
+Model coefficients:
+air_temperature : [0.3515939220718378]
+dew_temperature : [-0.41866450108335324]
+wind_speed : [0.13751371820540334]
+cos_wind_direction : [-0.08589532524715945]
+sin_wind_direction : [0.04266027048256721]
+
+Model intercept:
+0.0
+WEATHER TRAINING DATA
+
+Full dataset: (139773, 9)
+Subset by site: (8784, 9)
+Extracted data columns: (8784, 6)
+
+BUILDING TRAINING DATA
+
+Full dataset: (20216100, 4)
+Subset by site (6): (668133, 4)
+Threshold: 549709.1520000044, 0.0
+Outlier removal: 111903 values changed.
+Data averaged (mean) across all buildings for site 6: (8783, 4)
+Extracted data columns: (8784,)
+
+MODEL TRAIN
+
+Training size: 0.6699999999999999
+Test size: 0.33
+Training array dimensions: (5885, 6) (5885, 1)
+Test array dimensions: (2899, 6) (2899, 1)
+
+Normalised the training data and applied the same to the test set.
+
+Linear regression model fit:
+R²: 0.047813009729296474
+Mean squared error: 0.9521869902707035
+
+Linear regression model test:
+Mean squared error: 1.1810863781915466
+
+Model coefficients:
+air_temperature : [-0.1835768149451646]
+dew_temperature : [0.32027654457542576]
+sea_level_pressure : [0.1471109405406537]
+wind_speed : [0.06683213701036302]
+cos_wind_direction : [0.05142132633016496]
+sin_wind_direction : [0.04170457066887585]
+
+Model intercept:
+0.0
