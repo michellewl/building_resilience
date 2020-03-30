@@ -1,10 +1,18 @@
+
+#### What can be found here? 
+This folder offers code for applying bias correction (quantile mapping) for your chosen climate model and getting back corrected .nc files. It also provides code to get the Cooling Degree Days (CDD) at each grid point from both the reanalysis data ([ERA](https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era-interim)) and the corrected climate model data.
+
+##### Example output: 
+
+
 #### What is bias correction and why do we do it? 
 Bias correction is a set of approaches to correct output from climate models so that it matches
 with observational data.
 
 
 #### Implementation
-In order to execute the following bias correction code, one has to be connected to [JASMIN](http://www.jasmin.ac.uk)  
+In order to execute the following bias correction code, one first has to be connected to [JASMIN](http://www.jasmin.ac.uk). 
+
 
 
 
