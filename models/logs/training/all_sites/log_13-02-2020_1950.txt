@@ -1,0 +1,41 @@
+WEATHER TRAINING DATA
+
+Full dataset: (139773, 9)
+Subset by site: (8784, 9)
+Extracted data columns: (8784, 6)
+
+BUILDING TRAINING DATA
+
+Full dataset: (20216100, 4)
+Subset by site (2): (2530312, 4)
+Threshold: 3502.515575000043, 0.0
+Outlier removal: 254073 values changed.
+Data averaged (mean) across all buildings for site 2: (8784, 3)
+Extracted data columns: (8784,)
+
+MODEL TRAIN
+
+Training size: 0.6699999999999999
+Test size: 0.33
+Training array dimensions: (5885, 6) (5885, 1)
+Test array dimensions: (2899, 6) (2899, 1)
+
+Normalised the training data and applied the same to the test set.
+
+Linear regression model fit:
+R²: 0.5538737604144088
+Mean squared error: 0.4461262395855912
+
+Linear regression model test:
+Mean squared error: 14.383349427465976
+
+Model coefficients:
+air_temperature : [0.5011231034958079]
+dew_temperature : [0.3512408216603272]
+sea_level_pressure : [-0.03619948735215414]
+wind_speed : [-0.036541842915565864]
+cos_wind_direction : [-0.031031107401031984]
+sin_wind_direction : [0.26854776044134093]
+
+Model intercept:
+0.0

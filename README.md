@@ -1,14 +1,45 @@
-# building_resilience
+# Building Resilience
 AI4ER Guided Team Challenge: Team 1 (Future demand for cooling &amp; heating of buildings in future climate scenarios)
 
-Suspicion: a hand wavy model will perform as well or even better than a sophisticated one.
+## Background
+It is generally accepted that the current climate crisis will result in an increased future global average temperature. However, at a higher spatial resolution, some parts of the globe may experience higher or lower temperatures to greater extremes. This project aims to investigate how the changing future climate will impact the energy demand of buildings, attributed to cooling and/or heating.
 
-The main goal will be to infer the effect of climate model variables on the target (in our case heating/cooling energy usage). 
+#### Project aims
+- To make a prediction about global future energy demand of building heating and cooling, using weather data from bias-corrected global climate models (GCMs).
+- To develop suitable machine learning model(s) that can be applied to individual buildings to make energy demand predictions.
+- To compare performance of different prediction models, using common industry evaluation metrics.
+
+#### Hypotheses
+- A heuristic model predicts energy demand with lower error than a machine learning model.
+- In future climate scenarios, the energy demand for space cooling in buildings increases (assuming current space cooling technology).
+
+## Methodology
+Ideal data would have high spatio-temporal resolution, enabling the mapping of weather data to building energy usage. Features would include information about the buildings, location and population, which are also interlinked.
+
+Building variables might include:
+- Height & size (structure)
+- Materials
+- Contents & use 
+- Insulation (efficency and ongoing improvements)
+- Infrastructure by which energy is consumed e.g. electricity, gas
+
+Location-dependent variables including local regulations and most notably, local weather, have a large influence on building energy consumption for heating/cooling. However, the more nuanced human decision to use energy for building heating and cooling may also depend on occupation density of a building, the energy consumption culture and the availability of resources. For example, developing countries with poor access to air conditioning units may exhibit lower rates of cooling demand with increased temperature, compared to developed countries. A globally generalisable model could be applied if all of the above factors could be taken into account.
+
+Unfortunately, such data is not widely available (and may not exist). With this in mind, we approach this problem from two key directions: top-down and bottom-up.
+
+#### Top-down approach
+
+#### Bottom-up approach
+This approach uses available building energy data for a number of anonymised sites in developed countries. These datasets have good temporal resolution e.g. hourly or daily, and are good candidates for development of machine learning models. Here, we investigate a number of different ML approaches:
+- Linear regression (baseline model)
+- Neural networks
+- XG Boost
+
+## to edit
+
 What is our probability model? 
 
-In an ideal world we would have all the data we want; more concrretely, we can think of building specifics and area? specifics and population specifics. Building variables that would be of use are its height & size (structure), materials, contents, its insulation (in general efficency and ongoing temporal improvements) levels, the infrastructure by which it consumes electricity or other sources (e.g. gas). A Population (also occupancy rate) that resides in a building will matter - how many people are in a houshold? How rich are they? What is their energy consumption culture (according also to age). All of the aforementioned will relate to the location of the building through regulations in the area, the climate -> this needs to be broken down to the conditions experienced per day and per hour, the richness of the region and the culture (e.g. a location in india might be hot with poor population so even if air condition is wanted it can't be accessed). 
- - Dependency among regions seems to be not really important if all of the above variables exist in our dataset. 
- 
+
 In order to make progress, stepping away from the ideal case is inevitable.
 
 We are building two products for individual building evaluation. 
@@ -92,7 +123,6 @@ ML questions to check:
 
 
 Our current project includes 2 products for individual buildings and one product for global energy usage projection.
-
 
 
 

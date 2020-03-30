@@ -1,0 +1,28 @@
+MLP model uses weather variables and building meta data.
+
+
+Architecture: 25, 25, 25
+Epochs: 38
+Activation function: relu
+Loss function: Mean Squared Error
+Solver: adam
+Best training loss: 2.2719834101398237e-09
+Best validation loss: 6.763996820775599e-10
+Test set MSE: 7.182893724255734e-10
+
+Test set RMSE: 2.6800920672444655e-05
+Test set coefficient of variation: 172.09182814258236
+Test set SMAPE: 38.37785384993202
+Test set MAE: 1.2518399671535008e-05
+
+
+
+ SimpleNet_3bn(
+  (fc1): Linear(in_features=49, out_features=25, bias=True)
+  (bn1): BatchNorm1d(25, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (fc2): Linear(in_features=25, out_features=25, bias=True)
+  (bn2): BatchNorm1d(25, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (fc3): Linear(in_features=25, out_features=25, bias=True)
+  (bn3): BatchNorm1d(25, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (fc4): Linear(in_features=25, out_features=1, bias=True)
+)

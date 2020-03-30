@@ -1,0 +1,50 @@
+MLP model uses weather variables and building meta data.
+(take 6, no batch norm. torch.manual_seed(6))
+
+Architecture: 50, 50, 50
+Epochs: 50
+Activation function: relu
+Loss function: Mean Squared Error
+Solver: adam
+Best training loss: 2.3013373405982095e-09
+Best validation loss: 6.770234587108592e-10
+Test set MSE: 7.199730256424175e-10
+
+Test set RMSE: 2.68323135609422e-05
+Test set coefficient of variation: 172.2933854063317
+Test set SMAPE: 39.35190678053916
+Test set MAE: 1.2984033674001694e-05
+
+
+
+ SimpleNet_3(
+  (fc1): Linear(in_features=49, out_features=50, bias=True)
+  (fc2): Linear(in_features=50, out_features=50, bias=True)
+  (fc3): Linear(in_features=50, out_features=50, bias=True)
+  (fc4): Linear(in_features=50, out_features=1, bias=True)
+)
+MLP model uses weather variables and building meta data.
+
+
+Architecture: 50, 50, 50
+Epochs: 54
+Activation function: relu
+Loss function: Mean Squared Error
+Solver: adam
+Best training loss: 1.7169127866341976e-09
+Best validation loss: 4.233177447336645e-10
+Test set MSE: 4.406623399511034e-10
+
+Test set RMSE: 2.0991958854424472e-05
+Test set coefficient of variation: 134.7917930790688
+Test set SMAPE: 39.01806928820711
+Test set MAE: 1.2332936421444174e-05
+
+
+
+ SimpleNet_3(
+  (fc1): Linear(in_features=49, out_features=50, bias=True)
+  (fc2): Linear(in_features=50, out_features=50, bias=True)
+  (fc3): Linear(in_features=50, out_features=50, bias=True)
+  (fc4): Linear(in_features=50, out_features=1, bias=True)
+)

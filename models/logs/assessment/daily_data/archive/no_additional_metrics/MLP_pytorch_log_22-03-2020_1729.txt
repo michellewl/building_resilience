@@ -1,0 +1,10 @@
+MLP model uses weather variables and building meta data.
+
+
+Architecture: _100_100
+Best training loss: 2.649707464059476e-09
+Best validation loss: 9.043250829301607e-10
+Iterations: 20
+Activation function: relu
+Solver: adam
+Test set MSE: 9.702359095359803e-10

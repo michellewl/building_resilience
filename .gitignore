@@ -1,2 +1,11 @@
 /bias_correction/plots
+*.csv
+__pycache__/
 .ipynb_checkpoints/
+*.egg-info/
+*.sav
+*.npy
+.idea/
+*.tar
+*.png
+

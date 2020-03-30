@@ -1,0 +1,34 @@
+27-02-2020_1357
+WEATHER TRAINING DATA
+
+All sites.
+Data shape: (140544, 5)
+
+BUILDING TRAINING DATA
+
+All sites.
+Data shape: (140544,)
+
+MODEL TRAIN
+
+Training size: 0.6699999999999999
+Test size: 0.33
+Training array dimensions: (94164, 5) (94164, 1)
+Test array dimensions: (46380, 5) (46380, 1)
+
+Normalised the training data and applied the same to the test set.
+27-02-2020_1357
+Architecture: (100, 100)
+Batch size: 16
+27-02-2020_1359
+Loss: [0.4858380376533749, 0.4788943393032497, 0.4759252358896957, 0.474992786913542, 0.47445730761945515, 0.4739724412608803, 0.47310659398914484, 0.4721740150901964, 0.47152355577095223, 0.47180237287827986]
+Iterations: 10
+Layers: 4
+Outputs: 1
+Activation function: relu
+Output activation function: identity
+Solver: adam
+Mean squared error: 0.9355733916028681
+
+MLP regression model test:
+Mean squared error: 0.9111828204600223
