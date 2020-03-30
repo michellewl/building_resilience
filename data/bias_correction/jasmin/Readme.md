@@ -1,3 +1,4 @@
+- many thanks for @Risa Ueno for the downloader folder contents 
 ### Directory to access Jasmin and analyze data
 
 To access Jasmin from any network, run from terminal:
