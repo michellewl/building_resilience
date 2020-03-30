@@ -1,20 +1,20 @@
 import pandas as pd
 import numpy as np
 import glob
-from functions.functions import nan_mean_interpolation, nan_count_total, nan_count_by_variable, write, \
-    get_building_ids, fix_time_gaps, wind_direction_trigonometry
+from functions import nan_mean_interpolation, nan_count_total, \
+    fix_time_gaps, wind_direction_trigonometry, one_hot
 import datetime as dt
 
 windows_os = True
 
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
-    raw_folder = f"{code_home_folder}data\\ashrae-energy-prediction\\kaggle_provided\\" # raw data
-    data_folder = "data\\processed_arrays\\" # where to save the processed data
+    raw_folder = f"{code_home_folder}data\\datasets\\ashrae-energy-prediction\\kaggle_provided\\" # raw data
+    data_folder = "data\\datasets\\processed_arrays\\" # where to save the processed data
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
     raw_folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/" # raw data
-    data_folder = "data/processed_arrays/" # where to save the processed data
+    data_folder = "data/datasets/processed_arrays/" # where to save the processed data
 
 
 include_meta_data = True
@@ -38,8 +38,6 @@ print("Processing dataset...")
 
 
 dataframe_list= []
-# if monthly_data is True:
-#     dataframe_list_monthly = []
 
 for chosen_building in range(0, meta_data.shape[0]):
     if chosen_building%50==0:
@@ -124,28 +122,14 @@ for chosen_building in range(0, meta_data.shape[0]):
 
         weather['primary_use'] = [primary_use] * weather.shape[0]
 
-        # if monthly_data is True:
-        #     monthly_weather['year_built'] = [year_built] * monthly_weather.shape[0]
-        #     monthly_weather.year_built = monthly_weather.year_built.fillna(average_year)
-        #     monthly_weather['square_feet'] = [sq_ft] * monthly_weather.shape[0]
-        #     monthly_weather.square_feet = monthly_weather.square_feet.fillna(average_sqft)
-        #     monthly_weather['site_id'] = [chosen_site] * monthly_weather.shape[0]
-
     # include the building ID for joining dataframes later
     weather['building_id'] = [chosen_building] * weather.shape[0]
     weather = weather.reset_index()
     weather = weather.set_index(keys = ["timestamp", "building_id"])
 
-
     dataframe_list.append(weather)
-    # if monthly_data is True:
-    #     dataframe_list_monthly.append(monthly_weather)
-
 
 weather_dataframe = pd.concat(dataframe_list)
-
-# if monthly_data is True:
-#     weather_dataframe_monthly = pd.concat(dataframe_list_monthly)
 
 print("\nBUILDING TRAINING DATA")
 print("Reading dataset...")
@@ -165,8 +149,6 @@ data.loc[data.meter_reading <= q_low, "meter_reading"] = None
 print(f"Outlier limits: {q_low}, {q_high}")
 
 dataframe_list= []
-# if monthly_data is True:
-#     dataframe_list_monthly = []
 
 for chosen_building in range(0, meta_data.shape[0]):
     if chosen_building%50==0:
@@ -183,26 +165,18 @@ for chosen_building in range(0, meta_data.shape[0]):
     building.meter_reading = building.meter_reading* 0.000293071
     # This retains only the electricity meter and converts from kBTU to kWh
 
-
-
     if all(np.isnan(building.meter_reading)) is True:
-        #print(f"Skipped building #{chosen_building}.")
         continue
     building = fix_time_gaps(building, start=start, end=end)
-
-
 
     building.meter_reading = nan_mean_interpolation(building.meter_reading)
     nan_count = nan_count_total(building.meter_reading)
     if nan_count > 0:
         print(f"NaN count meter_reading is {nan_count} at building: {chosen_building}\n{building.head}")
 
-
-
     daily_energy = building.copy().resample("D", on="timestamp").mean()
     daily_energy.meter_reading = building.copy().resample("D", on="timestamp").sum().meter_reading
     energy = daily_energy.copy()
-
 
     if monthly_data is True:
         energy = building.copy().resample("M", on="timestamp").mean()
@@ -214,38 +188,37 @@ for chosen_building in range(0, meta_data.shape[0]):
     energy = energy.set_index(keys = ["timestamp", "building_id"])
 
     dataframe_list.append(energy)
-    # if monthly_data is True:
-    #     dataframe_list_monthly.append(monthly_energy)
-
 
 energy_dataframe = pd.concat(dataframe_list)
 
-# if monthly_data is True:
-#     energy_dataframe_monthly = pd.concat(dataframe_list_monthly)
-
 print(f"Weather array shape is {weather_dataframe.shape[0]} and energy array shape is {energy_dataframe.shape[0]}.")
 
-# if monthly_data is True:
-#     print(f"Weather array shape is {weather_dataframe_monthly.shape[0]} and energy array shape is {energy_dataframe_monthly.shape[0]}.")
-
-
-
 full_dataframe= weather_dataframe.join(energy_dataframe, how="left")
-
-
-
 
 full_dataframe = full_dataframe.dropna(axis=0)
 full_dataframe['electricity_per_sqft'] = full_dataframe['meter_reading'] / full_dataframe['square_feet']
 full_dataframe = full_dataframe.drop("meter_reading", axis=1)
 
+### One-hot encoding
+print(f"Before one-hot encoding:\n{data.columns}")
+
+hot_data = one_hot(full_dataframe, "site_id")
+
+sites = list(set(full_dataframe.site_id.values))
+site_dict = {}
+for i in sites:
+    site_dict[i] = f"site_{i}"
+
+hot_data = hot_data.rename(mapper=site_dict, axis=1)
+hot_data = one_hot(hot_data, "primary_use")
+
+print(f"After one-hot encoding:\n{hot_data.columns}")
 
 if include_meta_data is True:
-    full_dataframe.to_csv(f"{code_home_folder}{data_folder}full_dataframe_{timely}.csv", index=True)
+    hot_data.to_csv(f"{code_home_folder}{data_folder}full_dataframe_{timely}.csv", index=True)
 elif include_meta_data is False:
-    full_dataframe.to_csv(f"{code_home_folder}{data_folder}full_dataframe_nometa_{timely}.csv", index=True)
-
+    hot_data.to_csv(f"{code_home_folder}{data_folder}full_dataframe_nometa_{timely}.csv", index=True)
 
 print("\n Successfully saved full dataframe.")
 
-print(full_dataframe)
+print(hot_data)
