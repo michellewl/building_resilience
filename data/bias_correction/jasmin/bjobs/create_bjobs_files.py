@@ -4,7 +4,7 @@ import os
 
 def create_bjobs():
 	j = 0
-	for i in range(0, 356, 5):
+	for i in range(0, 360, 40):
 	    f = open("model" + str(j) + ".bsub", "w+")
 	    f.write('''#!/bin/bash \n
 	    # BSUB -q short-serial \n
@@ -12,14 +12,14 @@ def create_bjobs():
 	    # BSUB -oo R-%J.o \n
 	    # BSUB -eo R-%J.e \n
 	    # BSUB -W 23:00 \n
-	    python -c \'import os; os.chdir(\"/home/users/omer/PYTHON/\"); import threshold as th; th.cube_wrap(-90, 89,''' + str(i) + "," + str(i + 5) + ",\"" + str("HadGEM2-CC") + "\"" +''')\'''')
+	    python -c \'import os; os.chdir(\"/home/users/building_resilience/data/bias_correction/\"); from bias_correction.jasmin import threshold as th; th.cube_wrap(-90, 89,''' + str(i) + "," + str(i + 40) + ",\"" + str("HadGEM2-CC") + "\"" +''')\'''')
 	    f.close()
 	    j += 1
 
 
 def create_bjobs_era():
 	j = 0
-	for i in range(0, 356, 5):
+	for i in range(0, 360, 40):
 	    f = open("era" + str(j) + ".bsub", "w+")
 	    f.write('''#!/bin/bash \n
 	    # BSUB -q short-serial \n
@@ -27,6 +27,6 @@ def create_bjobs_era():
 	    # BSUB -oo R-%J.o \n
 	    # BSUB -eo R-%J.e \n
 	    # BSUB -W 23:00 \n
-	    python -c \'import os; os.chdir(\"/home/users/omer/PYTHON/\"); import threshold as th; th.get_threshold_world(-90, 89,''' + str(i) + "," + str(i + 5) +  ''')\'''')
+	    python -c \'import os; os.chdir(\"/home/users/building_resilience/data/bias_correction/\"); from bias_correction.jasmin import threshold as th; th.get_threshold_world(-90, 89,''' + str(i) + "," + str(i + 40) +  ''')\'''')
 	    f.close()
 	    j += 1
