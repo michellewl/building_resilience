@@ -19,7 +19,7 @@ git clone https://github.com/michellewl/building_resilience.git
 To setup enviornment run from Jasmin terminal:
 
 ```
-cd building_resilience/data/bias_correction/jasmin
+cd building_resilience/data/bias_correction/jasmin/setup
 
 sh setup.sh
 ```
