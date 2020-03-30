@@ -15,6 +15,7 @@ After login, run:
 ```
 git clone git@github.com:michellewl/building_resilience.git
 ```
+* note that you will have to ensure you have an access to github (ssh key)
 
 
 To setup enviornment run from Jasmin terminal:
