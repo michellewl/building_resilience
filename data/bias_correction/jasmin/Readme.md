@@ -42,7 +42,7 @@ sh ../building_resilience/data/bias_correction/jasmin/setup/create_directories_c
 For creating csv files for the ERA data with threshold of 24c˚ run:
 
 ```
-sh setup/era_bjob.sh
+sh ../building_resilience/data/bias_correction/jasmin/setup/era_bjob.sh
 ```  
 - The csv files produced will have to grid point with its associated Cooling Degree Days (CDD)
 
@@ -55,7 +55,7 @@ bjobs -a
 After the jobs are done run: 
 
 ```
-sh setup/mv_era_files.sh
+sh ../building_resilience/data/bias_correction/jasmin/setup/mv_era_files.sh
 ```
 
 
