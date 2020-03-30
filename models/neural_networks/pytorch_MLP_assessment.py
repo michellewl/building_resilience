@@ -6,8 +6,8 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
-from datasets.building_dataset import BuildingDataset
-from neural_networks.multilayer_perceptron import SimpleNet_3bn, SimpleNet_3, SimpleNet_4
+from functions.building_dataset import BuildingDataset
+from functions.multilayer_perceptron import SimpleNet_3bn, SimpleNet_3, SimpleNet_4
 from copy import deepcopy
 
 windows_os = True

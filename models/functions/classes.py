@@ -1,5 +1,5 @@
 import re
-from neural_networks.multilayer_perceptron import SimpleNet_2, SimpleNet_3, SimpleNet_4
+from multilayer_perceptron import SimpleNet_2, SimpleNet_3, SimpleNet_4
 
 class NNetwork():
     def __init__(self, filename):
