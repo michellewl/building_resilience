@@ -4,4 +4,4 @@ cd $PYTHONPATH
 git clone https://github.com/scott-hosking/baspy.git
 cp -r ../building_resilience/data/bias_correction/jasmin/downloader ./
 mkdir ERA
-mkdir bjob_files
+mkdir -p bjobs_run/model/era
