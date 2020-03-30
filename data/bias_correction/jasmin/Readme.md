@@ -32,14 +32,6 @@ module load jaspy
 ```
 ** Discover what is Jaspy for [here](https://help.jasmin.ac.uk/article/4729-jaspy-envs)
 
-
-Run:
-
-```
-sh ../building_resilience/data/bias_correction/jasmin/setup/create_directories_climate_models.sh
-```
-
-
 For creating csv files for the ERA data with threshold of 24c˚ run:
 
 ```
