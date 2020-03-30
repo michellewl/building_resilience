@@ -28,7 +28,6 @@ Then run (this step has to be run each time you login to Jasmin server):
 
 ```
 module load jaspy
-cd PYTHON
 ```
 ** Discover what is Jaspy for [here](https://help.jasmin.ac.uk/article/4729-jaspy-envs)
 
