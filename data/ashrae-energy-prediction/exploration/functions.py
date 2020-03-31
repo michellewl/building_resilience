@@ -1,7 +1,6 @@
 import pandas as pd
 from datetime import datetime as dt
 import numpy as np
-import re
 
 def show_data(folder,file_name):
     open_data = pd.read_csv(file_name)
@@ -73,26 +72,3 @@ def wind_direction_trigonometry(weather_array):
     weather_array["sin_wind_direction"] = np.sin(np.deg2rad(weather_array["wind_direction"]))
     weather_array = weather_array.drop("wind_direction", axis=1)
     return weather_array
-
-def one_hot(df, columns):
-    '''
-    one-hot encode variables in a specified column
-    ----------
-    Parameters: 
-    df (pandas dataframe)
-    columns (list of strings): columns to one hot encode
-    -------
-    Return:
-     One pandas dataframe with the one hot encoded columns 
-    '''
-    new_df = pd.concat((df, pd.get_dummies(df[columns])), axis=1)
-    return new_df.drop(columns, axis=1)
-
-
-def get_models_by_hidden_layers(models_list, hidden_layers):
-    list = []
-    for model in models_list:
-        nodes = re.compile(r'\d+').findall(model)
-        if len(nodes) == hidden_layers:
-            list.append(model)
-    return list

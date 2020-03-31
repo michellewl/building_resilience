@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
-from functions.building_dataset import BuildingDataset
-from functions.multilayer_perceptron import SimpleNet_3bn, SimpleNet_3
+from building_dataset import BuildingDataset
+from multilayer_perceptron import SimpleNet_3bn, SimpleNet_3
 from copy import deepcopy
 
 ### Hyperparameters ###
@@ -29,12 +29,12 @@ windows_os = True
 
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
-    data_folder = "data\\train_test_arrays\\"
-    filename = f"{code_home_folder}models\\saved\\MLP_pytorch_model_daily{arch}_take7_no_bn.tar"
+    data_folder = "data\\ashrae-energy-prediction\\train_test_arrays\\"
+    filename = f"{code_home_folder}models\\neural_networks\\saved\\MLP_pytorch_model_daily{arch}_take7_no_bn.tar"
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
-    data_folder = "data/train_test_arrays/"
-    filename = f"{code_home_folder}models/saved/MLP_pytorch_model_daily{arch}.tar"
+    data_folder = "data/ashrae-energy-prediction/train_test_arrays/"
+    filename = f"{code_home_folder}models/neural_networks/saved/MLP_pytorch_model_daily{arch}.tar"
 
 ### Code ###
 

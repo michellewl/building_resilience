@@ -9,15 +9,13 @@ windows_os = True
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
     raw_folder = f"{code_home_folder}data\\ashrae-energy-prediction\\kaggle_provided\\" # raw data
-    data_folder = "data\\processed_arrays\\" # processed data
-    save_folder = "data\\train_test_arrays\\"
+    data_folder = "data\\ashrae-energy-prediction\\processed_arrays\\" # processed data
+    save_folder = "data\\ashrae-energy-prediction\\train_test_arrays\\"
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
     raw_folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/" # raw data
-    data_folder = "data/processed_arrays/" # processed data
-    save_folder = "data/train_test_arrays/" # where to save the new arrays
-
-
+    data_folder = "data/ashrae-energy-prediction/processed_arrays/" # processed data
+    save_folder = "data/ashrae-energy-prediction/train_test_arrays/" # where to save the new arrays
 
 print("\nFULL DATASET\n")
 print("Reading dataset...")
@@ -31,8 +29,6 @@ X = data.drop(["timestamp", "building_id", "meter", "electricity_per_sqft"], axi
 
 print(f"X: {X.shape}\ny: {y.shape}")
 
-
-
 print("Splitting into train, validation and test sets...")
 test_size = 0.15
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
@@ -45,9 +41,7 @@ X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=va
 print("Applying normalisation...")
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
-#y_train = scaler.fit_transform(y_train)
 X_test = scaler.transform(X_test)
-#y_test = scaler.transform(y_test)
 X_val = scaler.transform(X_val)
 
 print("Saving train, validation & test files...")
