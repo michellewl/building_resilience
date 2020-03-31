@@ -12,7 +12,7 @@
 
 import numpy as np
 import xarray as xr
-from helper import find_nearest, tic, toc
+from jasmin.helper import find_nearest, tic, toc
 
 import pandas as pd
 import calendar
