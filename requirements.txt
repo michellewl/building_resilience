@@ -1,0 +1,8 @@
+# python requirements
+matplotlib
+numpy
+pandas
+pytorch
+scikit-learn
+scipy
+
