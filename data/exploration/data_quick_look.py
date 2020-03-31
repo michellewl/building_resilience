@@ -6,14 +6,12 @@ windows_os = True
 
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
-    raw_folder = f"{code_home_folder}data\\ashrae-energy-prediction\\kaggle_provided\\" # raw data
-    data_folder = "data\\processed_arrays\\" # where to save the processed data
+    raw_folder = f"{code_home_folder}data\\datasets\\ashrae-energy-prediction\\kaggle_provided\\" # raw data
+    data_folder = "data\\datasets\\processed_arrays\\" # where to save the processed data
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
     raw_folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/" # raw data
-    data_folder = "data/processed_arrays/" # where to save the processed data
-
-
+    data_folder = "data/datasets/processed_arrays/" # where to save the processed data
 
 print("\nWEATHER TRAINING DATA\n")
 files = glob.glob(f"{raw_folder}weather_train.csv")
@@ -21,10 +19,6 @@ data = show_data(raw_folder,files[0])
 
 print(f"\nFull dataset: {data.shape}")
 print(f"\nNaN count: \n{nan_count_by_variable(data)}")
-
-# print(data.loc[np.isnan(data.cloud_coverage)&(data.precip_depth_1_hr ==-1)])#["precip_depth_1_hr"].nunique())
-# plt.hist(data.loc[np.isnan(data.cloud_coverage)]["precip_depth_1_hr"])
-
 
 print("\nBUILDING TRAINING DATA\n")
 files = glob.glob(f"{raw_folder}train.csv")
@@ -48,5 +42,3 @@ print(f"\nNaN count: \n{nan_count_by_variable(data)}")
 
 print(f"\nBuilding purpose:\n{data.primary_use.value_counts()}")
 
-# plt.hist(data.year_built.values[~np.isnan(data.year_built)])
-# plt.show()

@@ -1,10 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib.pyplot import figure
-import numpy as np
 import glob
-from sklearn.linear_model import LinearRegression
-from functions import show_data
 from functions import nan_mean_interpolation, nan_count_by_variable, get_building_ids
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
