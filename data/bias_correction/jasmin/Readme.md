@@ -20,9 +20,8 @@ git clone https://github.com/michellewl/building_resilience.git
 To setup enviornment run from Jasmin terminal:
 
 ```
-cd building_resilience/data/bias_correction/jasmin/setup
 
-sh setup.sh
+sh ~/building_resilience/data/bias_correction/jasmin/setup/setup.sh
 ```
 
 Then run (this step has to be run each time you login to Jasmin server):
