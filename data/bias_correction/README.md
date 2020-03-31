@@ -6,8 +6,8 @@ This folder offers code for applying bias correction (currently empirical quanti
 
 
 #### What is bias correction and why do we do it? 
-Bias correction is a set of approaches to correct output from climate models so that it matches
-with observational data.
+Because climate models are an imperfect representation of reality, they are biased. Thus, climate model outputs will have to be matched with observational data. This procedure is called bias correction (BC). 
+However, as those biases between climate models and reality are complex, the currently available correction methods have their own limitations. In the current project, we use seasonally detrended  Empirical Quantile Mapping (ECDF)[Ho et al](https://journals.ametsoc.org/doi/pdf/10.1175/2011BAMS3110.1) to correct the data on air temperatures as its assumptions are capped to a minimum. The code contains possible extensions to other correction methods such as change factor (CF) and bias correction (BC).
 
 
 #### Execution
