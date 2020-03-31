@@ -1,1 +1,1 @@
-for i in {1..71}; do bsub < bjobs/models/model${i}.bsub; done
+for i in {0..8}; do bsub < ~/building_resilience/data/bias_correction/jasmin/bjobs/models/model${i}.bsub; done

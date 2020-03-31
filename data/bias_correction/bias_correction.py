@@ -1,7 +1,5 @@
 # -*- coding: UTF-8 -*-
-from sklearn.linear_model import LinearRegression
-from scipy.signal import detrend
-import dataprocessing as dp
+from jasmin.downloader import dataprocessing as dp
 import pandas as pd
 import xarray as xr
 import numpy as np
@@ -43,8 +41,8 @@ def match_calendar(obs, observations=True):
 
 def construct_ecdf(np_array):
     '''
-    
-    
+    Construct an empirical cumulative distribution function
+
     '''
     sorted_values = np.sort(np_array)
     pr_smaller_x = []
