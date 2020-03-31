@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from glob import glob
-from functions.classes import NNetwork
+from classes import NNetwork
 
 
 windows_os = True
@@ -10,11 +10,11 @@ windows_os = True
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
     folder = f"{code_home_folder}logs\\assessment\\daily_data\\"
-    models_folder = f"{code_home_folder}models\\saved\\"
+    models_folder = f"{code_home_folder}models\\neural_networks\\saved\\"
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
     folder = f"{code_home_folder}logs/assessment/daily_data/"
-    models_folder = f"{code_home_folder}models/saved/"
+    models_folder = f"{code_home_folder}models/neural_networks/saved/"
 
 filepath = f"{folder}Model_evaluation.csv"
 
