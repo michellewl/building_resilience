@@ -50,7 +50,7 @@ def catalog_to_xr(catl_model):
     --------
     data (Xarray):
         with latitude, longitude, time and height dimensions 
-        filled with the selected variable (e.g. tas)
+        filled with the selected variable (e.g. tasmax)
     '''
     for index, row in catl_model.iterrows():
         ds = bp.open_dataset(row)
@@ -148,6 +148,10 @@ def get_time_from_netcdftime(df, yr=True, mon=False, day=False):
 
 
 def grouped_df(dfs, params):
+    '''
+    
+
+    '''
     run, model, lati, longi, c_var = list(params)
 
     for key in (dfs.keys()):
@@ -199,20 +203,21 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
     lati_end : deafult True. boolean, include year characterisitc  
     lon_st : deafult True. boolean, include month characterisitc  
     lon_end : deafult True. boolean, include day characterisitc
-    era:
-    era_var:
-    c_var:
-    catl_model:
-    run:
-    exper:
-    model:
-    bias_cor: mean, delta, delta_var, quantile
+    era (boolean): is it a reanalysis execution (deafult True)
+    era_var (string): the name of the variable to load from era, deafult (t2max - maximum temperature)
+    c_var (string): the name of the variable to load from climate model, deafult (tasmax - maximum temperature)
+    catl_model (pandas DataFrame): 1 row of a df representing the specific run of the chosen model, deafult None for era execution 
+    run (int): deafult (0) for era execution, otherwise what run number of the model it is
+    exper (string): experiment name, deafult (empty string) for era.
+    model (string) : name of the climate model, deafult (empty string) for era.
 
 
     Returns:
     --------
     df (pd.DataFrame):
-        with # days above different threshold for every lat/lon square (2X2) grouped by year/month/day
+        with # CDD days above threshold (24c˚) for every lat/lon square (2X2) grouped by year/month/day
+
+    Also, saves csv files with CDD days 
     '''
 
     longi = lon_st
@@ -276,11 +281,14 @@ def cube_wrap(lati_st, lati_end, lon_st, lon_end, model):
     Parameters:
     ----------
 
-    lati_st:
-    lati_end:
-    lon_st:
-    lon_end:
-    model:
+    lati_st (int): 
+    lati_end (int):
+    lon_st (int):
+    lon_end (int):
+    model (string): the name of the model to be bias corrected 
+    ----------
+    Returns: 
+    None, just saves the appropriate csvs and NC files from the get_threshold_world function
 
     '''
     catalog = read_catalog(model)
@@ -294,6 +302,10 @@ def cube_wrap(lati_st, lati_end, lon_st, lon_end, model):
 
 # a bit of a bad code here - reading twice the catalog
 def model_wrap(lati_st, lati_end, lon_st, lon_end):
+    '''
+
+
+    '''
     f_catalog = read_catalog()
     print(f_catalog['Model'].unique())
     for model in f_catalog['Model'].unique():
