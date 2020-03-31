@@ -3,7 +3,7 @@ import geopandas as gpd
 from shapely.geometry import Point, Polygon
 
 
-shapefile = '/home/ts809/Documents/Code/github/building_resilience/extra_resources/data_resources/shapes/ne_110m_admin_0_countries.shp'
+shapefile = '/home/tudor/Documents/GitHub/building_resilience/models/top_to_bottom/resources/data_resources/shapes/ne_110m_admin_0_countries.shp'
 #Read shapefile using Geopandas
 gdf = gpd.read_file(shapefile)[['ADMIN', 'ADM0_A3', 'geometry']]
 #Rename columns.
@@ -31,6 +31,10 @@ def whichCountry(point, polygons=polygons):
         Three letter UN country code
     '''
     point = (point[1],point[0])  # the function is actually asking for (lon,lat)
+    
+    if (point[0] >= 180):
+        point = (-(360 - point[0]), point[1])
+    
     i = get_polygon_index(point, polygons)
     if i == None:
         return None
