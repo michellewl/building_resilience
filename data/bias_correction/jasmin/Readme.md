@@ -34,7 +34,6 @@ module load jaspy
 For creating csv files for the ERA data with threshold of 24c˚ run:
 
 ```
-cd ~/PYTHON
 sh ~/building_resilience/data/bias_correction/jasmin/bjobs/era_bjob.sh
 ```  
 - The csv files produced will have to grid point with its associated Cooling Degree Days (CDD)
