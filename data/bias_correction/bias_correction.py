@@ -32,10 +32,11 @@ def match_calendar(obs, observations=True):
     '''
     if (observations):
         obs = obs.where(obs.time.dt.day != 31, drop=True)
-        obs  = remove_leaps_xarray(obs)
+        obs = remove_leaps_xarray(obs)
     else:
-        obs = obs.where(((obs.time.dt.day != 30) | (obs.time.dt.month != 2)), drop=True)  
-        obs  = remove_leaps_xarray(obs)
+        obs = obs.where(((obs.time.dt.day != 30) | (
+            obs.time.dt.month != 2)), drop=True)
+        obs = remove_leaps_xarray(obs)
     return obs
 
 
@@ -135,18 +136,27 @@ def inverse_difference(last_ob, value):
     return value + last_ob
 
 
-def mean_bias_correct(model_data, observations, ref_times, future_times):
+def mean_bias_correct(model_data, obs, ref_times, future_times):
     '''
     Mean bias correction
+    ---------------
+    Parameters: 
+    model (xarray df): climate model xarray including time, lat, lon dimensions and xarray values representing the ones to be corrected
+    obs (xarray df): including time, lat, lon dimensions 
+    ref_times (tuple of strings): e.g. ('2000-01-01', '2010-01-01')
+    future_times (tuple of strings): e.g. ('2020-01-01', '2030-01-01')
+    ---------------
+    Returns: 
+    (xarray df) mean corrected future data
     '''
 
     # Select future data to be correcte
     try:
 
         # Select reference arrays
-        past_model = model_data.sel(time=slice(*ref_times))
-        past_obs = observations.sel(time=slice(*ref_times))
-        future_model = model_data.sel(time=slice(
+        past_model = model.sel(time=slice(*ref_times))
+        past_obs = obs.sel(time=slice(*ref_times))
+        future_model = model.sel(time=slice(
             *future_times)).reduce(np.mean, ('lat', 'lon'))
 
         # Bias
@@ -161,90 +171,48 @@ def mean_bias_correct(model_data, observations, ref_times, future_times):
     return future_bias_corrected
 
 
-def delta_change_correct(model_data, observations, ref_times, future_times):
-    '''
-    Delta change correction
-    '''
-
-    # Select reference arrays
-    past_model = model_data.sel(time=slice(*ref_times))
-    past_obs = observations.sel(time=slice(*ref_times))
-
-    # Select future data to be corrected
-    future_model = model_data.sel(time=slice(*future_times))
-
-    # Bias
-    past_model_mean = past_model.mean(dim='time')
-    future_model_mean = future_model.mean(dim='time')
-    diff = future_model_mean - past_model_mean
-
-    obs_bias_corrected = past_obs + diff
-
-    return(obs_bias_corrected)
-
-
 def ecdf_bias_correction(model, obs, ref_times, future_times):
+    '''
+    
+    -------------
+    Parameters: 
+    model (xarray df): climate model xarray including time, lat, lon dimensions and xarray values representing the ones to be corrected
+    obs (xarray df): including time, lat, lon dimensions 
+    ref_times (tuple of strings): e.g. ('2000-01-01', '2010-01-01')
+    future_times (tuple of strings): e.g. ('2020-01-01', '2030-01-01')
+    --------------
+    Returns: 
 
-    # Subset past and future
+
+    '''
+
     try:
 
         model1 = match_calendar(model.sel(time=slice(*ref_times)), False)
-
-
         model_past = detrend_seasonality(
             (model1.reduce(np.mean, ('lat', 'lon'))).values)
-
-
-
-        model_future = match_calendar(model.sel(time=slice(*future_times)), False)
-
-
+        model_future = match_calendar(
+            model.sel(time=slice(*future_times)), False)
         model_p_time = model_future.time[360:]
-
-
         model_future_obs = detrend_seasonality(
             (model_future.reduce(np.mean, ('lat', 'lon'))).values)
-
-
         sliced_obs = obs.sel(time=slice(*ref_times))
-
-        observations = match_calendar(sliced_obs.reduce(np.mean, ('lat', 'lon')))
-
-
-
+        observations = match_calendar(
+            sliced_obs.reduce(np.mean, ('lat', 'lon')))
         detrend_obs = detrend_seasonality(observations.values)
-
-
 
         # Construct ECDF for historical model times
         vals_past, ecdf_model_past = construct_ecdf(model_past)
         vals_future, ecdf_model_future = construct_ecdf(model_future_obs)
-
-
-        
-        # Change factor strategy
-        '''the change
-            from present-day to future in
-            the observation distribution will be the same as the
-            change in the model distribution
-            F-1[F (X )'''
-
         corrected = [inverse_ecdf_pr(fut, vals_future, np.array(ecdf_model_future)) for fut in [
             ecdf_val(obs, vals_past, ecdf_model_past) for obs in detrend_obs]]
-
-
-
         corrected_retrended = [inverse_difference(
             observations.values[i], corrected[i]) for i in range(len(corrected))]
-
-
-
-        # concat_xr = xr.concat((corrected), dim = "height")
         data = xr.DataArray(corrected_retrended,
                             dims=('time'),
                             coords={'time': model_p_time})
 
-    except Exception as e: 
+    except Exception as e:
         print(e)
         print('unable to bias correct')
         return None
