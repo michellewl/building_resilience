@@ -27,6 +27,7 @@ sh ~/building_resilience/data/bias_correction/jasmin/setup/setup.sh
 Then run (this step has to be run each time you login to Jasmin server):
 
 ```
+cd PYTHON
 module load jaspy
 ```
 ** Discover what is Jaspy for [here](https://help.jasmin.ac.uk/article/4729-jaspy-envs)
