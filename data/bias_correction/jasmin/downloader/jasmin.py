@@ -1,14 +1,13 @@
 # -*- coding: UTF-8 -*-
-
+from jasmin.downloader import dataprocessing as dp
+from baspy._xarray.util import extract_region
 import pandas as pd
 import baspy as bp
-import dataprocessing as dp
-from baspy._xarray.util import extract_region
 
 ## _cm ending means climate model
 ## tas means surface temp
 
- cat_model = bp.catalogue(dataset='cmip5', Model='HadGEM2-CC', Frequency='day',
+cat_model = bp.catalogue(dataset='cmip5', Model='HadGEM2-CC', Frequency='day',
                   Experiment='rcp45', RunID='r1i1p1', Var='tas').reset_index(drop=True)
 
 for index, row in cat_model.iterrows():
