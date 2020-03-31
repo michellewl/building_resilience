@@ -17,8 +17,6 @@ else:
     data_folder = "data/processed_arrays/" # processed data
     save_folder = "data/train_test_arrays/" # where to save the new arrays
 
-
-
 print("\nFULL DATASET\n")
 print("Reading dataset...")
 files = glob.glob(f"{code_home_folder}{data_folder}full_dataframe_daily.csv")
@@ -30,8 +28,6 @@ y = data.electricity_per_sqft.to_numpy()
 X = data.drop(["timestamp", "building_id", "meter", "electricity_per_sqft"], axis=1).to_numpy()
 
 print(f"X: {X.shape}\ny: {y.shape}")
-
-
 
 print("Splitting into train, validation and test sets...")
 test_size = 0.15
@@ -45,9 +41,7 @@ X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=va
 print("Applying normalisation...")
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
-#y_train = scaler.fit_transform(y_train)
 X_test = scaler.transform(X_test)
-#y_test = scaler.transform(y_test)
 X_val = scaler.transform(X_val)
 
 print("Saving train, validation & test files...")
