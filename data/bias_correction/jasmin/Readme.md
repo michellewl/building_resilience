@@ -61,4 +61,9 @@ sh ~/building_resilience/data/bias_correction/jasmin/setup/mv_era_files.sh
 
 ### Climate model correction 
 
+First, let's create folders for the different models: 
+```
+sh ~/building_resilience/data/bias_correction/jasmin/setup/create_directories_climate_models.sh
+```
+
 
