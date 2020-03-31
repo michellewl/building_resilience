@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-from jasmin.downloader import dataprocessing as dp
+import dataprocessing as dp
 import pandas as pd
 import xarray as xr
 import numpy as np
@@ -67,9 +67,14 @@ def construct_ecdf(np_array):
 
 def ecdf_val(val, ecdf_vals, ecdf_pr):
     '''
-    Given the values and probabilities of empirical cumulative distribution
-
-    returns p(x<= val)
+    get probability for a certain value given empirical cumulative distribution function
+    ----------------- 
+    Parameters: 
+    val (float): the value for which p(x<= val) is wanted
+    ecdf_vals (numpy array): the values from given empirical distribution
+    ecdf_pr (numpy array): the probabilities from given empirical distribution
+    -----------------
+    Returns: (float), p(x<= val)
     '''
 
     if all(val >= ecdf_vals):
@@ -80,7 +85,15 @@ def ecdf_val(val, ecdf_vals, ecdf_pr):
 
 def inverse_ecdf_pr(pr, ecdf_vals, ecdf_pr):
     '''
-    returns val such that p(x<= val) = pr
+    Get the value associated with a certain probability value from the empirical cumulative distribution function
+    ------------------
+    Parameters: 
+    pr (float): the probability for which p(x<= val) = pr is wanted
+    ecdf_vals (numpy array): the values from given empirical distribution
+    ecdf_pr (numpy array): the probabilities from given empirical distribution
+    ------------------
+    Returns:
+    val (float) such that p(x<= val) = pr
     '''
     if (all(pr >= ecdf_pr)):
         return np.max(ecdf_vals)
@@ -90,6 +103,14 @@ def inverse_ecdf_pr(pr, ecdf_vals, ecdf_pr):
 
 def detrend_seasonality(np_array, window=360):
     '''
+    Remove seasonal trend by subtracting from each day, same day in previous year
+    ---------------
+    Parameters:
+    np_array: array to be detrended ordered by date with no missing values
+    window (int): deafult 360 for 360day calendar, the trend to be subtracted 
+    ---------------
+    Returns: 
+    (numpy array) detrended array
 
     '''
     diff = list()
@@ -100,6 +121,17 @@ def detrend_seasonality(np_array, window=360):
 
 
 def inverse_difference(last_ob, value):
+    '''
+    Apply on a vlue to retrend it after detrended and corrected
+    ---------------
+    Parameters:
+    last_ob (float): observation that was subtracted from value in detrending
+    value (float) : current value after detrending and any other corrections (e.g bias correction)
+    ---------------
+    Returns:
+    (float) current value retrended 
+
+    '''
     return value + last_ob
 
 
@@ -126,7 +158,7 @@ def mean_bias_correct(model_data, observations, ref_times, future_times):
         print('unable to bias correct')
         return None
 
-    return(future_bias_corrected)
+    return future_bias_corrected
 
 
 def delta_change_correct(model_data, observations, ref_times, future_times):
