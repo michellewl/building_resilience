@@ -8,7 +8,6 @@ import pandas as pd
 import datetime
 
 
-
 def read_catalog(model=None, data='cmip5', freq='day', var='tasmax'):
     '''
     Read in catalogue of climate models
@@ -60,32 +59,26 @@ def catalog_to_xr(catl_model):
     return df_xr
 
 
-def get_days_below_abv_thres_temp(df, var='tasmax', gr='yr'):
+def get_days_below_abv_thres_temp(df, var='tasmax', gr='yr', thres=24):
     '''
-    get # days above/below different thresholds
+    get CDD value per year 
 
     Parameters:
     ----------
-    df (pd.DataFrame)
-    var (string): deafult tas. MX2T for era data
+    df (pd.DataFrame): a data frame which includes a grouping time column (e.g. yr, mon), a column for max temperature and lat and lon columns 
+    var (string): deafult tasmax. MX2T for era data; column name in df representing maximum temperature per day
     gr (string): deafult yr (year). varible to group on.
+    thres (float): the desired threshold for CDD
 
     Returns:
     --------
-    data (pd.DataFrame):
-        with threshold columns (e.g. column 32 will contain # days above 32)
+    grouped_df (pd.DataFrame):
+        dataframe which includes the lat/lon combination and the associated CDD per year in df
     '''
-    # print('below_above:', df)
 
     df['cel'] = df[var] - 273.15
 
-    # for temperature in range(-10, 19, 1):
-    #     df[temperature] = df['cel'] < temperature
-
-    # for temperature in range(22, 40, 1):
-    #     df[temperature] = df['cel'] > temperature
-
-    df['CDD'] = df['cel'] - 24
+    df['CDD'] = df['cel'] - thres
 
     df = df[df['CDD'] >= 0]
     print('are there CDDs?', df)
@@ -179,7 +172,8 @@ def bias_cor_methods(sliced_xr_temp, sliced_xr_obs, params):
     bias_cor_dict = {}
     model, run, exper, lat_st, lon_st = list(params)
 
-    sliced_xr_temp_bc_qm = bc.ecdf_bias_correction(sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
+    sliced_xr_temp_bc_qm = bc.ecdf_bias_correction(
+        sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
     try:
         sliced_xr_temp_bc_qm.name = 'bc_qm'
         sliced_xr_temp_bc_qm.to_netcdf("NC/" + str(model) + '_' + str(run) + '_' + str(
@@ -187,7 +181,7 @@ def bias_cor_methods(sliced_xr_temp, sliced_xr_obs, params):
         bias_cor_dict['qm'] = sliced_xr_temp_bc_qm.to_dataframe().reset_index()
     except:
         print('failed on lat-lon: ' + str(lat_st) + '_' + str(lon_st))
-        bias_cor_dict['qm']  = pd.DataFrame()
+        bias_cor_dict['qm'] = pd.DataFrame()
 
     return bias_cor_dict
 
