@@ -33,7 +33,7 @@ module load jaspy
 
 ### ERA - reanalysis data
 
-For creating csv files for the ERA data with threshold of 24c˚ run (0):
+0. For creating csv files for the ERA data with threshold of 24c˚ run (this step takes ~4 hours):
 
 ```
 sh ~/building_resilience/data/bias_correction/jasmin/bjobs/era_bjob.sh
@@ -65,5 +65,10 @@ First, let's create folders for the different models:
 ```
 sh ~/building_resilience/data/bias_correction/jasmin/setup/create_directories_climate_models.sh
 ```
+To run the bias correction (this step takes ~8 hours): 
+```
+sh ~/building_resilience/data/bias_correction/jasmin/bjobs/model_bjob.sh
+```
+
 
 
