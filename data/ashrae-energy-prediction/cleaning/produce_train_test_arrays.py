@@ -9,13 +9,13 @@ windows_os = True
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
     raw_folder = f"{code_home_folder}data\\ashrae-energy-prediction\\kaggle_provided\\" # raw data
-    data_folder = "data\\processed_arrays\\" # processed data
-    save_folder = "data\\train_test_arrays\\"
+    data_folder = "data\\ashrae-energy-prediction\\processed_arrays\\" # processed data
+    save_folder = "data\\ashrae-energy-prediction\\train_test_arrays\\"
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
     raw_folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/" # raw data
-    data_folder = "data/processed_arrays/" # processed data
-    save_folder = "data/train_test_arrays/" # where to save the new arrays
+    data_folder = "data/ashrae-energy-prediction/processed_arrays/" # processed data
+    save_folder = "data/ashrae-energy-prediction/train_test_arrays/" # where to save the new arrays
 
 print("\nFULL DATASET\n")
 print("Reading dataset...")

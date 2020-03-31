@@ -5,14 +5,20 @@ register_matplotlib_converters()
 import glob
 import datetime as dt
 
-code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
-data_folder = "data/processed_arrays/"
+windows_os = True
 
-folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/"
-#folder = "C:\\Users\\Michelle\\PycharmProjects\\GTC\\data\\ashrae-energy-prediction\\"
+if windows_os:
+    code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
+    raw_folder = f"{code_home_folder}data\\ashrae-energy-prediction\\kaggle_provided\\" # raw data
+    data_folder = "data\\ashrae-energy-prediction\\processed_arrays\\" # where to save the processed data
+else:
+    code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
+    raw_folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/" # raw data
+    data_folder = "data/processed_arrays/" # where to save the processed data
+
 
 print("\nBUILDING META DATA\n")
-files = glob.glob(f"{folder}*meta*.csv")
+files = glob.glob(f"{raw_folder}*meta*.csv")
 meta_data = pd.read_csv(files[0])
 
 start = dt.datetime(day=1, month=1, year=2016, hour=0, minute=0)
@@ -24,7 +30,6 @@ files = glob.glob(f"{code_home_folder}{data_folder}*dataframe.csv")
 data = pd.read_csv(files[0])
 data["timestamp"] = pd.to_datetime(data.timestamp)
 print("Processing dataset...")
-#meta_data_file = glob.glob(f"{folder}*meta*.csv")[0]
 
 fig, ax = plt.subplots(figsize=(20,8))
 
