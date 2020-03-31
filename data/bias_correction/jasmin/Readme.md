@@ -31,6 +31,8 @@ module load jaspy
 ```
 ** Discover what is Jaspy for [here](https://help.jasmin.ac.uk/article/4729-jaspy-envs)
 
+### ERA - reanalysis data
+
 For creating csv files for the ERA data with threshold of 24c˚ run (0):
 
 ```
@@ -56,5 +58,7 @@ After the jobs are done run:
 ```
 sh ~/building_resilience/data/bias_correction/jasmin/setup/mv_era_files.sh
 ```
+
+### Climate model correction 
 
 
