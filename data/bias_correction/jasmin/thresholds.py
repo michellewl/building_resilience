@@ -268,7 +268,7 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
     for item in dict_df.keys():
         if(dict_df[item].shape[0] > 0):
             dict_df[item].to_csv(str(item) + '_' + str(model) + '_' + str(exper) + '_' +
-                                 str(run) + '_lat: ' + str(lat_st) + '_longitude_' + str(lon_st) + '_' + str(lon_end) + '.csv')
+                                 str(run) + '_lat: ' + str(lati_st) + '_longitude_' + str(lon_st) + '_' + str(lon_end) + '.csv')
     return dict_df
 
 
