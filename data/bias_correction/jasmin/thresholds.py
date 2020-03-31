@@ -1,11 +1,11 @@
 # -*- coding: UTF-8 -*-
+import bias_correction as bc
 import dataprocessing as dp
 import baspy as bp
 import numpy as np
 import xarray as xr
 import pandas as pd
 import datetime
-import bias_correction as bc
 
 
 def read_catalog(model=None, data='cmip5', freq='day', var='tasmax'):
@@ -50,7 +50,7 @@ def catalog_to_xr(catl_model):
     --------
     data (Xarray):
         with latitude, longitude, time and height dimensions 
-        filled with the selected variable (e.g. tas)
+        filled with the selected variable (e.g. tasmax)
     '''
     for index, row in catl_model.iterrows():
         ds = bp.open_dataset(row)
@@ -59,32 +59,26 @@ def catalog_to_xr(catl_model):
     return df_xr
 
 
-def get_days_below_abv_thres_temp(df, var='tasmax', gr='yr'):
+def get_days_below_abv_thres_temp(df, var='tasmax', gr='yr', thres=24):
     '''
-    get # days above/below different thresholds
+    get CDD value per year 
 
     Parameters:
     ----------
-    df (pd.DataFrame)
-    var (string): deafult tas. MX2T for era data
+    df (pd.DataFrame): a data frame which includes a grouping time column (e.g. yr, mon), a column for max temperature and lat and lon columns 
+    var (string): deafult tasmax. MX2T for era data; column name in df representing maximum temperature per day
     gr (string): deafult yr (year). varible to group on.
+    thres (float): the desired threshold for CDD
 
     Returns:
     --------
-    data (pd.DataFrame):
-        with threshold columns (e.g. column 32 will contain # days above 32)
+    grouped_df (pd.DataFrame):
+        dataframe which includes the lat/lon combination and the associated CDD per year in df
     '''
-    # print('below_above:', df)
 
     df['cel'] = df[var] - 273.15
 
-    # for temperature in range(-10, 19, 1):
-    #     df[temperature] = df['cel'] < temperature
-
-    # for temperature in range(22, 40, 1):
-    #     df[temperature] = df['cel'] > temperature
-
-    df['CDD'] = df['cel'] - 24
+    df['CDD'] = df['cel'] - thres
 
     df = df[df['CDD'] >= 0]
     print('are there CDDs?', df)
@@ -154,6 +148,10 @@ def get_time_from_netcdftime(df, yr=True, mon=False, day=False):
 
 
 def grouped_df(dfs, params):
+    '''
+    
+
+    '''
     run, model, lati, longi, c_var = list(params)
 
     for key in (dfs.keys()):
@@ -175,10 +173,15 @@ def grouped_df(dfs, params):
 
 
 def bias_cor_methods(sliced_xr_temp, sliced_xr_obs, params):
+    '''
+    
+
+    '''
     bias_cor_dict = {}
     model, run, exper, lat_st, lon_st = list(params)
 
-    sliced_xr_temp_bc_qm = bc.ecdf_bias_correction(sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
+    sliced_xr_temp_bc_qm = bc.ecdf_bias_correction(
+        sliced_xr_temp, sliced_xr_obs, ('2000-01-01', '2010-01-01'), ('2020-01-01', '2030-01-01'))
     try:
         sliced_xr_temp_bc_qm.name = 'bc_qm'
         sliced_xr_temp_bc_qm.to_netcdf("NC/" + str(model) + '_' + str(run) + '_' + str(
@@ -186,7 +189,7 @@ def bias_cor_methods(sliced_xr_temp, sliced_xr_obs, params):
         bias_cor_dict['qm'] = sliced_xr_temp_bc_qm.to_dataframe().reset_index()
     except:
         print('failed on lat-lon: ' + str(lat_st) + '_' + str(lon_st))
-        bias_cor_dict['qm']  = pd.DataFrame()
+        bias_cor_dict['qm'] = pd.DataFrame()
 
     return bias_cor_dict
 
@@ -200,20 +203,21 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
     lati_end : deafult True. boolean, include year characterisitc  
     lon_st : deafult True. boolean, include month characterisitc  
     lon_end : deafult True. boolean, include day characterisitc
-    era:
-    era_var:
-    c_var:
-    catl_model:
-    run:
-    exper:
-    model:
-    bias_cor: mean, delta, delta_var, quantile
+    era (boolean): is it a reanalysis execution (deafult True)
+    era_var (string): the name of the variable to load from era, deafult (t2max - maximum temperature)
+    c_var (string): the name of the variable to load from climate model, deafult (tasmax - maximum temperature)
+    catl_model (pandas DataFrame): 1 row of a df representing the specific run of the chosen model, deafult None for era execution 
+    run (int): deafult (0) for era execution, otherwise what run number of the model it is
+    exper (string): experiment name, deafult (empty string) for era.
+    model (string) : name of the climate model, deafult (empty string) for era.
 
 
     Returns:
     --------
     df (pd.DataFrame):
-        with # days above different threshold for every lat/lon square (2X2) grouped by year/month/day
+        with # CDD days above threshold (24c˚) for every lat/lon square (2X2) grouped by year/month/day
+
+    Also, saves csv files with CDD days 
     '''
 
     longi = lon_st
@@ -267,7 +271,7 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
     for item in dict_df.keys():
         if(dict_df[item].shape[0] > 0):
             dict_df[item].to_csv(str(item) + '_' + str(model) + '_' + str(exper) + '_' +
-                                 str(run) + '_lat: ' + str(lat_st) + '_longitude_' + str(lon_st) + '_' + str(lon_end) + '.csv')
+                                 str(run) + '_lat: ' + str(lati_st) + '_longitude_' + str(lon_st) + '_' + str(lon_end) + '.csv')
     return dict_df
 
 
@@ -277,11 +281,14 @@ def cube_wrap(lati_st, lati_end, lon_st, lon_end, model):
     Parameters:
     ----------
 
-    lati_st:
-    lati_end:
-    lon_st:
-    lon_end:
-    model:
+    lati_st (int): 
+    lati_end (int):
+    lon_st (int):
+    lon_end (int):
+    model (string): the name of the model to be bias corrected 
+    ----------
+    Returns: 
+    None, just saves the appropriate csvs and NC files from the get_threshold_world function
 
     '''
     catalog = read_catalog(model)
@@ -295,6 +302,10 @@ def cube_wrap(lati_st, lati_end, lon_st, lon_end, model):
 
 # a bit of a bad code here - reading twice the catalog
 def model_wrap(lati_st, lati_end, lon_st, lon_end):
+    '''
+
+
+    '''
     f_catalog = read_catalog()
     print(f_catalog['Model'].unique())
     for model in f_catalog['Model'].unique():
