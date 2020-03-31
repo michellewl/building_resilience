@@ -173,7 +173,14 @@ def mean_bias_correct(model_data, obs, ref_times, future_times):
 
 def ecdf_bias_correction(model, obs, ref_times, future_times):
     '''
+    An implementation of the empirical cumulative distribution function mapping 
     
+    (predicted observed x) = F_m'(^-1)[F_m(X_o)]: future observations are equal to past observations projected on ecdf of past climate model, 
+    then taking the inverse of future climate model ecdf.
+
+    Main assumption: "the change from present-day to future in
+    the observation distribution will be the same as the
+    change in the model distribution" 
     -------------
     Parameters: 
     model (xarray df): climate model xarray including time, lat, lon dimensions and xarray values representing the ones to be corrected
@@ -182,6 +189,7 @@ def ecdf_bias_correction(model, obs, ref_times, future_times):
     future_times (tuple of strings): e.g. ('2020-01-01', '2030-01-01')
     --------------
     Returns: 
+    (xarray) with values ecdf corrected and retrended with time dimension equivalent to future_times minus the first 360 days
 
 
     '''
