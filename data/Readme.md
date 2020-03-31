@@ -34,3 +34,5 @@ These scripts print information about the ASHRAE dataset which may be useful whe
 The IEA data exploration script is specific to the IEA dataset and will not work with the ASHRAE dataset.
 
 Plotting scripts produce graphs which may be useful when exploring the ASHRAE dataset.
+
+  ##### [Example exploration notebook](https://github.com/michellewl/building_resilience/blob/omer/data/ashrae/exploration/notebooks/Exploration_ASHRAE.ipynb)  
