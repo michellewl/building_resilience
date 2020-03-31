@@ -10,9 +10,9 @@ Bias correction is a set of approaches to correct output from climate models so 
 with observational data.
 
 
-#### Implementation
+#### Execution
 In order to execute the following bias correction code, one first has to be connected to [JASMIN](http://www.jasmin.ac.uk). 
-
+After you sign up to JASMIN refer to the jasmin folder for further details
 
 
 
