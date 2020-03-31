@@ -10,4 +10,4 @@
 
 	    # BSUB -W 23:00 
 
-	    python -c 'import os; os.chdir("/home/users/omer/PYTHON/"); import threshold as th; th.cube_wrap(-90, 89,160,200,"HadGEM2-CC")'
+	    python -c 'import os; os.chdir("/home/users/omer/PYTHON/"); import thresholds as th; th.cube_wrap(-90, 89,160,200,"HadGEM2-CC")'

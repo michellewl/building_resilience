@@ -42,6 +42,13 @@ def match_calendar(obs, observations=True):
 def construct_ecdf(np_array):
     '''
     Construct an empirical cumulative distribution function
+    ----------------
+    Parameters:
+    np_array (numpy array)
+    _______________
+    Returns:
+    sorted_values (numpy array): the input array sorted
+    pr_smaller_x (numpy array): the prob. to be smaller equal to the value in sorted_values
 
     '''
     sorted_values = np.sort(np_array)
@@ -60,6 +67,8 @@ def construct_ecdf(np_array):
 
 def ecdf_val(val, ecdf_vals, ecdf_pr):
     '''
+    Given the values and probabilities of empirical cumulative distribution
+
     returns p(x<= val)
     '''
 
