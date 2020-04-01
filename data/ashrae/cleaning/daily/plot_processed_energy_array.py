@@ -9,12 +9,12 @@ windows_os = True
 
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
-    raw_folder = f"{code_home_folder}data\\ashrae-energy-prediction\\kaggle_provided\\" # raw data
-    data_folder = "data\\ashrae-energy-prediction\\processed_arrays\\" # where to save the processed data
+    raw_folder = f"{code_home_folder}data\\ashrae\\kaggle_provided\\" # raw data
+    data_folder = "data\\ashrae\\processed_arrays\\" # where to save the processed data
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
     raw_folder = "/space/mwlw3/GTC_data_exploration/data_ashrae_raw/" # raw data
-    data_folder = "data/processed_arrays/" # where to save the processed data
+    data_folder = "data/ashrae/processed_arrays/" # where to save the processed data
 
 
 print("\nBUILDING META DATA\n")
