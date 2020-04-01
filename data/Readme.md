@@ -31,8 +31,8 @@ pip3 install kaggle (on windows), pip3 install --user kaggle (mac)
     kaggle competitions download ashrae-energy-prediction
   ```
 
-## _Exploring the data_
-
+## _Exploring and cleaning_
+- see more in dedicated [folder]() 
 #### Data exploration scripts
 These scripts print information about the ASHRAE dataset which may be useful when writing further code. The first port of call should be the "quick look" script, which describes the features in the weather and building datasets.
 
