@@ -18,4 +18,5 @@ Throughout the project, these were recorded manually in a table saved as a .csv 
 
 ## References
 Edwards, R. E., New, J., & Parker, L. E. (2012). Predicting future hourly residential electrical consumption: A machine learning case study. Energy and Buildings, 49, 591–603. doi: 10.1016/j.enbuild.2012.03.010
+
 Amasyali, K., & El-Gohary, N. M. (2018). A review of data-driven building energy consumption prediction studies. Renewable and Sustainable Energy Reviews, 81, 1192–1205. doi: 10.1016/j.rser.2017.04.095
