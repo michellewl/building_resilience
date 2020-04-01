@@ -186,3 +186,20 @@ def get_country_CDD(country_code, dataset):
     cumulative_cdd = cumulative_cdd/len(points_in_country)
     
     return cumulative_cdd
+
+#---------------------------------------------------------------------------------------------------------------------
+
+def change_to_fips(repo_path, dataset):
+    
+    fips_list = []
+    corresp = pd.read_csv(repo_path +'/models/top_to_bottom/resources/data_resources/country_codes_2_3_letters.csv')
+    three_letter_list = list(corresp['3-letter code'])
+    fips_code_list = list(corresp['fips code'])
+    for i in range(len(dataset)):
+        the_code = dataset['Country Code'].iloc[i]
+        the_index= three_letter_list.index(the_code)
+        the_new_code = fips_code_list[the_index]
+        fips_list.append(the_new_code)
+        
+    dataset['FIPS Code'] = fips_list
+    return dataset
