@@ -4,7 +4,10 @@
 ## Note that the network still requires separate definition from the saved model.
 
 ## Inputs: 6 numpy files (train, validation and test for inputs and targets)
+## These are the outputs from ASHRAE data cleaning at the daily level (see data folder).
+
 ## Outputs: 1 model .tar file (contains optimised weights, loss history for training and validation sets, number of epochs)
+## This forms the input for the assessment script (also in this folder).
 
 ### Package imports
 
