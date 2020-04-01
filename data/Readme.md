@@ -2,20 +2,20 @@
 
 Our project contains multiple datasets, namely:
 
-- ASHRAE dataset:
+- Linear regression & NN dataset:
 The American Society of Heating, Refrigerating and Air-Conditioning Engineers (ASHRAE) released via Kaggle 1448 buildings across 16 global sites, with hourly meter reading data for the year 2016
 
-- Eia buildings
+- XGBoost model datasets: 
+  - Eia buildings
 
-- WorldBank's World Development Indicators:
+- Top to bottom model datasets:
+  - WorldBank's World Development Indicators:
+  - UN's population dynamics and projections datasets:
+  - IEA (International Cooling Agency) electricity usage datasets:
 
-- UN's population dynamics and projections datasets:
-
-- IEA (International Cooling Agency) electricity usage datasets:
-
-- ERA (reanalysis data)
-
-- Climate model HadGEM-CC2-piControl-r1
+- bias correction datasets:
+  - ERA (reanalysis data)
+  - Climate model HadGEM-CC2-piControl-r1
 
 ## _Getting the data_
 
