@@ -1,3 +1,5 @@
+# This script defines a class used to help compile an evaluation table in the plot_model_evaluation script.
+
 import re
 from multilayer_perceptron import SimpleNet_2, SimpleNet_3, SimpleNet_4
 

@@ -1,3 +1,12 @@
+# This script takes a pre-filled evaluation table (manually compiled during project progress) and plots the SMAPE
+# evaluation metric. It also calculates the number of parameters for the neural network models (varies with architecture)
+# to represent model complexity.
+
+# Inputs: Model evaluation table
+# This is compiled  manually.
+
+# Outputs: Evaluation scatter plot (saved as .png file)
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
