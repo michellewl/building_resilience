@@ -1,7 +1,9 @@
 * This folder contains all scripts and documentation needed to obtain the data used in this project 
 
 Our project contains multiple datasets, namely:
-- Ashrae dataset 
+- ASHRAE dataset:
+The American Society of Heating, Refrigerating and Air-Conditioning Engineers (ASHRAE) released via Kaggle 1448 buildings across 16 global sites, with hourly meter reading data for the year 2016
+
 - Eia buildings
 - 
 
@@ -31,7 +33,8 @@ pip3 install kaggle (on windows), pip3 install --user kaggle (mac)
     kaggle competitions download ashrae-energy-prediction
   ```
 
-## _Exploring the data_
+## _ASHRAE Exploring and cleaning_
+- see ASHRAE dedicated [folder](https://github.com/michellewl/building_resilience/tree/omer/data/ashrae) 
 
 #### Data exploration scripts
 These scripts print information about the ASHRAE dataset which may be useful when writing further code. The first port of call should be the "quick look" script, which describes the features in the weather and building datasets.

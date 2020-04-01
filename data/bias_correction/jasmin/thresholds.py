@@ -8,6 +8,7 @@ import pandas as pd
 import datetime
 
 
+
 def read_catalog(model=None, data='cmip5', freq='day', var='tasmax'):
     '''
     Read in catalogue of climate models
