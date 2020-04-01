@@ -4,29 +4,31 @@
 
 Our project contains multiple datasets, namely:
 
-- Linear regression & NN dataset:
+a. Linear regression & NN dataset:
 The American Society of Heating, Refrigerating and Air-Conditioning Engineers (ASHRAE) released via Kaggle 1448 buildings across 16 global sites, with hourly meter reading data for the year 2016
 
-- XGBoost model datasets: 
+b. XGBoost model datasets: 
   - Eia buildings
 
-- Top to bottom model datasets:
+c. Top to bottom model datasets:
   - WorldBank's World Development Indicators:
   - UN's population dynamics and projections datasets:
   - IEA (International Cooling Agency) electricity usage datasets:
 
-- bias correction datasets:
+d. bias correction datasets:
   - ERA (reanalysis data)
   - Climate model HadGEM-CC2-piControl-r1
 
 ## _Getting the data_
 
+#### a.
 #### To download eia data run from terminal the command:
 ```
 sh eia_buildings/download_eia_data.sh
 ```
 * This will download the data as a csv file in your Downloads folder.
 
+#### b.
 #### To download ASHRAE kaggle data: 
 1. Ensure you run python3, then:
 ```
@@ -44,7 +46,7 @@ pip3 install kaggle (on windows), pip3 install --user kaggle (mac)
   ```
     kaggle competitions download ashrae-energy-prediction
   ```
-  
+#### d.
 #### To use the ERA/climate model data please see the [jasmin folder](https://github.com/michellewl/building_resilience/tree/omer/data/bias_correction/jasmin)
 
 ## _Exploring and cleaning_
