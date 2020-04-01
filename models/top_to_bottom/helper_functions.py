@@ -35,7 +35,7 @@ def choose_UN_scenario(data_path, un_pop_data, scenario):
     location_df = pd.DataFrame(location_list, columns =['Country Name'])
     
     # Read teh country codes for the WB format and delete unwanted territories
-    WBs = pd.read_csv(data_path + '/help_data/WB_country_code.csv')
+    WBs = pd.read_csv(data_path + '/help_data/UN_country_code.csv')
     WBs = WBs.dropna(axis = 0).reset_index(drop=True)
     check_countries = location_df.merge(WBs, on='Country Name', how='left')
     check_countries = check_countries.dropna(axis = 0).reset_index(drop=True)
