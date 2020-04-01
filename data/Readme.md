@@ -43,7 +43,7 @@ pip3 install kaggle (on windows), pip3 install --user kaggle (mac)
     kaggle competitions download ashrae-energy-prediction
   ```
   
-#### To use the ERA/climate model data please see the [jasmin folder]()
+#### To use the ERA/climate model data please see the [jasmin folder](https://github.com/michellewl/building_resilience/tree/omer/data/bias_correction/jasmin)
 
 ## _ASHRAE Exploring and cleaning_
 - see ASHRAE dedicated [folder](https://github.com/michellewl/building_resilience/tree/omer/data/ashrae) 
