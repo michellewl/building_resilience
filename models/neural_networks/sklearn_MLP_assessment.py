@@ -1,12 +1,27 @@
-import glob
+## This script uses the Sci-Kit Learn library to evaluate a feed-forward neural network model
+## and writes a .txt log file with mean squared error metric.
+## A saved model from the training script is loaded using Pickle.
+
+## Inputs: 1 model .sav file; 4 numpy files (training and test sets for inputs and targets)
+## These are the outputs from the training script (also in this folder)
+## and the data cleaning script (see data folder) respectively.
+
+## Outputs: 1 assessment log .txt file
+## This includes details about the neural network architecture as well as the MSE metric.
+
+### Package imports
+
 import numpy as np
 from sklearn.metrics import mean_squared_error
 from functions.functions import write, current_time
 import pickle
 
-windows_os = True
+#### File naming system for models of different architecture
 
 arch = "_50_50"
+
+### Folder formatting for different operating systems
+windows_os = True
 
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
@@ -21,10 +36,7 @@ else:
     filename = f"{code_home_folder}models/MLP_model_daily{arch}.sav"
     title = f"{code_home_folder}logs/assessment/daily_data/MLP{arch}_log_{current_time()}"
 
-arch = "_50_50"
-
-
-
+# Load data and model
 
 print("Importing data...")
 X_train = np.load(f"{code_home_folder}{data_folder}X_train.npy")
@@ -35,6 +47,8 @@ y_test = np.load(f"{code_home_folder}{data_folder}y_test.csv")
 print("Importing model...")
 
 model = pickle.load(open(filename, 'rb'))
+
+# Write log file
 
 write(title, f"MLP model uses weather variables and building meta data (year built and square feet).\n")
 write(title, f"\nArchitecture: {model.hidden_layer_sizes}\nBatch size: {model.batch_size}")
@@ -49,7 +63,8 @@ write(title, f"\nBest loss: {model.best_loss_}"
 write(title, f"Training array dimensions: {X_train.shape} {y_train.shape}")
 write(title, f"Test array dimensions: {X_test.shape} {y_test.shape}")
 
-## TRAINING SET
+# Calculate MSE for the training data
+
 print("Training set:")
 dataset_X = X_train
 dataset_y = y_train
@@ -74,8 +89,8 @@ mean_se = all_se / dataset_X.shape[0]
 print(f"Mean squared error (training data): {mean_se}")
 write(title, f"\nMean squared error (training data): {mean_se}")
 
+# Calculate MSE for the test data
 
-## TEST SET
 print("Test set:")
 dataset_X = X_test
 dataset_y = y_test
@@ -96,6 +111,8 @@ for i in range(0, n_batches):
 all_se = np.concatenate(array_list, axis=None)
 all_se = all_se.sum()
 mean_se = all_se / dataset_X.shape[0]
+
+# Write MSE to log file
 
 print(f"Mean squared error (test data): {mean_se}")
 write(title, f"Mean squared error (test data): {mean_se}")
