@@ -32,7 +32,8 @@ pip3 install kaggle (on windows), pip3 install --user kaggle (mac)
   ```
 
 ## _Exploring and cleaning_
-- see more in dedicated [folder]() 
+- see ASHRAE dedicated [folder](https://github.com/michellewl/building_resilience/tree/omer/data/ashrae) 
+
 #### Data exploration scripts
 These scripts print information about the ASHRAE dataset which may be useful when writing further code. The first port of call should be the "quick look" script, which describes the features in the weather and building datasets.
 
