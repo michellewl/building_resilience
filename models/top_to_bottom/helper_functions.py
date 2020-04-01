@@ -1,9 +1,16 @@
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
+import os 
+
+
+os.chdir('./resources')
+import extra_resources as extra
+os.chdir('../')
 
 #---------------------------------------------------KEY FUNCTIONS------------------------------------------------------------------
 
-def choose_UN_scenario(un_pop_data, scenario):
+def choose_UN_scenario(data_path, un_pop_data, scenario):
 # Usage: un_pop_data is the data read form the UN population dataset
 #        scenario is one of the following cases predicted by the UN:
 #        'Constant fertility', 'Constant mortality', 'Instant replacement'
@@ -28,7 +35,7 @@ def choose_UN_scenario(un_pop_data, scenario):
     location_df = pd.DataFrame(location_list, columns =['Country Name'])
     
     # Read teh country codes for the WB format and delete unwanted territories
-    WBs = pd.read_csv('data/help_data/WB_country_code.csv')
+    WBs = pd.read_csv(data_path + '/help_data/UN_country_code.csv')
     WBs = WBs.dropna(axis = 0).reset_index(drop=True)
     check_countries = location_df.merge(WBs, on='Country Name', how='left')
     check_countries = check_countries.dropna(axis = 0).reset_index(drop=True)
@@ -52,6 +59,31 @@ def choose_UN_scenario(un_pop_data, scenario):
         
     print(scenario + ' scenario population prediction data succesfully extracted in your variable!')
     return check_countries
+#---------------------------------------------------------------------------------------------------------------------
+
+def drop_unwanted_UN_years(UN_scenario_dataset):
+    # drop unwanted column from the population dataset:
+    # drop years prior to 2000 and after 2030
+    drop_list = []
+    for i in range(50):
+        drop_list.append(str(i+1950))
+    for i in range(70):
+        drop_list.append(str(i+2031))
+        
+    UN_scenario_dataset = UN_scenario_dataset.drop(drop_list, axis = 1)
+    return UN_scenario_dataset
+
+#---------------------------------------------------------------------------------------------------------------------
+
+def IEA_year(year):
+    iea_year = year
+    if (year < 2005) and (year >=2000): iea_year = 2000
+    if (year < 2010) and (year >=2005): iea_year = 2005
+    if (year < 2015) and (year >=2010): iea_year = 2010
+    if (year < 2017) and (year >=2015): iea_year = 2015
+    if (year >=2017): iea_year = 2017
+
+    return iea_year
 
 #---------------------------------------------------------------------------------------------------------------------
 
@@ -124,3 +156,33 @@ def stick_household_data(UN_pop_df):
 
     new = household.merge(UN_pop_df, on='Country Name', how='left')
     return new
+
+#---------------------------------------------------------------------------------------------------------------------
+
+def get_climate_year(climate_data, year):
+    year_of_interest = climate_data[climate_data['yr'] == str(year)]
+    
+    mid_lat_p = []
+    mid_lon_p = []
+    country_name = []
+    
+    for i in tqdm(range(len(year_of_interest))):
+        mid_lat_p.append(np.mean((float(year_of_interest['lati_st'].iloc[i]),float(year_of_interest['lati'].iloc[i]))))
+        mid_lon_p.append(np.mean((float(year_of_interest['longi_st'].iloc[i]),float(year_of_interest['longi'].iloc[i]))))
+        country_name.append(extra.whichCountry((mid_lat_p[i],mid_lon_p[i])))
+        
+    year_of_interest['country name'] = country_name
+    return year_of_interest
+
+#---------------------------------------------------------------------------------------------------------------------
+
+def get_country_CDD(country_code, dataset):
+    
+    points_in_country = list(dataset[dataset['country name'] == country_code]['CDD'])
+    cumulative_cdd = 0
+    for i in range(len(points_in_country)):
+        cumulative_cdd += float(points_in_country[i])
+        
+    cumulative_cdd = cumulative_cdd/len(points_in_country)
+    
+    return cumulative_cdd

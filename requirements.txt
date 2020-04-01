@@ -1,0 +1,9 @@
+# python requirements
+# Python version 3.7.6
+matplotlib
+numpy
+pandas
+pytorch
+scikit-learn
+scipy
+
