@@ -1,3 +1,7 @@
+# This script defines feed-forward neural networks using the PyTorch machine learning library.
+# Each class instance has a different number of hidden layers, some with batch normalisation incorporated
+# (this was added in as the models were developed, so all are included here; future work should use batch norm).
+
 import torch
 import torch.nn as nn
 
@@ -83,6 +87,8 @@ class SimpleNet_3bn(nn.Module):
         x = torch.relu(self.bn3(self.fc3(x)))
         x = self.fc4(x)
         return x
+
+# 2 hidden layers; no batch norm
 
 class SimpleNet_2(nn.Module):
     def __init__(self, number_of_features, hl1, hl2):
