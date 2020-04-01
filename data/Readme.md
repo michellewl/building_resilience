@@ -1,11 +1,21 @@
 * This folder contains all scripts and documentation needed to obtain the data used in this project 
 
 Our project contains multiple datasets, namely:
+
 - ASHRAE dataset:
 The American Society of Heating, Refrigerating and Air-Conditioning Engineers (ASHRAE) released via Kaggle 1448 buildings across 16 global sites, with hourly meter reading data for the year 2016
 
 - Eia buildings
-- 
+
+- WorldBank's World Development Indicators:
+
+- UN's population dynamics and projections datasets:
+
+- IEA (International Cooling Agency) electricity usage datasets:
+
+- ERA (reanalysis data)
+
+- Climate model HadGEM-CC2-piControl-r1
 
 ## _Getting the data_
 
@@ -32,6 +42,8 @@ pip3 install kaggle (on windows), pip3 install --user kaggle (mac)
   ```
     kaggle competitions download ashrae-energy-prediction
   ```
+  
+#### To use the ERA/climate model data please see the [jasmin folder]()
 
 ## _ASHRAE Exploring and cleaning_
 - see ASHRAE dedicated [folder](https://github.com/michellewl/building_resilience/tree/omer/data/ashrae) 
