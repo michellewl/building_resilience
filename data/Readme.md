@@ -45,9 +45,9 @@ pip3 install kaggle (on windows), pip3 install --user kaggle (mac)
   
 #### To use the ERA/climate model data please see the [jasmin folder](https://github.com/michellewl/building_resilience/tree/omer/data/bias_correction/jasmin)
 
-## _ASHRAE Exploring and cleaning_
+## _Exploring and cleaning_
 - see ASHRAE dedicated [folder](https://github.com/michellewl/building_resilience/tree/omer/data/ashrae) 
-
+- see EIA dedicated [folder]()
 #### Data exploration scripts
 These scripts print information about the ASHRAE dataset which may be useful when writing further code. The first port of call should be the "quick look" script, which describes the features in the weather and building datasets.
 
