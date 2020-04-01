@@ -33,7 +33,7 @@ pip3 install kaggle (on windows), pip3 install --user kaggle (mac)
     kaggle competitions download ashrae-energy-prediction
   ```
 
-## _Exploring and cleaning_
+## _ASHRAE Exploring and cleaning_
 - see ASHRAE dedicated [folder](https://github.com/michellewl/building_resilience/tree/omer/data/ashrae) 
 
 #### Data exploration scripts
