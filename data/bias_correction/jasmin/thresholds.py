@@ -149,7 +149,18 @@ def get_time_from_netcdftime(df, yr=True, mon=False, day=False):
 
 def grouped_df(dfs, params):
     '''
-    
+    A support function for get_threshold_world, acts as a wrapper 
+    that executes CDD calculation regardless if it is era data 
+    or corrected climate model data, then organizes the dataframe stored in dfs[key]
+    to have details about the lat/lon the model name  and run number.
+    ---------------------
+    Parameters: 
+    dfs (dict): 
+    params (tuple): must include the variables run (int), model (string), lati (int), 
+    longi (int), c_var (string): variable to be aggregated to CDD 
+    --------------------- 
+    Returns: 
+    (dict) with keys representing either era or different bias correction methods (e.g. quantile mapping)
 
     '''
     run, model, lati, longi, c_var = list(params)
@@ -174,7 +185,18 @@ def grouped_df(dfs, params):
 
 def bias_cor_methods(sliced_xr_temp, sliced_xr_obs, params):
     '''
-    
+    A support function for get_threshold_world.
+    Bias correction quantile mapping.
+    -----------------
+    Parameters: 
+    sliced_xr_temp (xarray df):
+    sliced_xr_obs (xarray df): 
+    params (tuple of vars):
+    -----------------
+    Returns: 
+    (dict) containting a key for quantile mapping ("qm") with a vlaue for that key being pandas dataframe 
+    with column specifying the bias corrected values 
+ 
 
     '''
     bias_cor_dict = {}
@@ -196,13 +218,14 @@ def bias_cor_methods(sliced_xr_temp, sliced_xr_obs, params):
 
 def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t2max', c_var='tasmax', catl_model=None, run=0, exper="", model=""):
     '''
-    Get 
+    Get csv and nc files for corrected bias and aggregated to CDD per year and lat/lon or csv with CDD for the reanalysis (ERA) data
+
     Parameters:
     ----------
-    lati_st: (pandas.DataFrame with time column (netcdf format))
-    lati_end : deafult True. boolean, include year characterisitc  
-    lon_st : deafult True. boolean, include month characterisitc  
-    lon_end : deafult True. boolean, include day characterisitc
+    lati_st (int): the starting latitude for analysis
+    lati_end (int): the end latitude for analysis
+    lon_st (int): the starting longitude for analysis
+    lon_end (int): the end longitude for analysis
     era (boolean): is it a reanalysis execution (deafult True)
     era_var (string): the name of the variable to load from era, deafult (t2max - maximum temperature)
     c_var (string): the name of the variable to load from climate model, deafult (tasmax - maximum temperature)
@@ -217,7 +240,7 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
     df (pd.DataFrame):
         with # CDD days above threshold (24c˚) for every lat/lon square (2X2) grouped by year/month/day
 
-    Also, saves csv files with CDD days 
+    Also, saves csv files with CDD days per year and lat/lon combo 
     '''
 
     longi = lon_st
@@ -277,14 +300,15 @@ def get_threshold_world(lati_st, lati_end, lon_st, lon_end, era=True, era_var='t
 
 def cube_wrap(lati_st, lati_end, lon_st, lon_end, model):
     '''
-    Get csv files with threshold for all the runs of a model
+    Get csv files with threshold for all the runs of a model.
+    A wraper function for get_threshold_world
     Parameters:
     ----------
 
-    lati_st (int): 
-    lati_end (int):
-    lon_st (int):
-    lon_end (int):
+    lati_st (int): the starting latitude for analysis
+    lati_end (int): the end latitude for analysis
+    lon_st (int): the starting longitude for analysis
+    lon_end (int): the end longitude for analysis
     model (string): the name of the model to be bias corrected 
     ----------
     Returns: 
@@ -300,14 +324,23 @@ def cube_wrap(lati_st, lati_end, lon_st, lon_end, model):
                             c_var='tasmax', catl_model=pd.DataFrame(cat_item), run=runi, exper=experi, model=model)
 
 
-# a bit of a bad code here - reading twice the catalog
 def model_wrap(lati_st, lati_end, lon_st, lon_end):
     '''
+    Run bias correction for all models on the JASMIN platfrom.
+    A wraper function for cube_wrap. 
 
+    Parameters:
+    ----------
+
+    lati_st (int): the starting latitude for analysis
+    lati_end (int): the end latitude for analysis
+    lon_st (int): the starting longitude for analysis
+    lon_end (int): the end longitude for analysis
+    ----------
+    Saves csvs for all models and nc files for all bias corrected data
 
     '''
     f_catalog = read_catalog()
     print(f_catalog['Model'].unique())
     for model in f_catalog['Model'].unique():
-        print(model)
         cube_wrap(lati_st, lati_end, lon_st, lon_end, model)
