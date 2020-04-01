@@ -4,7 +4,10 @@
 ## Note that the network still requires separate definition from the saved model.
 
 ## Inputs: 6 numpy files (train, validation and test for inputs and targets)
+## These are the outputs from ASHRAE data cleaning at the daily level (see data folder).
+
 ## Outputs: 1 model .tar file (contains optimised weights, loss history for training and validation sets, number of epochs)
+## This forms the input for the assessment script (also in this folder).
 
 ### Package imports
 
@@ -47,11 +50,11 @@ windows_os = True
 
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
-    data_folder = "data\\ashrae-energy-prediction\\train_test_arrays\\"
+    data_folder = "data\\ashrae\\train_test_arrays\\"
     filename = f"{code_home_folder}models\\neural_networks\\saved\\MLP_pytorch_model_daily{arch}_take7_no_bn.tar"
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
-    data_folder = "data/ashrae-energy-prediction/train_test_arrays/"
+    data_folder = "data/ashrae/train_test_arrays/"
     filename = f"{code_home_folder}models/neural_networks/saved/MLP_pytorch_model_daily{arch}.tar"
 
 ### Code

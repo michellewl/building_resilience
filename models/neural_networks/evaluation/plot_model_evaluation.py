@@ -1,3 +1,12 @@
+# This script takes a pre-filled evaluation table (manually compiled during project progress) and plots the SMAPE
+# evaluation metric. It also calculates the number of parameters for the neural network models (varies with architecture)
+# to represent model complexity.
+
+# Inputs: Model evaluation table
+# This is compiled  manually.
+
+# Outputs: Evaluation scatter plot (saved as .png file)
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -38,6 +47,8 @@ for model_name in models_list:
 # Use a log scale
 eval_table["log_n_params"] = np.log(eval_table.n_parameters.astype('float64'))
 
+# Create plot
+
 fig, ax = plt.subplots()
 ax.scatter(eval_table.loc[eval_table.model_type == "multilayer_perceptron"].log_n_params,
            eval_table.loc[eval_table.model_type == "multilayer_perceptron"].smape, label="neural network")
@@ -49,4 +60,5 @@ plt.xlabel("log(number of parameters)")
 plt.title("% error")
 plt.legend()
 
+# Save plot figure
 fig.savefig(f"{folder}model_evaluation.png", dpi=200)
