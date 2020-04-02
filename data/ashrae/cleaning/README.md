@@ -1,3 +1,12 @@
+## _What's in here?_
+
+- Scripts for cleaning ASHRAE data:
+  - Daily
+  - Hourly
+
+## _How to use me?_
+
+#### - Daily: 
 Only the stacking scripts provided here are required to process the raw ASHRAE data. The scripts for fixing time gaps and getting buildings were written to help design functions.
 
 In the building-stacking script, the include_meta_data variable refers to building information about the year built and square feet. If made to equal False, the produced dataset will only include weather variables for each building.
@@ -5,3 +14,12 @@ This script converts wind direction (degrees) to two features - sine of the wind
 For the energy (target) array, high and low extremes are removed and then any missing values are mean-interpolated as above.
 
 Both arrays are saved as .csv files.
+
+
+#### - Hourly:
+Just run: 
+```
+
+
+```
+
