@@ -25,7 +25,7 @@ Both arrays are saved as .csv files.
 
 #### Hourly:
 1. Download data according to the steps [here](https://github.com/michellewl/building_resilience/tree/omer/data)
-2. Open a Python terminal/notebook from inside [hourly folder] (https://github.com/michellewl/building_resilience/tree/omer/data/ashrae/cleaning/hourly)
+2. Open a Python terminal/notebook from inside hourly [folder](https://github.com/michellewl/building_resilience/tree/omer/data/ashrae/cleaning/hourly)
 3. Just run : 
 ```
 path = your_path (replace with the path to downloaded data)
