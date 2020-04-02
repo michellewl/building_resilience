@@ -14,7 +14,7 @@ in the exploration folder you'll find exploration both on a daily level and an h
 | Long time periods (2-6 months) with missing data were visually identified during data exploration and removed from further analysis (some buildings at sites 0, 15).                                                                                              | It was perceived that these may have been instances of disused buildings.                 |
 | The dewpoint temperature input feature was converted to units of relative humidity (RH).                                                                                             | This step was taken to enable the application of neural network models to global climate model outputs, which use RH.    
 
-### Hourly data cleaning & exploration
+### Hourly data  - cleaning & exploration
 
 An exploration notebook of the hourly data and the consequent actions for cleaning can be found [here](https://github.com/michellewl/building_resilience/blob/michelle/branch2/data/ashrae/exploration/notebooks/Exploration_ASHRAE.ipynb)
 
