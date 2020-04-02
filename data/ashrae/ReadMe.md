@@ -17,5 +17,5 @@ in the exploration folder you'll find exploration both on a daily level and an h
 
 ### Hourly data  - cleaning & exploration
 
-##### [Here](https://github.com/michellewl/building_resilience/blob/michelle/branch2/data/ashrae/exploration/notebooks/Exploration_ASHRAE.ipynb)is an exploration notebook of the hourly data and the consequent actions for cleaning can be found 
+##### [Here](https://github.com/michellewl/building_resilience/blob/michelle/branch2/data/ashrae/exploration/notebooks/Exploration_ASHRAE.ipynb) is an exploration notebook of the hourly data and the consequent actions for cleaning can be found 
 
