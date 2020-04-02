@@ -13,7 +13,7 @@ in the exploration folder you'll find exploration both on a daily level and an h
 | Meter readings provided as kBTU were converted to kWh per square foot.                                 | Energy was converted to more commonly used units and calculated per unit of area, to account for buildings of different size. Note that building area (square feet) was retained as an input feature.               
 | Two sites (7, 9) with unusual energy reading behaviour were visually identified during data exploration and removed from further analysis.                                                                                               | Possible explanations for the behaviour of these sites have yet to be resolved.          
 | Long time periods (2-6 months) with missing data were visually identified during data exploration and removed from further analysis (some buildings at sites 0, 15).                                                                                              | It was perceived that these may have been instances of disused buildings.                 |
-| The dewpoint temperature input feature was converted to units of relative humidity (RH).                                                                                             | This step was taken to enable the application of neural network models to global climate model outputs, which use RH.    
+| The dewpoint temperature input feature was converted to units of relative humidity (RH).                                                                                             | This step was taken to enable the application of neural network models to global climate model outputs, which use RH.|   
 
 ### Hourly data  - cleaning & exploration
 
