@@ -5,7 +5,7 @@ in the exploration folder you'll find exploration both on a daily level and an h
 
 
 | Pre-processing step                                                                                                                                                             | Justification      
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|---
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------
 | Missing values (NaN) in the raw weather and energy hourly data were interpolated using the mean of the values in the previous and following hour| This would account for any occasional instances of corrupted/missing data without changing the overall behaviour.                                                      |
 | Extreme values in energy readings were removed by retaining the middle 99.9% values of the total raw dataset. These were replaced by NaN and then filled in as above.                                                                                               
 
