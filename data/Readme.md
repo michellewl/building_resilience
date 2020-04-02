@@ -7,7 +7,8 @@ Our project contains multiple datasets, namely:
 a. [ASHRAE dataset](https://www.kaggle.com/c/ashrae-energy-prediction/data):
 The American Society of Heating, Refrigerating and Air-Conditioning Engineers (ASHRAE) released via Kaggle 1448 buildings across 16 global sites, with hourly meter reading data for the year 2016
 
-b. [Eia dataset](https://www.eia.gov/consumption/commercial/data/): 
+b. [Eia dataset](https://www.eia.gov/consumption/commercial/data/):
+"The Commercial Buildings Energy Consumption Survey (CBECS) is a national sample survey that collects information on the stock of U.S. commercial buildings, including their energy-related building characteristics and energy usage data (consumption and expenditures)"
 
 c. Top to bottom model datasets:
   - WorldBank's [World Development Indicators]():
