@@ -5,7 +5,7 @@ AI4ER Guided Team Challenge: Team 1 (Future demand for cooling &amp; heating of 
 It is generally accepted that the current climate crisis will result in an increased future global average temperature. However, at a higher spatial resolution, some parts of the globe may experience higher or lower temperatures to greater extremes. This project aims to investigate how the changing future climate will impact the energy demand of buildings, attributed to cooling and/or heating.
 
 #### Project aims
-- To make a prediction about global future energy demand of building heating and cooling, using weather data from bias-corrected global climate models (GCMs).
+- To make a prediction about global future energy demand of building heating and cooling, using weather data from [bias-corrected](https://github.com/michellewl/building_resilience/tree/omer/data/bias_correction) global climate models (GCMs).
 - To develop suitable machine learning model(s) that can be applied to individual buildings to make energy demand predictions.
 - To compare performance of different prediction models, using common industry evaluation metrics.
 
@@ -27,12 +27,12 @@ Location-dependent variables including local regulations and most notably, local
 
 Unfortunately, such data is not widely available (and may not exist). With this in mind, we approach this problem from two key directions: top-down and bottom-up.
 
-#### Top-down approach
+#### [Top-down approach](https://github.com/michellewl/building_resilience/tree/omer/models/top_to_bottom)
 
-This approach was used to create a simple heuristic model for predicting the energy usages for multiple countries. The datasets used are open datasets from global organisations and we use a linear regression model for each country to predict the energy usage for cooling with respect to the population of the country and the number of cooling degree days (CDDs). The linear regression is performed 3 times for each country with available data: once for the industrial sector, once for the commercial and once for the residential buildings. In the model, we assumed that those two variables (population and CDDs) are the most important ones for the problem, but other parameters could be included in future iterations, such as the country's gross domestc product.
+This approach was used to create a simple heuristic model for predicting the energy usages for multiple countries. The datasets used are open datasets from global organisations and we use a linear regression model for each country to predict the energy usage for cooling with respect to the population of the country and the number of [cooling degree days](https://www.eia.gov/energyexplained/units-and-calculators/degree-days.php) (CDDs). The linear regression is performed 3 times for each country with available data: once for the industrial sector, once for the commercial and once for the residential buildings. In the model, we assumed that those two variables (population and CDDs) are the most important ones for the problem, but other parameters could be included in future iterations, such as the country's gross domestc product.
 
 #### Bottom-up approach
 This approach uses available building energy data for a number of anonymised sites in developed countries. These datasets have good temporal resolution e.g. hourly or daily, and are good candidates for development of machine learning models. Here, we investigate a number of different ML approaches:
-- Linear regression (baseline model)
-- Neural networks
-- XG Boost
+- [Linear regression (baseline model)](https://github.com/michellewl/building_resilience/tree/omer/models/linear_regression)
+- [Neural networks](https://github.com/michellewl/building_resilience/tree/omer/models/neural_networks)
+- [XG Boost](https://github.com/michellewl/building_resilience/tree/omer/other/anna)
