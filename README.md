@@ -34,5 +34,5 @@ This approach was used to create a simple heuristic model for predicting the ene
 #### Bottom-up approach
 This approach uses available building energy data for a number of anonymised sites in developed countries. These datasets have good temporal resolution e.g. hourly or daily, and are good candidates for development of machine learning models. Here, we investigate a number of different ML approaches:
 - [Linear regression (baseline model)](https://github.com/michellewl/building_resilience/tree/omer/models/linear_regression)
-- [Neural networks]()
+- [Neural networks](https://github.com/michellewl/building_resilience/tree/omer/models/neural_networks)
 - [XG Boost]()
