@@ -5,7 +5,7 @@ AI4ER Guided Team Challenge: Team 1 (Future demand for cooling &amp; heating of 
 It is generally accepted that the current climate crisis will result in an increased future global average temperature. However, at a higher spatial resolution, some parts of the globe may experience higher or lower temperatures to greater extremes. This project aims to investigate how the changing future climate will impact the energy demand of buildings, attributed to cooling and/or heating.
 
 #### Project aims
-- To make a prediction about global future energy demand of building heating and cooling, using weather data from [bias-corrected]() global climate models (GCMs).
+- To make a prediction about global future energy demand of building heating and cooling, using weather data from [bias-corrected](https://github.com/michellewl/building_resilience/tree/omer/data/bias_correction) global climate models (GCMs).
 - To develop suitable machine learning model(s) that can be applied to individual buildings to make energy demand predictions.
 - To compare performance of different prediction models, using common industry evaluation metrics.
 
