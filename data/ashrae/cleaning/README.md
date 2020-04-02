@@ -24,9 +24,12 @@ Both arrays are saved as .csv files.
 
 
 #### Hourly:
-Just run: 
+1. Download data according to the steps [here]()
+2. Open a Python terminal/notebook from inside [hourly folder] ()
+3. Just run : 
 ```
-
-
+path = your_path (replace with the path to downloaded data)
+raw_df, meta = rj.read_n_join_data(path)
+df = cleanup(raw_df)
 ```
 
