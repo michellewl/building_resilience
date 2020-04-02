@@ -7,5 +7,5 @@ __pycache__/
 *.npy
 .idea/
 *.tar
-models/logs/assessment/daily_data/loss_plots/
-models/logs/assessment/daily_data/model_evaluation.png
+
+
