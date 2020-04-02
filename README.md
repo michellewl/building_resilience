@@ -27,7 +27,7 @@ Location-dependent variables including local regulations and most notably, local
 
 Unfortunately, such data is not widely available (and may not exist). With this in mind, we approach this problem from two key directions: top-down and bottom-up.
 
-#### Top-down approach
+#### [Top-down approach]()
 
 This approach was used to create a simple heuristic model for predicting the energy usages for multiple countries. The datasets used are open datasets from global organisations and we use a linear regression model for each country to predict the energy usage for cooling with respect to the population of the country and the number of cooling degree days (CDDs). The linear regression is performed 3 times for each country with available data: once for the industrial sector, once for the commercial and once for the residential buildings. In the model, we assumed that those two variables (population and CDDs) are the most important ones for the problem, but other parameters could be included in future iterations, such as the country's gross domestc product.
 

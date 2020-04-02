@@ -1,18 +1,34 @@
 * This folder contains all scripts and documentation needed to obtain the data used in this project 
 
+## _Datasets_
+
 Our project contains multiple datasets, namely:
-- Ashrae dataset 
-- Eia buildings
-- 
+
+a. Linear regression & NN dataset:
+The American Society of Heating, Refrigerating and Air-Conditioning Engineers (ASHRAE) released via Kaggle 1448 buildings across 16 global sites, with hourly meter reading data for the year 2016
+
+b. XGBoost model datasets: 
+  - Eia buildings
+
+c. Top to bottom model datasets:
+  - WorldBank's World Development Indicators:
+  - UN's population dynamics and projections datasets:
+  - IEA (International Cooling Agency) electricity usage datasets:
+
+d. bias correction datasets:
+  - ERA (reanalysis data)
+  - Climate model HadGEM-CC2-piControl-r1
 
 ## _Getting the data_
 
+#### a.
 #### To download eia data run from terminal the command:
 ```
 sh eia_buildings/download_eia_data.sh
 ```
 * This will download the data as a csv file in your Downloads folder.
 
+#### b.
 #### To download ASHRAE kaggle data: 
 1. Ensure you run python3, then:
 ```
@@ -30,18 +46,14 @@ pip3 install kaggle (on windows), pip3 install --user kaggle (mac)
   ```
     kaggle competitions download ashrae-energy-prediction
   ```
+#### d.
+#### To use the ERA/climate model data please see the [jasmin folder](https://github.com/michellewl/building_resilience/tree/omer/data/bias_correction/jasmin)
 
-## _Exploring the data_
-
-#### Data exploration scripts
-These scripts print information about the ASHRAE dataset which may be useful when writing further code. The first port of call should be the "quick look" script, which describes the features in the weather and building datasets.
-
-The IEA data exploration script is specific to the IEA dataset and will not work with the ASHRAE dataset.
-
-Plotting scripts produce graphs which may be useful when exploring the ASHRAE dataset.
-
-  ##### [Example exploration notebook](https://github.com/michellewl/building_resilience/blob/omer/data/ashrae/exploration/notebooks/Exploration_ASHRAE.ipynb)  
-  
+## _Exploring and cleaning_
+- see ASHRAE dedicated [folder](https://github.com/michellewl/building_resilience/tree/omer/data/ashrae) 
+- see EIA dedicated [folder](https://github.com/michellewl/building_resilience/tree/omer/other/anna)
+  ##### [Example: ASHRAE exploration notebook](https://github.com/michellewl/building_resilience/blob/omer/data/ashrae/exploration/notebooks/Exploration_ASHRAE.ipynb)  
+ 
   
  
 #### General data links:
