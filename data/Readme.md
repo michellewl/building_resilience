@@ -1,5 +1,12 @@
 * This folder contains all scripts and documentation needed to obtain the data used in this project 
 
+## _What's in here?_
+
+- Datasets' short description 
+- How to get these datasets
+- Exploration & cleaning procedures to datasets
+
+
 ## _Datasets_
 
 Our project contains multiple datasets, namely:
