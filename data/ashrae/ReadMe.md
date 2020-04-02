@@ -1,9 +1,10 @@
-## ## _What's in here?_
+## _What's in here?_
 
 This folder contains scripts for exploring and cleaning the ASHRAE [dataset](https://www.kaggle.com/c/ashrae-energy-prediction/data);</br> 
 in the exploration folder you'll find exploration both on a daily level and an hourly level. 
 
 ### Daily data cleaning step
+
 | Pre-processing step                                                                                                                                                             | Justification      
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|---
 | Missing values (NaN) in the raw weather and energy hourly data were interpolated using the mean of the values in the previous and following hour| This would account for any occasional instances of corrupted/missing data without changing the overall behaviour.                                                      |
