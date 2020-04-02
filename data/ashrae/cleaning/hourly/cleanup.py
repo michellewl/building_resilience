@@ -22,7 +22,7 @@ def cleanup(df, ones_to_hot, ones_to_drop):
     df = fe.feature_engineer(df, 'timestamp')
     df = fe.one_hot(df, ones_to_hot)
     df = drop_redundant(df, ones_to_drop)
-    df = drop_outliers()
+    # df = drop_outliers() ## still needs to be worked on
     df = missing_vals(df)
     return df
 
