@@ -1,7 +1,9 @@
 ### Visualizations 
 
-This part of the repository contains an R webapp and another R script to create a world map colored according to 
-energy consumption 
+This part of the repository contains:
+- [R webapp](https://github.com/michellewl/building_resilience/tree/omer/visual/WebApp_Rshiny)   
+- R script to create an energy consumption world map 
+
 
 
 ![](./elec_00.png)
