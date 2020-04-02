@@ -7,7 +7,7 @@ Our project contains multiple datasets, namely:
 a. [ASHRAE dataset](https://www.kaggle.com/c/ashrae-energy-prediction/data):
 The American Society of Heating, Refrigerating and Air-Conditioning Engineers (ASHRAE) released via Kaggle 1448 buildings across 16 global sites, with hourly meter reading data for the year 2016
 
-b. [Eia dataset](): 
+b. [Eia dataset](https://www.eia.gov/consumption/commercial/data/): 
 
 c. Top to bottom model datasets:
   - WorldBank's [World Development Indicators]():
