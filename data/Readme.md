@@ -14,7 +14,7 @@ c. Top to bottom model datasets:
   - [UN's population dynamics and projections]() datasets:
   - [IEA]() (International Cooling Agency) electricity usage datasets:
 
-d. bias correction datasets:
+d. bias correction datasets (available on JASMIN):
   - ERA (reanalysis data)
   - Climate model HadGEM-CC2-piControl-r1
 
