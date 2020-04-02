@@ -1,6 +1,6 @@
-## _Contents_
+## ## _What's in here?_
 
-This folder contains scripts for exploring and cleaning the ASHRAE [dataset](https://www.kaggle.com/c/ashrae-energy-prediction/data); 
+This folder contains scripts for exploring and cleaning the ASHRAE [dataset](https://www.kaggle.com/c/ashrae-energy-prediction/data);</br> 
 in the exploration folder you'll find exploration both on a daily level and an hourly level. 
 
 ### Daily data cleaning step
