@@ -18,9 +18,12 @@ The American Society of Heating, Refrigerating and Air-Conditioning Engineers (A
 "The Commercial Buildings Energy Consumption Survey (CBECS) is a national sample survey that collects information on the stock of U.S. commercial buildings, including their energy-related building characteristics and energy usage data (consumption and expenditures)"
 
 #### c. Top to bottom model datasets:<br/>
-  - WorldBank's [World Development Indicators]():
-  - [UN's population dynamics and projections]() datasets:
-  - [IEA]() (International Cooling Agency) electricity usage datasets:
+  - WorldBank's [World Development Indicators](https://databank.worldbank.org/source/world-development-indicators):
+  
+  - [UN's population dynamics and projections](https://population.un.org/wpp/Download/Standard/Population/) datasets:
+  
+  - [IEA](https://www.eia.gov/energyexplained/) (International Cooling Agency) electricity usage datasets:
+  
 
 #### d. bias correction datasets (available on JASMIN):<br/>
   - ERA (reanalysis data)
