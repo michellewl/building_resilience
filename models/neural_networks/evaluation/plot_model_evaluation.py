@@ -18,7 +18,7 @@ windows_os = True
 
 if windows_os:
     code_home_folder = "C:\\Users\\Michelle\\OneDrive - University of Cambridge\\MRes\\Guided_Team_Challenge\\building_resilience\\"
-    folder = f"{code_home_folder}logs\\assessment\\daily_data\\"
+    folder = f"{code_home_folder}models\\logs\\assessment\\daily_data\\"
     models_folder = f"{code_home_folder}models\\neural_networks\\saved\\"
 else:
     code_home_folder = "/home/mwlw3/Documents/Guided_team_challenge/building_resilience/"
@@ -61,4 +61,4 @@ plt.title("% error")
 plt.legend()
 
 # Save plot figure
-fig.savefig(f"{folder}model_evaluation.png", dpi=200)
+fig.savefig(f"{folder}model_evaluation_80.png", dpi=80)
