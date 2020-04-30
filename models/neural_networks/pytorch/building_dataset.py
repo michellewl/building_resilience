@@ -15,6 +15,7 @@ class BuildingDataset(Dataset):
     def __init__(self, X_filepath, y_filepath):
         self.inputs = torch.from_numpy(np.load(X_filepath)).float()
         self.targets = torch.from_numpy(np.load(y_filepath)).float()
+    # This currently loads the whole data file, but could be altered and moved to the get item function to define loading of a single row at a time.
 
     def __len__(self):
         return self.inputs.size()[0]
